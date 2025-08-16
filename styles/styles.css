@@ -1,0 +1,103 @@
+@import 'tailwindcss';
+@config "../tailwind.config.ts";
+
+@theme {
+  /* Transitions */
+  --default-transition-duration: 300ms;
+
+  /* Z-indexes */
+  --z-index-60: 60;
+  --z-index-70: 70;
+
+  /* Line heights */
+  --leading-4_5: 18px;
+
+  --default-border-color: #323232;
+
+  /* Spacing */
+  --spacing-4_5: 18px;
+  --spacing-15: 60px;
+  --spacing-17: 68px;
+  --spacing-18: 72px;
+  --spacing-22: 88px;
+  --spacing-26: 104px;
+  --spacing-30: 120px;
+  --spacing-34: 136px;
+}
+
+/* Override cursor-pointer becoming default */
+button:not(:disabled),
+[role='button']:not(:disabled) {
+  cursor: pointer;
+}
+
+@layer base {
+  body {
+    @apply w-full min-w-[320px] bg-grey-900 font-sans text-base leading-5 font-normal whitespace-pre-line text-grey-200;
+  }
+}
+
+body {
+  @apply max-w-[100vw] overflow-x-hidden overflow-y-scroll;
+}
+
+/*CUSTOM SCROLLBAR*/
+::-webkit-scrollbar {
+  @apply size-1.5 md:h-2 md:w-3;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply rounded bg-grey-200;
+}
+
+::selection {
+  @apply bg-grey-200 text-black;
+}
+
+b,
+strong {
+  font-weight: bold;
+}
+
+/* Prevent blue tap colouring and outlines on button focus */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+textarea:focus,
+select:focus,
+input:focus {
+  outline: none !important;
+}
+
+/* Hide up and down arrows on quantity inputs */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.next-image {
+  position: relative !important;
+  inset: unset !important;
+}
+
+/* Transform blur fix */
+.sharpen-transform {
+  transform: translate3d(0, 0, 0) perspective(999px);
+}
+
+/* Ensure text does not overflow on a single line */
+.label-preview {
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

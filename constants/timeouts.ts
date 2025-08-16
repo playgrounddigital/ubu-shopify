@@ -1,0 +1,13 @@
+export const TIMEOUT_3S = 3000
+export const TIMEOUT_2S = 2000
+export const TIMEOUT_1200MS = 1200
+export const TIMEOUT_1S = 1000
+export const TIMEOUT_800MS = 800
+export const TIMEOUT_700MS = 700
+export const TIMEOUT_600MS = 600
+export const TIMEOUT_500MS = 500
+export const TIMEOUT_400MS = 400
+export const TIMEOUT_300MS = 300
+export const TIMEOUT_200MS = 200
+export const TIMEOUT_100MS = 100
+export const TIMEOUT_50MS = 50
