@@ -11,7 +11,7 @@ const IntroSection: FC<IntroSectionProps> = ({ content }) => {
   return (
     <section className="bg-black">
       <Container className="flex h-[376px] items-end pb-4.5">
-        <div className="max-w-[888px] text-[35px] leading-[42px] font-semibold -tracking-[1.05px] text-white">
+        <div className="text-introduction max-w-[888px] text-white">
           <StructuredTextRenderer data={content.description} />
         </div>
       </Container>

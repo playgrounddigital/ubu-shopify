@@ -9,7 +9,6 @@ import {
 } from 'datocms-structured-text-utils'
 import { FC, Fragment } from 'react'
 import { StructuredText, renderMarkRule, renderNodeRule } from 'react-datocms'
-import OptimisedImage from '~/components/Layout/OptimisedImage'
 import PageLink from '~/components/Layout/PageLink'
 import { joinSmartTagsIntoString } from '~/helpers/cms'
 
@@ -108,7 +107,7 @@ const StructuredTextRenderer: FC<StructuredTextRendererProps> = ({ data, paragra
       switch (record.__typename) {
         case 'ImageRecord':
           return (
-            <OptimisedImage
+            <img
               src={record.image.url}
               alt={record.image.alt || joinSmartTagsIntoString(record.image.smartTags)}
               className="mr-2 inline-block h-9 w-[117px]"

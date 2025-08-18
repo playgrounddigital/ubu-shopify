@@ -6,6 +6,39 @@ const imageQuery = `{
     smartTags
 }`
 
+const reasonsSectionQuery = `... on ReasonsSectionRecord {
+  id
+  title
+  shouldShowTitle
+  reasons {
+    id
+    image {
+      url
+    }
+    title
+  }
+}`
+
+const featuredProductsSectionQuery = `... on FeaturedProductsSectionRecord {
+  id
+  title
+  products {
+    product
+  }
+}`
+
+const fullWidthBannerSectionQuery = `... on FullWidthBannerSectionRecord {
+  id
+  image ${imageQuery}
+  imageMobile ${imageQuery}
+  title
+  titleColour
+  buttonText
+  buttonColour
+  link
+  height
+}`
+
 export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string> = {
   [GraphQlQueryEnum.SiteBanner]: () => `{
     siteBanner {
@@ -32,37 +65,10 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
       
       content {
         __typename 
-        ... on ReasonsSectionRecord {
-          id
-          title
-          shouldShowTitle
-          reasons {
-            id
-            image {
-              url
-            }
-            title
-          }
-        }
-        
-        ... on FeaturedProductsSectionRecord {
-          id
-          title
-          products {
-            product
-          }
-        }
-        
-        ... on FullWidthBannerSectionRecord {
-          id
-          image ${imageQuery}
-          imageMobile ${imageQuery}
-          title
-          buttonText
-          buttonColour
-          link
-          height
-        }
+
+        ${reasonsSectionQuery}
+        ${featuredProductsSectionQuery}
+        ${fullWidthBannerSectionQuery}
         
         ... on TextMarqueeSectionRecord {
           id
@@ -121,6 +127,22 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
           shouldAddBorder
         }
         
+      }
+    }
+  }`,
+
+  [GraphQlQueryEnum.AllCollections]: () => `{
+    allCollections {
+      shopifyCollection
+      backgroundColour
+      image ${imageQuery}
+      description
+      
+      content {
+        __typename
+        ${reasonsSectionQuery}
+        ${featuredProductsSectionQuery}
+        ${fullWidthBannerSectionQuery}
       }
     }
   }`,

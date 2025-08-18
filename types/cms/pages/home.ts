@@ -66,6 +66,7 @@ export interface FullWidthBannerSectionRecord {
   image: Image
   imageMobile: Image
   title: string
+  titleColour: 'black' | 'white'
   buttonText: string
   buttonColour: 'pink' | 'yellow' | 'blue' | 'green'
   link: string

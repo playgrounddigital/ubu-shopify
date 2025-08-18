@@ -35,10 +35,17 @@ const FullWidthBannerSection: FC<FullWidthBannerSectionProps> = ({ content }) =>
         <div
           className={cx({
             'max-w-[531px]': content.height === 'md',
-            'max-w-[631px]': content.height === 'lg',
+            'max-w-[424px]': content.height === 'lg',
           })}
         >
-          <p className="heading-3 mb-10">{content.title}</p>
+          <h2
+            className={cx('heading-3 mb-10', {
+              'text-black': content.titleColour === 'black',
+              'text-white': content.titleColour === 'white',
+            })}
+          >
+            {content.title}
+          </h2>
           <Button
             size="md"
             variant={(() => {

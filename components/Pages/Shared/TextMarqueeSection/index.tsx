@@ -17,7 +17,7 @@ const TextMarqueeSection: FC<TextMarqueeSectionProps> = ({ content }) => {
           <span
             key={index}
             style={{ color: content.textColour }}
-            className="text-[270px] leading-[243px] font-extrabold -tracking-[5.4px]"
+            className="heading-1"
           >
             {content.marqueeText}
           </span>

@@ -42,6 +42,9 @@ button:not(:disabled),
   body {
     @apply w-full min-w-[320px] bg-white font-sans text-base leading-5 font-normal whitespace-pre-line text-black;
   }
+  .heading-1 {
+    @apply text-[270px] leading-[243px] font-extrabold -tracking-[5.4px];
+  }
   .heading-2 {
     @apply text-[84px] leading-[75.6px] font-extrabold -tracking-[4.2px];
   }
@@ -51,8 +54,14 @@ button:not(:disabled),
   .text-subheading {
     @apply text-2xl leading-7 font-semibold -tracking-[0.72px];
   }
+  .text-collection-title {
+    @apply text-[100px] leading-[90px] font-extrabold -tracking-[2px];
+  }
   .text-product-title {
     @apply text-xl leading-7 font-bold -tracking-[0.78px];
+  }
+  .text-introduction {
+    @apply text-[35px] leading-[42px] font-semibold -tracking-[1.05px];
   }
   .body-large {
     @apply text-xl leading-7 font-normal -tracking-[0.6px];

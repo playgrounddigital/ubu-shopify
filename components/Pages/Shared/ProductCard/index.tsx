@@ -1,19 +1,18 @@
 import { FC } from 'react'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
 import { useCart } from '~/context/CartContext'
-import { DatoCMSShopifyProduct } from '~/types/cms/pages/home'
 import { Product } from '~/types/shopify'
 
 interface ProductCardProps {
-  product: DatoCMSShopifyProduct
-  productData: Product
+  product: Product
 }
 
-const ProductCard: FC<ProductCardProps> = ({ product, productData }) => {
+const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const { addToCart } = useCart()
-  const productTitle = productData?.title
-  const productPrice = productData?.variants.find((v) => v.id === product.product.id)?.priceV2.amount
-  const variantTitle = product.product.title
+  const productTitle = product.title
+  const variant = product.variants[0]
+  const productPrice = variant?.priceV2.amount
+  const variantTitle = variant?.title
   return (
     <div className="relative mr-10 !w-[305px]">
       {/* IMAGE AND CART BUTTON */}
@@ -28,8 +27,8 @@ const ProductCard: FC<ProductCardProps> = ({ product, productData }) => {
           }}
         >
           <OptimisedImage
-            src={product.product.image.src}
-            alt={product.product.title}
+            src={product.images[0].url}
+            alt={product.title}
             layout="cover"
             className="h-full w-full"
           />
@@ -39,12 +38,12 @@ const ProductCard: FC<ProductCardProps> = ({ product, productData }) => {
           <button
             onClick={() =>
               addToCart({
-                variantId: product.product.id,
+                variantId: product.id,
                 quantity: 1,
                 productTitle: productTitle,
                 priceAmount: productPrice ?? '0',
                 currencyCode: 'USD',
-                imageUrl: product.product.image.src,
+                imageUrl: product.images[0].url,
               })
             }
             className="group/button relative inline-flex h-[34px] w-fit items-center justify-center rounded-full px-4 text-center uppercase"

@@ -49,13 +49,19 @@ const FeaturedProductsSection: FC<FeaturedProductsSectionProps> = ({ products, c
           ref={sliderRef}
           beforeChange={handleSlideChange}
         >
-          {productsToShow.map((cmsProduct) => (
-            <ProductCard
-              key={cmsProduct.product.id}
-              product={cmsProduct}
-              productData={products.find((p) => p.variants.find((v) => v.id === cmsProduct.product.id))}
-            />
-          ))}
+          {productsToShow.map((cmsProduct) => {
+            const shopifyProduct = products.find((p) => p.variants.find((v) => v.id === cmsProduct.product.id))
+            if (!shopifyProduct) {
+              console.error(`Product ${cmsProduct.product.id} not found in Shopify products`)
+              return null
+            }
+            return (
+              <ProductCard
+                key={cmsProduct.product.id}
+                product={shopifyProduct}
+              />
+            )
+          })}
         </Slider>
         {/* Show next and prev buttons */}
         <div className="mt-[52px] flex gap-x-4">
