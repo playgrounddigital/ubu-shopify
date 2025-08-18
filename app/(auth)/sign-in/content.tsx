@@ -1,11 +1,9 @@
 'use client'
 import { useState } from 'react'
+import AuthInput from '~/components/Layout/AuthInput'
+import AuthLayout from '~/components/Layout/AuthLayout'
 import Button from '~/components/Layout/Button'
-import Container from '~/components/Layout/Container'
-import OptimisedImage from '~/components/Layout/OptimisedImage'
 import PageLink from '~/components/Layout/PageLink'
-import TextMarqueeSection from '~/components/Pages/Shared/TextMarqueeSection'
-import { joinSmartTagsIntoString } from '~/helpers/cms'
 import { SignInContent } from '~/types/cms/pages/sign-in'
 import { SitePages } from '~/types/pages'
 
@@ -45,107 +43,60 @@ export default function SignInPage({ content }: { content: SignInContent }) {
   }
 
   return (
-    <>
-      <section>
-        <Container
-          noPaddingDesktop
-          className="pt-[126px]"
+    <AuthLayout
+      image={content.image}
+      title={content.title}
+      description={content.description}
+      content={content.content}
+    >
+      {error && <div className="mb-6 rounded-md border border-red-500 bg-red-50 p-4 text-red-700">{error}</div>}
+
+      <form onSubmit={onSubmit}>
+        <AuthInput
+          id="email"
+          type="email"
+          placeholder="Email address"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          autoComplete="email"
+          required
+        />
+        <AuthInput
+          id="password"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          autoComplete="current-password"
+          required
+          className="mb-3"
+        />
+
+        <div className="mb-9 text-sm">
+          <PageLink
+            href={SitePages.ForgotPassword}
+            className="underline"
+          >
+            Forgot your password?
+          </PageLink>
+        </div>
+
+        <Button
+          type="submit"
+          size="md"
+          variant="white-black"
+          disabled={loading}
+          className="mb-4.5 !flex"
         >
-          <div className="grid gap-x-5 lg:grid-cols-2">
-            <OptimisedImage
-              src={content.image.url}
-              alt={joinSmartTagsIntoString(content.image.smartTags)}
-              layout="cover"
-              className="w-full"
-            />
-            <div className="bg-off-white p-[50px]">
-              <h1 className="mb-4.5 text-right text-[76px] leading-none font-semibold -tracking-[4.56px]">
-                {content.title}
-              </h1>
-              <p className="mb-12 ml-auto max-w-[243px] text-right">{content.description}</p>
-
-              {error && <div className="mb-6 rounded-md border border-red-500 bg-red-50 p-4 text-red-700">{error}</div>}
-
-              <form onSubmit={onSubmit}>
-                <div className="mb-8 border-b border-black pb-4">
-                  <label
-                    htmlFor="email"
-                    className="sr-only"
-                  >
-                    Email address
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    placeholder="Email address"
-                    className="text-input w-full bg-transparent placeholder:text-black"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    autoComplete="email"
-                    required
-                  />
-                </div>
-                <div className="mb-3 border-b border-black pb-4">
-                  <label
-                    htmlFor="password"
-                    className="sr-only"
-                  >
-                    Password
-                  </label>
-                  <input
-                    id="password"
-                    type="password"
-                    placeholder="Password"
-                    className="text-input w-full bg-transparent placeholder:text-black"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    autoComplete="current-password"
-                    required
-                  />
-                </div>
-
-                <div className="mb-9 text-sm">
-                  <PageLink
-                    href={SitePages.ForgotPassword}
-                    className="underline"
-                  >
-                    Forgot your password?
-                  </PageLink>
-                </div>
-
-                <Button
-                  type="submit"
-                  size="md"
-                  variant="white-black"
-                  disabled={loading}
-                  className="mb-4.5 !flex"
-                >
-                  {loading ? 'Signing In…' : 'Sign In'}
-                </Button>
-                <PageLink
-                  href={SitePages.SignUp}
-                  className="underline"
-                >
-                  Don’t have an account? Sign up
-                </PageLink>
-              </form>
-            </div>
-          </div>
-        </Container>
-      </section>
-      {content.content.map((section) => {
-        switch (section.__typename) {
-          case 'TextMarqueeSectionRecord':
-            return (
-              <TextMarqueeSection
-                key={section.id}
-                content={section}
-              />
-            )
-          default:
-            return null
-        }
-      })}
-    </>
+          {loading ? 'Signing In…' : 'Sign In'}
+        </Button>
+        <PageLink
+          href={SitePages.SignUp}
+          className="underline"
+        >
+          Don't have an account? Sign up
+        </PageLink>
+      </form>
+    </AuthLayout>
   )
 }

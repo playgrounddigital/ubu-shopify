@@ -1,10 +1,9 @@
 'use client'
 import { useEffect, useState } from 'react'
+import AuthInput from '~/components/Layout/AuthInput'
+import AuthLayout from '~/components/Layout/AuthLayout'
 import Button from '~/components/Layout/Button'
-import Container from '~/components/Layout/Container'
-import OptimisedImage from '~/components/Layout/OptimisedImage'
 import PageLink from '~/components/Layout/PageLink'
-import { joinSmartTagsIntoString } from '~/helpers/cms'
 import { SignInContent } from '~/types/cms/pages/sign-in'
 import { SitePages } from '~/types/pages'
 
@@ -48,87 +47,54 @@ export default function ResetPasswordPage({ content }: { content: SignInContent 
   }
 
   return (
-    <section>
-      <Container
-        noPaddingDesktop
-        className="pt-[126px]"
-      >
-        <div className="grid gap-x-5 lg:grid-cols-2">
-          <OptimisedImage
-            src={content.image.url}
-            alt={joinSmartTagsIntoString(content.image.smartTags)}
-            layout="cover"
-            className="w-full"
-          />
-          <div className="bg-off-white p-[50px]">
-            <h1 className="mb-4.5 text-right text-[76px] leading-none font-semibold -tracking-[4.56px]">
-              Reset password
-            </h1>
-            <p className="mb-12 ml-auto max-w-[243px] text-right">Choose a new password for your account.</p>
+    <AuthLayout
+      image={content.image}
+      title="Reset password"
+      description="Choose a new password for your account."
+      content={content.content}
+    >
+      {error && <div className="mb-6 rounded-md border border-red-500 bg-red-50 p-4 text-red-700">{error}</div>}
 
-            {error && <div className="mb-6 rounded-md border border-red-500 bg-red-50 p-4 text-red-700">{error}</div>}
+      <form onSubmit={onSubmit}>
+        <AuthInput
+          id="password"
+          type="password"
+          placeholder="New password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          autoComplete="new-password"
+          required
+          minLength={6}
+        />
 
-            <form onSubmit={onSubmit}>
-              <div className="mb-8 border-b border-black pb-4">
-                <label
-                  htmlFor="password"
-                  className="sr-only"
-                >
-                  New password
-                </label>
-                <input
-                  id="password"
-                  type="password"
-                  placeholder="New password"
-                  className="text-input w-full bg-transparent placeholder:text-black"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  autoComplete="new-password"
-                  required
-                  minLength={6}
-                />
-              </div>
+        <AuthInput
+          id="confirm"
+          type="password"
+          placeholder="Confirm password"
+          value={confirm}
+          onChange={(e) => setConfirm(e.target.value)}
+          autoComplete="new-password"
+          required
+          minLength={6}
+        />
 
-              <div className="mb-8 border-b border-black pb-4">
-                <label
-                  htmlFor="confirm"
-                  className="sr-only"
-                >
-                  Confirm password
-                </label>
-                <input
-                  id="confirm"
-                  type="password"
-                  placeholder="Confirm password"
-                  className="text-input w-full bg-transparent placeholder:text-black"
-                  value={confirm}
-                  onChange={(e) => setConfirm(e.target.value)}
-                  autoComplete="new-password"
-                  required
-                  minLength={6}
-                />
-              </div>
-
-              <div className="flex items-center gap-x-6">
-                <Button
-                  type="submit"
-                  size="md"
-                  variant="white-black"
-                  disabled={loading}
-                >
-                  {loading ? 'Resetting…' : 'Reset password'}
-                </Button>
-                <PageLink
-                  href={SitePages.SignIn}
-                  className="underline"
-                >
-                  Back to Sign in
-                </PageLink>
-              </div>
-            </form>
-          </div>
+        <div className="flex items-center gap-x-6">
+          <Button
+            type="submit"
+            size="md"
+            variant="white-black"
+            disabled={loading}
+          >
+            {loading ? 'Resetting…' : 'Reset password'}
+          </Button>
+          <PageLink
+            href={SitePages.SignIn}
+            className="underline"
+          >
+            Back to Sign in
+          </PageLink>
         </div>
-      </Container>
-    </section>
+      </form>
+    </AuthLayout>
   )
 }
