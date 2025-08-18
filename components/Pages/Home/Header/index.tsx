@@ -1,13 +1,13 @@
 import { FC } from 'react'
 import Slider from 'react-slick'
-import { HomePageProps } from '~/app/content'
+import { HomePageSectionProps } from '~/app/content'
 import Container from '~/components/Layout/Container'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
 import { heroSliderSettings } from '~/components/Pages/Home/Header/presets'
 import { joinSmartTagsIntoString } from '~/helpers/cms'
 import RectangleBackground from '~/public/img/home/header/rectangle-background.svg'
 
-const Header: FC<HomePageProps> = ({ content }) => {
+const Header: FC<HomePageSectionProps> = ({ content }) => {
   return (
     <section className="relative z-0 h-svh overflow-hidden">
       <Slider {...heroSliderSettings}>

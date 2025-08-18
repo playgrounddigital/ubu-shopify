@@ -8,16 +8,19 @@ import FullWidthBannerSection from '~/components/Pages/Shared/FullWidthBannerSec
 import IntroSection from '~/components/Pages/Shared/IntroSection'
 import ReasonsSection from '~/components/Pages/Shared/ReasonsSection'
 import TextMarqueeSection from '~/components/Pages/Shared/TextMarqueeSection'
-import { Product } from '~/lib/shopify'
 import { HomeContent } from '~/types/cms/pages/home'
+import { Product } from '~/types/shopify'
 
-export interface HomePageProps {
+export interface HomePageSectionProps {
+  content: HomeContent
+}
+
+interface HomePageProps {
   products: Product[]
   content: HomeContent
 }
 
 const HomePage: FC<HomePageProps> = ({ products, content }) => {
-  console.log(products)
   return (
     <>
       <Header content={content} />
@@ -62,6 +65,7 @@ const HomePage: FC<HomePageProps> = ({ products, content }) => {
             return (
               <FeaturedProductsSection
                 key={section.id}
+                products={products}
                 content={section}
               />
             )

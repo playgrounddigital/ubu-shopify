@@ -6,6 +6,7 @@ import AnimateLayout from '~/components/Layout/AnimateLayout'
 import ErrorBoundary from '~/components/Layout/ErrorBoundary'
 import Footer from '~/components/Layout/Nav/Footer'
 import Navbar from '~/components/Layout/Nav/Navbar'
+import CartProvider from '~/context/CartContext'
 import PageTransitionProvider from '~/context/PageTransitionContext'
 import '~/styles/styles.css'
 
@@ -22,13 +23,15 @@ export default ({ children }: { children: ReactNode }) => {
       <body className={cx(inter.variable)}>
         <ErrorBoundary>
           <PageTransitionProvider>
-            <Suspense>
-              <Navbar />
-              <AnimateLayout>
-                {children}
-                <Footer />
-              </AnimateLayout>
-            </Suspense>
+            <CartProvider>
+              <Suspense>
+                <Navbar />
+                <AnimateLayout>
+                  {children}
+                  <Footer />
+                </AnimateLayout>
+              </Suspense>
+            </CartProvider>
           </PageTransitionProvider>
         </ErrorBoundary>
       </body>

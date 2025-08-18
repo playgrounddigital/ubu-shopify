@@ -52,6 +52,7 @@ const OptimisedImage: FC<OptimisedImageProps> = ({
   return (
     <div
       className={cx('transform-gpu select-none', className, {
+        'overflow-hidden': className?.includes('rounded-'),
         relative: !['fixed', 'absolute', 'sticky'].some((position) => className?.includes(position)),
       })}
       style={containerStyle}

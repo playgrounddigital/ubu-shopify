@@ -46,7 +46,7 @@ export interface FeaturedProductsSectionRecord {
   products: DatoCMSShopifyProduct[]
 }
 
-interface DatoCMSShopifyProduct {
+export interface DatoCMSShopifyProduct {
   product: {
     __typename: 'product-variant'
     id: string

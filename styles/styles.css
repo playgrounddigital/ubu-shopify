@@ -54,6 +54,9 @@ button:not(:disabled),
   .text-product-title {
     @apply text-xl leading-7 font-bold -tracking-[0.78px];
   }
+  .body-large {
+    @apply text-xl leading-7 font-normal -tracking-[0.6px];
+  }
 }
 
 body {

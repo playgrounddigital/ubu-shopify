@@ -1,4 +1,14 @@
 import { GraphQLClient, gql } from 'graphql-request'
+import {
+  Checkout,
+  CheckoutLineItem,
+  CheckoutLineItemAddInput,
+  CheckoutLineItemUpdateInput,
+  Collection,
+  Image,
+  Product,
+  ProductVariant,
+} from '~/types/shopify'
 
 // Environment
 const SHOPIFY_DOMAIN = process.env.NEXT_PRIVATE_SHOPIFY_DOMAIN
@@ -17,65 +27,6 @@ const client = new GraphQLClient(`https://${SHOPIFY_DOMAIN}/api/${API_VERSION}/g
   },
 })
 
-// ===== Types =====
-export type Money = {
-  amount: string
-  currencyCode: string
-}
-
-export type Image = {
-  id?: string | null
-  url: string
-  altText?: string | null
-}
-
-export type Collection = {
-  id: string
-  title: string
-  handle: string
-}
-
-export type Product = {
-  id: string
-  title: string
-  handle: string
-  description?: string | null
-  priceRange?: {
-    minVariantPrice: Money
-    maxVariantPrice: Money
-  }
-  images: Image[]
-  // Expose a few variant ids to allow add-to-cart/checkouts
-  variantIds?: string[]
-}
-
-export type CheckoutLineItem = {
-  id: string
-  quantity: number
-  title: string
-  variant?: {
-    id: string
-    title: string
-    priceV2: Money
-  } | null
-}
-
-export type Checkout = {
-  id: string
-  webUrl: string
-  lineItems: CheckoutLineItem[]
-}
-
-export type CheckoutLineItemAddInput = {
-  variantId: string
-  quantity: number
-}
-
-export type CheckoutLineItemUpdateInput = {
-  id: string
-  quantity: number
-}
-
 // ===== Selections =====
 const PRODUCT_SELECTION = `
 	id
@@ -89,21 +40,39 @@ const PRODUCT_SELECTION = `
 	images(first: 10) {
 		edges { node { id url altText } }
 	}
-	variants(first: 10) {
-		edges { node { id } }
+	variants(first: 250) {
+		edges {
+			node {
+				id
+				title
+				sku
+				availableForSale
+				priceV2: price { amount currencyCode }
+				compareAtPriceV2: compareAtPrice { amount currencyCode }
+				image { id url altText }
+			}
+		}
 	}
 `
 
-const CHECKOUT_SELECTION = `
+const CART_SELECTION = `
 	id
-	webUrl
-	lineItems(first: 250) {
+	checkoutUrl
+	lines(first: 250) {
 		edges {
 			node {
 				id
 				quantity
-				title
-				variant { id title priceV2 { amount currencyCode } }
+				merchandise {
+					__typename
+					... on ProductVariant {
+						id
+						title
+						priceV2: price { amount currencyCode }
+						image { id url altText }
+						product { title }
+					}
+				}
 			}
 		}
 	}
@@ -158,28 +127,28 @@ const PRODUCT_BY_HANDLE_QUERY = gql`
 	}
 `
 
-const CHECKOUT_CREATE_MUTATION = gql`
-	mutation CreateCheckout($input: CheckoutCreateInput!) {
-		checkoutCreate(input: $input) {
-			checkout { ${CHECKOUT_SELECTION} }
+const CART_CREATE_MUTATION = gql`
+	mutation CartCreate($input: CartInput) {
+		cartCreate(input: $input) {
+			cart { ${CART_SELECTION} }
 			userErrors { field message }
 		}
 	}
 `
 
-const CHECKOUT_LINES_ADD_MUTATION = gql`
-	mutation AddLines($checkoutId: ID!, $lineItems: [CheckoutLineItemInput!]!) {
-		checkoutLineItemsAdd(checkoutId: $checkoutId, lineItems: $lineItems) {
-			checkout { ${CHECKOUT_SELECTION} }
+const CART_LINES_ADD_MUTATION = gql`
+	mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+		cartLinesAdd(cartId: $cartId, lines: $lines) {
+			cart { ${CART_SELECTION} }
 			userErrors { field message }
 		}
 	}
 `
 
-const CHECKOUT_LINES_UPDATE_MUTATION = gql`
-	mutation UpdateLines($checkoutId: ID!, $lineItems: [CheckoutLineItemUpdateInput!]!) {
-		checkoutLineItemsUpdate(checkoutId: $checkoutId, lineItems: $lineItems) {
-			checkout { ${CHECKOUT_SELECTION} }
+const CART_LINES_UPDATE_MUTATION = gql`
+	mutation CartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+		cartLinesUpdate(cartId: $cartId, lines: $lines) {
+			cart { ${CART_SELECTION} }
 			userErrors { field message }
 		}
 	}
@@ -188,7 +157,15 @@ const CHECKOUT_LINES_UPDATE_MUTATION = gql`
 // ===== Helpers =====
 function mapProduct(node: any): Product {
   const images: Image[] = (node.images?.edges ?? []).map((e: any) => e.node)
-  const variantIds: string[] = (node.variants?.edges ?? []).map((e: any) => e.node.id)
+  const variants: ProductVariant[] = (node.variants?.edges ?? []).map((e: any) => ({
+    id: e.node.id,
+    title: e.node.title,
+    sku: e.node.sku ?? null,
+    availableForSale: Boolean(e.node.availableForSale),
+    priceV2: e.node.priceV2,
+    compareAtPriceV2: e.node.compareAtPriceV2 ?? null,
+    image: e.node.image ?? null,
+  }))
   return {
     id: node.id,
     title: node.title,
@@ -196,15 +173,34 @@ function mapProduct(node: any): Product {
     description: node.description,
     priceRange: node.priceRange,
     images,
-    variantIds,
+    variants,
   }
 }
 
 function mapCheckout(payload: any): Checkout {
-  const items: CheckoutLineItem[] = (payload.lineItems?.edges ?? []).map((e: any) => e.node)
+  // Map Cart payload to our internal Checkout shape
+  const items: CheckoutLineItem[] = (payload.lines?.edges ?? []).map((e: any) => {
+    const node = e.node
+    const merchandise = node.merchandise
+    const productTitle = merchandise?.product?.title ?? ''
+    const variant = merchandise
+      ? {
+          id: merchandise.id,
+          title: merchandise.title,
+          priceV2: merchandise.priceV2,
+          image: merchandise.image || null,
+        }
+      : null
+    return {
+      id: node.id,
+      quantity: node.quantity,
+      title: productTitle,
+      variant,
+    }
+  })
   return {
     id: payload.id,
-    webUrl: payload.webUrl,
+    webUrl: payload.checkoutUrl,
     lineItems: items,
   }
 }
@@ -296,13 +292,14 @@ export async function getProductByHandle(handle: string): Promise<Product | null
 }
 
 export async function createCheckout(lineItems: CheckoutLineItemAddInput[] = []): Promise<Checkout> {
-  const variables = { input: { lineItems } }
+  const lines = (lineItems ?? []).map((li) => ({ merchandiseId: li.variantId, quantity: li.quantity }))
+  const variables = { input: lines.length ? { lines } : undefined }
   const data = await client.request<{
-    checkoutCreate: { checkout: any; userErrors: { field: string[] | null; message: string }[] }
-  }>(CHECKOUT_CREATE_MUTATION, variables)
-  const { checkout, userErrors } = data.checkoutCreate
+    cartCreate: { cart: any; userErrors: { field: string[] | null; message: string }[] }
+  }>(CART_CREATE_MUTATION, variables)
+  const { cart, userErrors } = data.cartCreate
   if (userErrors && userErrors.length) throw new Error(userErrors.map((e) => e.message).join(', '))
-  return mapCheckout(checkout)
+  return mapCheckout(cart)
 }
 
 type UpdateCheckoutArgs = {
@@ -319,37 +316,41 @@ export async function updateCheckout(args: UpdateCheckoutArgs): Promise<Checkout
 
   if (add && add.length && update && update.length) {
     // Run add then update sequentially to keep responses and errors simple
+    const addLines = add.map((li) => ({ merchandiseId: li.variantId, quantity: li.quantity }))
     const addRes = await client.request<{
-      checkoutLineItemsAdd: { checkout: any; userErrors: { field: string[] | null; message: string }[] }
-    }>(CHECKOUT_LINES_ADD_MUTATION, { checkoutId, lineItems: add })
-    if (addRes.checkoutLineItemsAdd.userErrors?.length) {
-      throw new Error(addRes.checkoutLineItemsAdd.userErrors.map((e) => e.message).join(', '))
+      cartLinesAdd: { cart: any; userErrors: { field: string[] | null; message: string }[] }
+    }>(CART_LINES_ADD_MUTATION, { cartId: checkoutId, lines: addLines })
+    if (addRes.cartLinesAdd.userErrors?.length) {
+      throw new Error(addRes.cartLinesAdd.userErrors.map((e) => e.message).join(', '))
     }
+    const updateLines = (update ?? []).map((li) => ({ id: li.id, quantity: li.quantity }))
     const updRes = await client.request<{
-      checkoutLineItemsUpdate: { checkout: any; userErrors: { field: string[] | null; message: string }[] }
-    }>(CHECKOUT_LINES_UPDATE_MUTATION, { checkoutId, lineItems: update })
-    if (updRes.checkoutLineItemsUpdate.userErrors?.length) {
-      throw new Error(updRes.checkoutLineItemsUpdate.userErrors.map((e) => e.message).join(', '))
+      cartLinesUpdate: { cart: any; userErrors: { field: string[] | null; message: string }[] }
+    }>(CART_LINES_UPDATE_MUTATION, { cartId: checkoutId, lines: updateLines })
+    if (updRes.cartLinesUpdate.userErrors?.length) {
+      throw new Error(updRes.cartLinesUpdate.userErrors.map((e) => e.message).join(', '))
     }
-    return mapCheckout(updRes.checkoutLineItemsUpdate.checkout)
+    return mapCheckout(updRes.cartLinesUpdate.cart)
   }
 
   if (add && add.length) {
+    const lines = add.map((li) => ({ merchandiseId: li.variantId, quantity: li.quantity }))
     const res = await client.request<{
-      checkoutLineItemsAdd: { checkout: any; userErrors: { field: string[] | null; message: string }[] }
-    }>(CHECKOUT_LINES_ADD_MUTATION, { checkoutId, lineItems: add })
-    if (res.checkoutLineItemsAdd.userErrors?.length) {
-      throw new Error(res.checkoutLineItemsAdd.userErrors.map((e) => e.message).join(', '))
+      cartLinesAdd: { cart: any; userErrors: { field: string[] | null; message: string }[] }
+    }>(CART_LINES_ADD_MUTATION, { cartId: checkoutId, lines })
+    if (res.cartLinesAdd.userErrors?.length) {
+      throw new Error(res.cartLinesAdd.userErrors.map((e) => e.message).join(', '))
     }
-    return mapCheckout(res.checkoutLineItemsAdd.checkout)
+    return mapCheckout(res.cartLinesAdd.cart)
   }
 
   // update only
+  const updateLines = (update ?? []).map((li) => ({ id: li.id, quantity: li.quantity }))
   const res = await client.request<{
-    checkoutLineItemsUpdate: { checkout: any; userErrors: { field: string[] | null; message: string }[] }
-  }>(CHECKOUT_LINES_UPDATE_MUTATION, { checkoutId, lineItems: update })
-  if (res.checkoutLineItemsUpdate.userErrors?.length) {
-    throw new Error(res.checkoutLineItemsUpdate.userErrors.map((e) => e.message).join(', '))
+    cartLinesUpdate: { cart: any; userErrors: { field: string[] | null; message: string }[] }
+  }>(CART_LINES_UPDATE_MUTATION, { cartId: checkoutId, lines: updateLines })
+  if (res.cartLinesUpdate.userErrors?.length) {
+    throw new Error(res.cartLinesUpdate.userErrors.map((e) => e.message).join(', '))
   }
-  return mapCheckout(res.checkoutLineItemsUpdate.checkout)
+  return mapCheckout(res.cartLinesUpdate.cart)
 }

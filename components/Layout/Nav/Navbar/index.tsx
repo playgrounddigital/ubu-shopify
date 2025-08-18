@@ -5,6 +5,7 @@ import { FC, useEffect, useState } from 'react'
 import Container from '~/components/Layout/Container'
 import { navLinks } from '~/components/Layout/Nav/Navbar/presets'
 import PageLink from '~/components/Layout/PageLink'
+import { useCart } from '~/context/CartContext'
 import CartIcon from '~/public/img/icons/cart.svg'
 import SearchIcon from '~/public/img/icons/search.svg'
 import UserIcon from '~/public/img/icons/user.svg'
@@ -17,6 +18,7 @@ const siteBanner = SiteBannerJSON as SiteBanner
 
 const Navbar: FC = () => {
   const [hasScrolled, setHasScrolled] = useState(false)
+  const { openCart } = useCart()
 
   const rightSideButtons = [
     {
@@ -35,7 +37,7 @@ const Navbar: FC = () => {
       label: 'Cart',
       icon: CartIcon,
       iconClassName: 'w-4.5 min-w-4.5 h-5',
-      onClick: () => {},
+      onClick: openCart,
     },
   ]
 
