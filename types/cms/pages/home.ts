@@ -1,129 +1,5 @@
-// {
-//   homePage {
-//     heroSlides {
-//       id
-//       image {
-//         url
-//       }
-//       imageMobile {
-//         url
-//       }
-//       vimeoVideo {
-//         url
-//       }
-//       vimeoVideoMobile {
-//         url
-//       }
-//       useVideo
-//       description
-//     }
-
 import { StructuredTextGraphQlResponse } from 'react-datocms/structured-text'
 import { Image, PageContent } from '~/types/cms/common'
-
-//     content {
-//       __typename
-//       ... on ReasonsSectionRecord {
-//         id
-//         title
-//         shouldShowTitle
-//         reasons {
-//           id
-//           image {
-//             url
-//           }
-//           title
-//         }
-//       }
-
-//       ... on FeaturedProductsSectionRecord {
-//         id
-//         title
-//         products {
-//           product
-//         }
-//       }
-
-//       ... on FullWidthBannerSectionRecord {
-//         id
-//         image {
-//           url
-//         }
-//         imageMobile {
-//           url
-//         }
-//         title
-//         buttonText
-//         buttonColour
-//         link
-//         height
-//       }
-
-//       ... on TextMarqueeSectionRecord {
-//         id
-//         marqueeText
-//         textColour
-//       }
-
-//       ... on DoubleLinkSectionRecord {
-//         id
-//         linkBlocks {
-//           id
-//           image {
-//             url
-//           }
-//           lineOne
-//           lineTwo
-//           link
-//         }
-//       }
-
-//       ... on IntroSectionRecord {
-//         id
-//         description {
-//           value
-//           inlineBlocks {
-//             __typename
-//             ... on ImageRecord {
-//               id
-//               image {
-//                 url
-//               }
-//             }
-//           }
-//         }
-//       }
-
-//       ... on DoubleLinkImageSectionRecord {
-//         id
-//         linkBlock {
-//           id
-//           backgroundColour
-//           lineOne
-//           lineTwo
-//           link
-//           buttonText
-//         }
-//       }
-
-//       ... on FullWidthBannerSectionRecord {
-//         id
-//         image {
-//           url
-//         }
-//         imageMobile {
-//           url
-//         }
-//         title
-//         buttonText
-//         buttonColour
-//         link
-//         height
-//       }
-
-//     }
-//   }
-// }
 
 export interface HomeContent extends PageContent {
   heroSlides: HeroSlide[]
@@ -150,6 +26,7 @@ type Content =
   | DoubleLinkImageSectionRecord
 
 export interface ReasonsSectionRecord {
+  __typename: 'ReasonsSectionRecord'
   id: string
   title: string
   shouldShowTitle: boolean
@@ -163,6 +40,7 @@ interface Reason {
 }
 
 export interface FeaturedProductsSectionRecord {
+  __typename: 'FeaturedProductsSectionRecord'
   id: string
   title: string
   products: DatoCMSShopifyProduct[]
@@ -186,6 +64,7 @@ interface DatoCMSShopifyProduct {
 }
 
 export interface FullWidthBannerSectionRecord {
+  __typename: 'FullWidthBannerSectionRecord'
   id: string
   image: Image
   imageMobile: Image
@@ -197,12 +76,14 @@ export interface FullWidthBannerSectionRecord {
 }
 
 export interface TextMarqueeSectionRecord {
+  __typename: 'TextMarqueeSectionRecord'
   id: string
   marqueeText: string
   textColour: string
 }
 
 export interface DoubleLinkSectionRecord {
+  __typename: 'DoubleLinkSectionRecord'
   id: string
   linkBlocks: LinkBlock[]
 }
@@ -216,11 +97,13 @@ interface LinkBlock {
 }
 
 export interface IntroSectionRecord {
+  __typename: 'IntroSectionRecord'
   id: string
   description: StructuredTextGraphQlResponse
 }
 
 export interface DoubleLinkImageSectionRecord {
+  __typename: 'DoubleLinkImageSectionRecord'
   id: string
   linkBlock: LinkBlock
 }

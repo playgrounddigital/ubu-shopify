@@ -42,6 +42,10 @@ button:not(:disabled),
     @apply w-full min-w-[320px] bg-white font-sans text-base leading-5 font-normal whitespace-pre-line text-black;
   }
 
+  .heading-3 {
+    @apply text-[76px] leading-[68.4px] font-semibold -tracking-[4.56px];
+  }
+
   .text-subheading {
     @apply text-2xl leading-7 font-semibold -tracking-[0.72px];
   }
@@ -53,12 +57,17 @@ body {
 
 /*CUSTOM SCROLLBAR*/
 ::-webkit-scrollbar {
-  @apply size-1.5 md:h-2 md:w-3;
+  @apply size-1.5 md:h-2 md:w-4;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-black;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  @apply bg-black;
+  @apply bg-green;
 }
 
 ::selection {
@@ -110,4 +119,9 @@ input[type='number'] {
   line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* REDUCE SPACE BETWEEN MARQUEE ITEMS */
+.rfm-marquee {
+  @apply !min-w-[unset];
 }

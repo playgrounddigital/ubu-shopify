@@ -7,9 +7,9 @@ import { heroSliderSettings } from '~/components/Pages/Home/Header/presets'
 import { joinSmartTagsIntoString } from '~/helpers/cms'
 import RectangleBackground from '~/public/img/home/header/rectangle-background.svg'
 
-const HeroSlider: FC<HomePageProps> = ({ content }) => {
+const Header: FC<HomePageProps> = ({ content }) => {
   return (
-    <section className="relative z-0 overflow-hidden">
+    <section className="relative z-0 h-svh overflow-hidden">
       <Slider {...heroSliderSettings}>
         {content.heroSlides.map((slide) => (
           <div
@@ -21,7 +21,7 @@ const HeroSlider: FC<HomePageProps> = ({ content }) => {
               alt={joinSmartTagsIntoString(slide.image.smartTags)}
               layout="cover"
               imgClassName="object-bottom"
-              className="h-dvh w-full"
+              className="h-svh w-full"
             />
             {/* Text overlay on top */}
             <Container className="!absolute bottom-0 left-1/2 flex -translate-x-1/2 justify-end pb-6">
@@ -37,4 +37,4 @@ const HeroSlider: FC<HomePageProps> = ({ content }) => {
   )
 }
 
-export default HeroSlider
+export default Header

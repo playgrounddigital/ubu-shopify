@@ -17,7 +17,7 @@ const Container: ForwardRefRenderFunction<HTMLDivElement, ContainerProps> = (
   <div
     ref={ref}
     className={cx('relative mx-auto w-full max-w-[1440px]', className, {
-      'lg:px-[50px]': !noPaddingDesktop && !noPadding,
+      'lg:px-10': !noPaddingDesktop && !noPadding,
       'md:px-6': !noPaddingTablet && !noPadding && !noPaddingDesktop,
       'px-4': !noPaddingMobile && !noPadding,
     })}
