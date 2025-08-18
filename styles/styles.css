@@ -41,6 +41,10 @@ button:not(:disabled),
   body {
     @apply w-full min-w-[320px] bg-white font-sans text-base leading-5 font-normal whitespace-pre-line text-black;
   }
+
+  .text-subheading {
+    @apply text-2xl leading-7 font-semibold -tracking-[0.72px];
+  }
 }
 
 body {
