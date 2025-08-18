@@ -1,17 +1,27 @@
-export type ButtonColours = 'primary' | 'border'
-export type ButtonSize = 36
+export type ButtonSize = 'sm' | 'md'
 
-export type CircleButtonColours = 'white-black' | 'black-green'
+export type ButtonColours = 'white-black' | 'black-green' | 'black-pink' | 'black-yellow' | 'black-blue'
 
 export const defaultButtonClasses =
   'group relative font-mono flex select-none items-center justify-between gap-x-2 overflow-hidden border text-[9.5px] leading-4 tracking-[0.765px] uppercase font-normal transition-all'
 
 export const BUTTON_SIZE: Record<ButtonSize, string> = {
-  36: 'pl-3 pr-2',
+  sm: 'h-[34px] px-4',
+  md: 'h-[58px] px-[27px] text-[23px] leading-[45.5px]',
 }
 
-export const CIRCLE_BUTTON_COLOURS: Record<
-  CircleButtonColours,
+export const BUTTON_CIRCLE_SIZE: Record<ButtonSize, string> = {
+  sm: 'size-[34px] min-w-[34px]',
+  md: 'size-[58px] min-w-[58px]',
+}
+
+export const BUTTON_ARROW_SIZE: Record<ButtonSize, string> = {
+  sm: 'size-[15px] min-w-[15px] min-h-[15px]',
+  md: 'size-[26px] min-w-[26px] min-h-[26px]',
+}
+
+export const BUTTON_COLOURS: Record<
+  ButtonColours,
   {
     button: string
     background: string
@@ -24,5 +34,17 @@ export const CIRCLE_BUTTON_COLOURS: Record<
   'black-green': {
     button: 'text-black',
     background: 'bg-green',
+  },
+  'black-pink': {
+    button: 'text-black',
+    background: 'bg-pink',
+  },
+  'black-yellow': {
+    button: 'text-black',
+    background: 'bg-yellow',
+  },
+  'black-blue': {
+    button: 'text-black',
+    background: 'bg-blue',
   },
 }

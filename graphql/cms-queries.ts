@@ -105,6 +105,8 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
             link
             buttonText
           }
+          image ${imageQuery}
+          shouldSwapOrder
         }
         
         ... on FullWidthBannerSectionRecord {
@@ -116,6 +118,7 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
           buttonColour
           link
           height
+          shouldAddBorder
         }
         
       }

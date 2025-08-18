@@ -48,17 +48,14 @@ export interface FeaturedProductsSectionRecord {
 
 interface DatoCMSShopifyProduct {
   product: {
-    __typename: 'product'
+    __typename: 'product-variant'
     id: string
     title: string
-    handle: string
-    images: {
-      edges: {
-        node: {
-          src: string
-        }
-      }[]
+    sku: string | null
+    image: {
+      src: string
     }
+    productId: string
     imageUrl: string
   }
 }
@@ -70,9 +67,10 @@ export interface FullWidthBannerSectionRecord {
   imageMobile: Image
   title: string
   buttonText: string
-  buttonColour: string
+  buttonColour: 'pink' | 'yellow' | 'blue' | 'green'
   link: string
-  height: string
+  height: 'md' | 'lg'
+  shouldAddBorder: boolean
 }
 
 export interface TextMarqueeSectionRecord {
@@ -85,10 +83,10 @@ export interface TextMarqueeSectionRecord {
 export interface DoubleLinkSectionRecord {
   __typename: 'DoubleLinkSectionRecord'
   id: string
-  linkBlocks: LinkBlock[]
+  linkBlocks: LinkBlockWithImage[]
 }
 
-interface LinkBlock {
+interface LinkBlockWithImage {
   id: string
   image: Image
   lineOne: string
@@ -105,5 +103,16 @@ export interface IntroSectionRecord {
 export interface DoubleLinkImageSectionRecord {
   __typename: 'DoubleLinkImageSectionRecord'
   id: string
-  linkBlock: LinkBlock
+  linkBlock: LinkBlockWithoutImage
+  image: Image
+  shouldSwapOrder: boolean
+}
+
+interface LinkBlockWithoutImage {
+  id: string
+  lineOne: string
+  lineTwo: string
+  link: string
+  backgroundColour: string
+  buttonText: string
 }

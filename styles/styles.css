@@ -27,6 +27,7 @@
   --color-yellow: #eaf73a;
   --color-blue: #0000ff;
   --color-green: #86fa00;
+  --color-grey: #747474;
 
   --font-sans: 'Inter', sans-serif;
 }
@@ -41,13 +42,17 @@ button:not(:disabled),
   body {
     @apply w-full min-w-[320px] bg-white font-sans text-base leading-5 font-normal whitespace-pre-line text-black;
   }
-
+  .heading-2 {
+    @apply text-[84px] leading-[75.6px] font-extrabold -tracking-[4.2px];
+  }
   .heading-3 {
     @apply text-[76px] leading-[68.4px] font-semibold -tracking-[4.56px];
   }
-
   .text-subheading {
     @apply text-2xl leading-7 font-semibold -tracking-[0.72px];
+  }
+  .text-product-title {
+    @apply text-xl leading-7 font-bold -tracking-[0.78px];
   }
 }
 
@@ -124,4 +129,13 @@ input[type='number'] {
 /* REDUCE SPACE BETWEEN MARQUEE ITEMS */
 .rfm-marquee {
   @apply !min-w-[unset];
+}
+
+.slick-slider {
+  @apply relative z-0 overflow-hidden;
+}
+
+/* Fix for slick slider content breaking onto new line */
+.slick-track {
+  display: flex !important;
 }

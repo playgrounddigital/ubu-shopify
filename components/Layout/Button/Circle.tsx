@@ -1,27 +1,44 @@
 import cx from 'classnames'
-import { FC } from 'react'
-import { CIRCLE_BUTTON_COLOURS, CircleButtonColours } from '~/components/Layout/Button/presets'
+import { ButtonHTMLAttributes, FC } from 'react'
+import { BUTTON_COLOURS, ButtonColours } from '~/components/Layout/Button/presets'
 import ArrowRightIcon from '~/public/img/icons/arrow-right.svg'
 
-interface CircleButtonProps {
-  variant: CircleButtonColours
+interface CircleButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  isFlipped?: boolean
+  variant: ButtonColours
+  ariaLabel: string
+  onClick: () => void
 }
 
-const CircleButton: FC<CircleButtonProps> = ({ variant }) => {
+const CircleButton: FC<CircleButtonProps> = ({ variant, ariaLabel, onClick, isFlipped, ...props }) => {
   return (
     <button
+      aria-label={ariaLabel}
+      onClick={onClick}
       className={cx(
-        CIRCLE_BUTTON_COLOURS[variant].button,
-        'group/button relative inline-flex size-[85px] items-center justify-center'
+        BUTTON_COLOURS[variant].button,
+        'group/button relative inline-flex size-[85px] items-center justify-center',
+        {
+          'pointer-events-none': props.disabled,
+        }
       )}
+      {...props}
     >
       <span
         className={cx(
-          CIRCLE_BUTTON_COLOURS[variant].background,
-          'absolute inset-0 rounded-full transition-[filter] group-hover/button:blur-sm'
+          BUTTON_COLOURS[variant].background,
+          'absolute inset-0 rounded-full transition-all group-hover/button:blur-sm',
+          {
+            '!bg-grey': props.disabled,
+          }
         )}
       />
-      <ArrowRightIcon className="relative z-10 size-[50px] transition-transform group-hover/button:translate-x-0.5" />
+      <ArrowRightIcon
+        className={cx('relative z-10 size-[50px] transition-transform', {
+          'group-hover/button:translate-x-0.5': !isFlipped,
+          'rotate-180 group-hover/button:-translate-x-0.5': isFlipped,
+        })}
+      />
     </button>
   )
 }

@@ -35,7 +35,7 @@ const DoubleLinkSection: FC<DoubleLinkSectionProps> = ({ content }) => {
           return (
             <div
               key={linkBlock.id}
-              className="relative inline-flex h-full items-end overflow-hidden p-10"
+              className="relative inline-flex h-full items-end overflow-hidden p-[30px] pl-10"
             >
               <OptimisedImage
                 src={linkBlock.image.url}
