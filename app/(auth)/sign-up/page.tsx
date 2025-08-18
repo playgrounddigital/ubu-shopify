@@ -1,15 +1,22 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Button from '~/components/Layout/Button'
 import Container from '~/components/Layout/Container'
+import { useAuth } from '~/context/AuthContext'
+import { SitePages } from '~/types/pages'
 
 export default function SignUpPage() {
+  const { isAuthenticated } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (isAuthenticated) window.location.replace(SitePages.Account)
+  }, [isAuthenticated])
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

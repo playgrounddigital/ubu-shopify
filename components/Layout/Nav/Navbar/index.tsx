@@ -5,6 +5,7 @@ import { FC, useEffect, useState } from 'react'
 import Container from '~/components/Layout/Container'
 import { navLinks } from '~/components/Layout/Nav/Navbar/presets'
 import PageLink from '~/components/Layout/PageLink'
+import { useAuth } from '~/context/AuthContext'
 import { useCart } from '~/context/CartContext'
 import CartIcon from '~/public/img/icons/cart.svg'
 import SearchIcon from '~/public/img/icons/search.svg'
@@ -19,6 +20,7 @@ const siteBanner = SiteBannerJSON as SiteBanner
 const Navbar: FC = () => {
   const [hasScrolled, setHasScrolled] = useState(false)
   const { openCart } = useCart()
+  const { isAuthenticated } = useAuth()
 
   const rightSideButtons = [
     {
@@ -31,7 +33,7 @@ const Navbar: FC = () => {
       label: 'User',
       icon: UserIcon,
       iconClassName: 'w-4 min-w-4 h-4.5',
-      link: SitePages.SignIn,
+      link: isAuthenticated ? SitePages.Account : SitePages.SignIn,
     },
     {
       label: 'Cart',

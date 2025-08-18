@@ -133,6 +133,17 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
       }
     }
   }`,
+  [GraphQlQueryEnum.SignInPage]: () => `{
+    signInPage {
+      image ${imageQuery}
+      title
+      description
+      content {
+        __typename
+        ${textMarqueeSectionQuery}
+      }
+    }
+  }`,
 
   [GraphQlQueryEnum.ProductPageTemplate]: () => `{
     productPageTemplate {

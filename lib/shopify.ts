@@ -214,6 +214,35 @@ const CUSTOMER_WITH_ORDERS_QUERY = gql`
   }
 `
 
+const CUSTOMER_RECOVER_MUTATION = gql`
+  mutation CustomerRecover($email: String!) {
+    customerRecover(email: $email) {
+      userErrors: customerUserErrors {
+        field
+        message
+      }
+    }
+  }
+`
+
+const CUSTOMER_RESET_BY_URL_MUTATION = gql`
+  mutation CustomerResetByUrl($resetUrl: URL!, $password: String!) {
+    customerResetByUrl(resetUrl: $resetUrl, password: $password) {
+      customer {
+        id
+      }
+      customerAccessToken {
+        accessToken
+        expiresAt
+      }
+      userErrors: customerUserErrors {
+        field
+        message
+      }
+    }
+  }
+`
+
 // ===== Helpers =====
 function mapProduct(node: any): Product {
   const images: Image[] = (node.images?.edges ?? []).map((e: any) => e.node)
@@ -478,4 +507,27 @@ export async function getCustomerWithOrders(accessToken: string, first: number =
   }))
 
   return { ...customer, orders }
+}
+
+export async function recoverCustomerPassword(email: string): Promise<void> {
+  const data = await client.request<{
+    customerRecover: { userErrors: { field: string[] | null; message: string }[] }
+  }>(CUSTOMER_RECOVER_MUTATION, { email })
+
+  const { userErrors } = data.customerRecover
+  if (userErrors && userErrors.length) throw new Error(userErrors.map((e) => e.message).join(', '))
+}
+
+export async function resetCustomerPasswordByUrl(resetUrl: string, password: string): Promise<CustomerAccessToken> {
+  const data = await client.request<{
+    customerResetByUrl: {
+      customerAccessToken: { accessToken: string; expiresAt: string } | null
+      userErrors: { field: string[] | null; message: string }[]
+    }
+  }>(CUSTOMER_RESET_BY_URL_MUTATION, { resetUrl, password })
+
+  const { customerAccessToken, userErrors } = data.customerResetByUrl
+  if (userErrors && userErrors.length) throw new Error(userErrors.map((e) => e.message).join(', '))
+  if (!customerAccessToken) throw new Error('Unable to reset password. The link may be invalid or expired.')
+  return { accessToken: customerAccessToken.accessToken, expiresAt: customerAccessToken.expiresAt }
 }
