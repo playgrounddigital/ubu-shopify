@@ -53,6 +53,7 @@ const Footer: FC = () => {
           <div className="flex gap-x-5">
             {FooterJSON.acceptedPaymentMethods.map((item) => (
               <OptimisedImage
+                key={item.id}
                 src={item.image.url}
                 alt={item.name}
                 className="h-6 w-[34px]"

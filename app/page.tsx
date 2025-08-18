@@ -1,6 +1,7 @@
 import HomePage from '~/app/content'
 import { fetchFromDatoAPI, getGraphQLQuery } from '~/helpers/cms'
 import { _generateMetadata, PageProps } from '~/helpers/next'
+import { getAllProducts } from '~/lib/shopify'
 import { HomeContent } from '~/types/cms/pages/home'
 import { GraphQlQueryEnum } from '~/types/graphql'
 import { SitePages } from '~/types/pages'
@@ -23,5 +24,12 @@ export default async () => {
   const homePageQuery = getGraphQLQuery(GraphQlQueryEnum.HomePage)
   const { homePage }: { homePage: HomeContent } = await fetchFromDatoAPI(homePageQuery)
 
-  return <HomePage content={homePage} />
+  const products = await getAllProducts()
+
+  return (
+    <HomePage
+      content={homePage}
+      products={products}
+    />
+  )
 }
