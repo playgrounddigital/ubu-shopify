@@ -10,7 +10,7 @@ const Footer: FC = () => {
   return (
     <footer className="bg-black text-white">
       <Container className="pt-16 pb-14">
-        <div className="mb-[50px] flex items-center justify-between text-[44px] leading-10 -tracking-[2.64px]">
+        <div className="text-input mb-[50px] flex items-center justify-between">
           <p className="font-semibold">Sign up to our newsletter</p>
 
           <div className="flex max-w-[650px] gap-x-10 border-b border-white pb-5">

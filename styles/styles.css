@@ -67,6 +67,9 @@ button:not(:disabled),
   .body-large {
     @apply text-xl leading-7 font-normal -tracking-[0.6px];
   }
+  .text-input {
+    @apply text-[44px] leading-10 -tracking-[2.64px];
+  }
 }
 
 body {
