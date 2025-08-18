@@ -7,16 +7,19 @@ const imageQuery = `{
 }`
 
 export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string> = {
+  [GraphQlQueryEnum.SiteBanner]: () => `{
+    siteBanner {
+      id
+      bannerText
+      isBannerActive
+    }
+  }`,
   [GraphQlQueryEnum.HomePage]: () => `{
     homePage {
       heroSlides {
         id
-        image {
-          url
-        }
-        imageMobile {
-          url
-        }
+        image ${imageQuery}
+        imageMobile ${imageQuery}
         vimeoVideo {
           url
         }
@@ -52,12 +55,8 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
         
         ... on FullWidthBannerSectionRecord {
           id
-          image {
-            url
-          }
-          imageMobile {
-            url
-          }
+          image ${imageQuery}
+          imageMobile ${imageQuery}
           title
           buttonText
           buttonColour
@@ -75,9 +74,7 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
           id
           linkBlocks {
             id
-            image {
-              url
-            }
+            image ${imageQuery}
             lineOne
             lineTwo
             link
@@ -92,9 +89,7 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
               __typename
               ... on ImageRecord {
                 id
-                image {
-                  url
-                }
+                image ${imageQuery}
               }
             }
           }
@@ -114,12 +109,8 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
         
         ... on FullWidthBannerSectionRecord {
           id
-          image {
-            url
-          }
-          imageMobile {
-            url
-          }
+          image ${imageQuery}
+          imageMobile ${imageQuery}
           title
           buttonText
           buttonColour

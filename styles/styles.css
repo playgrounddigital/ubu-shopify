@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@config "../tailwind.config.ts";
 
 @theme {
   /* Transitions */
@@ -23,6 +22,13 @@
   --spacing-26: 104px;
   --spacing-30: 120px;
   --spacing-34: 136px;
+
+  --color-pink: #ff4faa;
+  --color-yellow: #eaf73a;
+  --color-blue: #0000ff;
+  --color-green: #86fa00;
+
+  --font-sans: 'Inter', sans-serif;
 }
 
 /* Override cursor-pointer becoming default */
@@ -33,7 +39,7 @@ button:not(:disabled),
 
 @layer base {
   body {
-    @apply w-full min-w-[320px] bg-grey-900 font-sans text-base leading-5 font-normal whitespace-pre-line text-grey-200;
+    @apply w-full min-w-[320px] bg-white font-sans text-base leading-5 font-normal whitespace-pre-line text-black;
   }
 }
 
@@ -48,11 +54,11 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  @apply rounded bg-grey-200;
+  @apply bg-black;
 }
 
 ::selection {
-  @apply bg-grey-200 text-black;
+  @apply bg-green text-black;
 }
 
 b,
