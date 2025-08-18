@@ -66,3 +66,28 @@ export type CheckoutLineItemUpdateInput = {
   id: string
   quantity: number
 }
+
+// ===== Customer Auth & Orders =====
+export type Customer = {
+  id: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+}
+
+export type Order = {
+  id: string
+  orderNumber: number
+  processedAt: string
+  totalPrice: Money
+  statusUrl?: string | null
+}
+
+export type CustomerWithOrders = Customer & {
+  orders: Order[]
+}
+
+export type CustomerAccessToken = {
+  accessToken: string
+  expiresAt: string
+}

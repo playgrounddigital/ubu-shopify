@@ -31,7 +31,7 @@ const Navbar: FC = () => {
       label: 'User',
       icon: UserIcon,
       iconClassName: 'w-4 min-w-4 h-4.5',
-      onClick: () => {},
+      link: SitePages.SignIn,
     },
     {
       label: 'Cart',
@@ -99,18 +99,23 @@ const Navbar: FC = () => {
 
           {/* Right side buttons */}
           <div className="flex items-center justify-end gap-x-2.5">
-            {rightSideButtons.map(({ label, icon: Icon, iconClassName, onClick }) => (
-              <button
+            {rightSideButtons.map(({ label, icon: Icon, iconClassName, link, onClick }) => (
+              <PageLink
                 key={label}
-                aria-label={label}
-                onClick={onClick}
-                className="group relative inline-flex h-[34px] items-center justify-center rounded-full px-4"
+                href={link}
               >
-                <span
-                  className={cx('absolute inset-0 rounded-full bg-green transition-[filter] group-hover:blur-sm')}
-                />
-                <Icon className={cx('relative z-10', iconClassName)} />
-              </button>
+                <button
+                  key={label}
+                  aria-label={label}
+                  onClick={onClick}
+                  className="group relative inline-flex h-[34px] items-center justify-center rounded-full px-4"
+                >
+                  <span
+                    className={cx('absolute inset-0 rounded-full bg-green transition-[filter] group-hover:blur-sm')}
+                  />
+                  <Icon className={cx('relative z-10', iconClassName)} />
+                </button>
+              </PageLink>
             ))}
           </div>
         </Container>

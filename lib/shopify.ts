@@ -5,7 +5,11 @@ import {
   CheckoutLineItemAddInput,
   CheckoutLineItemUpdateInput,
   Collection,
+  Customer,
+  CustomerAccessToken,
+  CustomerWithOrders,
   Image,
+  Order,
   Product,
   ProductVariant,
 } from '~/types/shopify'
@@ -76,6 +80,22 @@ const CART_SELECTION = `
 			}
 		}
 	}
+`
+
+// ===== Customer selections =====
+const CUSTOMER_CORE_SELECTION = `
+	id
+	email
+	firstName
+	lastName
+`
+
+const ORDER_SELECTION = `
+	id
+	orderNumber
+	processedAt
+	statusUrl
+	totalPriceV2 { amount currencyCode }
 `
 
 // ===== Queries & Mutations =====
@@ -152,6 +172,46 @@ const CART_LINES_UPDATE_MUTATION = gql`
 			userErrors { field message }
 		}
 	}
+`
+
+const CUSTOMER_ACCESS_TOKEN_CREATE_MUTATION = gql`
+  mutation CustomerAccessTokenCreate($email: String!, $password: String!) {
+    customerAccessTokenCreate(input: { email: $email, password: $password }) {
+      customerAccessToken {
+        accessToken
+        expiresAt
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`
+
+const CUSTOMER_CREATE_MUTATION = gql`
+  mutation CustomerCreate($email: String!, $password: String!, $firstName: String, $lastName: String) {
+    customerCreate(input: { email: $email, password: $password, firstName: $firstName, lastName: $lastName }) {
+      customer {
+        id
+      }
+      userErrors: customerUserErrors {
+        field
+        message
+      }
+    }
+  }
+`
+
+const CUSTOMER_WITH_ORDERS_QUERY = gql`
+  query CustomerWithOrders($accessToken: String!, $first: Int!) {
+    customer(customerAccessToken: $accessToken) {
+      ${CUSTOMER_CORE_SELECTION}
+      orders(first: $first, sortKey: PROCESSED_AT, reverse: true) {
+        edges { node { ${ORDER_SELECTION} } }
+      }
+    }
+  }
 `
 
 // ===== Helpers =====
@@ -353,4 +413,69 @@ export async function updateCheckout(args: UpdateCheckoutArgs): Promise<Checkout
     throw new Error(res.cartLinesUpdate.userErrors.map((e) => e.message).join(', '))
   }
   return mapCheckout(res.cartLinesUpdate.cart)
+}
+
+// ===== Customer Auth & Orders API =====
+
+export async function signInCustomer(email: string, password: string): Promise<CustomerAccessToken> {
+  const data = await client.request<{
+    customerAccessTokenCreate: {
+      customerAccessToken: { accessToken: string; expiresAt: string } | null
+      userErrors: { field: string[] | null; message: string }[]
+    }
+  }>(CUSTOMER_ACCESS_TOKEN_CREATE_MUTATION, { email, password })
+
+  const { customerAccessToken, userErrors } = data.customerAccessTokenCreate
+  if (userErrors && userErrors.length) throw new Error(userErrors.map((e) => e.message).join(', '))
+  if (!customerAccessToken) throw new Error('Authentication failed')
+  return { accessToken: customerAccessToken.accessToken, expiresAt: customerAccessToken.expiresAt }
+}
+
+export async function signUpCustomer(params: {
+  email: string
+  password: string
+  firstName?: string
+  lastName?: string
+}): Promise<CustomerAccessToken> {
+  const { email, password, firstName, lastName } = params
+  const createRes = await client.request<{
+    customerCreate: { customer: { id: string } | null; userErrors: { field: string[] | null; message: string }[] }
+  }>(CUSTOMER_CREATE_MUTATION, { email, password, firstName, lastName })
+
+  const { userErrors } = createRes.customerCreate
+  if (userErrors && userErrors.length) throw new Error(userErrors.map((e) => e.message).join(', '))
+
+  // Immediately sign in after creation
+  return signInCustomer(email, password)
+}
+
+export async function getCustomerWithOrders(accessToken: string, first: number = 20): Promise<CustomerWithOrders> {
+  const data = await client.request<{
+    customer: {
+      id: string
+      email: string
+      firstName?: string | null
+      lastName?: string | null
+      orders: { edges: { node: any }[] }
+    } | null
+  }>(CUSTOMER_WITH_ORDERS_QUERY, { accessToken, first })
+
+  if (!data.customer) throw new Error('Invalid or expired session')
+
+  const customer: Customer = {
+    id: data.customer.id,
+    email: data.customer.email,
+    firstName: data.customer.firstName ?? null,
+    lastName: data.customer.lastName ?? null,
+  }
+
+  const orders: Order[] = (data.customer.orders?.edges ?? []).map((e) => ({
+    id: e.node.id,
+    orderNumber: e.node.orderNumber,
+    processedAt: e.node.processedAt,
+    totalPrice: e.node.totalPriceV2,
+    statusUrl: e.node.statusUrl ?? null,
+  }))
+
+  return { ...customer, orders }
 }
