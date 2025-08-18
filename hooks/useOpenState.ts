@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-interface UseModalOptions {
+interface useOpenStateOptions {
   defaultOpen?: boolean
   closeEscape?: boolean
 }
 
-const useModal = ({ defaultOpen = false, closeEscape = false }: UseModalOptions = {}) => {
+const useOpenState = ({ defaultOpen = false, closeEscape = false }: useOpenStateOptions = {}) => {
   const [isOpen, setIsEnabled] = useState(defaultOpen)
   const ref = useRef<HTMLElement>(null)
 
@@ -51,4 +51,4 @@ const useModal = ({ defaultOpen = false, closeEscape = false }: UseModalOptions 
   }
 }
 
-export default useModal
+export default useOpenState

@@ -5,12 +5,12 @@ const nextConfig = {
   trailingSlash: false,
   reactStrictMode: true,
   env: {
-    siteDomain: 'hedgey-landing-site.vercel.app',
-    siteName: 'Hedgey Finance',
-    siteTitle: ' | Hedgey Finance',
+    siteDomain: 'ubu-shopify.vercel.app',
+    siteName: 'UBU Store',
+    siteTitle: ' | UBU Store',
     siteDescription:
-      'Hedgey helps you accelerate every step of token operations, from the first steps of TGE planning, through launch and beyond.',
-    siteUrl: 'https://hedgey-landing-site.vercel.app',
+      'UBU is a creative kids’ accessories brand for the trendsetters, letting you be you and express yourself.',
+    siteUrl: 'https://ubu-shopify.vercel.app',
     siteImagePreviewURL: '/share-preview.jpg',
     siteLogo: '/logo.svg',
     siteFavicon: '/favicon.png',

@@ -2,7 +2,7 @@
 
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://hedgey-landing-site.vercel.app',
+  siteUrl: 'https://ubu-shopify.vercel.app',
   generateRobotsTxt: true,
   // robotsTxtOptions: {
   //   policies: [
