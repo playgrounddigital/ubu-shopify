@@ -27,8 +27,12 @@ const DoubleLinkImageSection: FC<DoubleLinkImageSectionProps> = ({ content }) =>
             {/* LEFT SIDE */}
             <p className="heading-3">
               {content.linkBlock.lineOne}
-              <br />
-              {content.linkBlock.lineTwo}
+              {content.linkBlock.lineTwo && (
+                <>
+                  <br />
+                  {content.linkBlock.lineTwo}
+                </>
+              )}
             </p>
 
             {/* RIGHT SIDE */}

@@ -1,6 +1,6 @@
 export enum SitePages {
   Home = '/',
   Shop = '/shop',
-  Product = '/product',
+  Products = '/products',
   About = '/about',
 }

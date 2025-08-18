@@ -1,13 +1,13 @@
 import { Metadata } from 'next'
 
 interface ParamsProps {
-  slug?: string // use for slug etc later
+  handle?: string // use for slug etc later
   pathname: string
 }
 
 export type PageProps = {
   params?: Promise<{
-    slug?: string // use for slug etc later
+    handle?: string // use for slug etc later
     pathname: string
   }>
 }

@@ -2,9 +2,11 @@ import { FC, useRef, useState } from 'react'
 import Slider from 'react-slick'
 import CircleButton from '~/components/Layout/Button/Circle'
 import Container from '~/components/Layout/Container'
+import PageLink from '~/components/Layout/PageLink'
 import { featuredProductsSliderSettings } from '~/components/Pages/Shared/FeaturedProductsSection/presets'
 import ProductCard from '~/components/Pages/Shared/ProductCard'
 import { FeaturedProductsSectionRecord } from '~/types/cms/pages/home'
+import { SitePages } from '~/types/pages'
 import { Product } from '~/types/shopify'
 
 const SLIDES_TO_SHOW = 5
@@ -43,11 +45,21 @@ const FeaturedProductsSection: FC<FeaturedProductsSectionProps> = ({ products, c
   return (
     <section>
       <Container className="pt-[88px] pb-20">
-        <h2 className="heading-2 mb-[52px]">{content.title}</h2>
+        <div className="mb-[52px] flex items-end justify-between">
+          <h2 className="heading-2">{content.title}</h2>
+
+          <PageLink
+            href={SitePages.Shop}
+            className="uppercase hover:underline"
+          >
+            View all
+          </PageLink>
+        </div>
         <Slider
           {...featuredProductsSliderSettings}
           ref={sliderRef}
           beforeChange={handleSlideChange}
+          className="lg:min-w-[calc(100%+40px)]"
         >
           {productsToShow.map((cmsProduct) => {
             const shopifyProduct = products.find((p) => p.variants.find((v) => v.id === cmsProduct.product.id))
@@ -59,6 +71,7 @@ const FeaturedProductsSection: FC<FeaturedProductsSectionProps> = ({ products, c
               <ProductCard
                 key={cmsProduct.product.id}
                 product={shopifyProduct}
+                className="mr-10"
               />
             )
           })}

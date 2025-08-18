@@ -1,5 +1,6 @@
 'use client'
 import { FC } from 'react'
+import QuantitySelector from '~/components/Layout/QuantitySelector'
 import TrashIcon from '~/public/img/icons/trash.svg'
 import { CheckoutLineItem } from '~/types/shopify'
 
@@ -40,25 +41,13 @@ const CartItem: FC<CartItemProps> = ({ item, isLoading, onIncrease, onDecrease, 
           {item.variant?.title ? <p className="text-grey">{item.variant.title}</p> : null}
 
           <div className="flex items-center gap-x-3">
-            <div className="flex h-[29px] items-center rounded-full border border-green">
-              <button
-                disabled={isLoading}
-                aria-label="Decrease quantity"
-                onClick={() => onDecrease(item.id, item.quantity)}
-                className="flex h-[29px] items-center justify-center pr-[7px] pl-[11px] disabled:opacity-50"
-              >
-                −
-              </button>
-              <div className="w-4 text-center">{item.quantity}</div>
-              <button
-                disabled={isLoading}
-                aria-label="Increase quantity"
-                onClick={() => onIncrease(item.id, item.quantity)}
-                className="flex h-[29px] items-center justify-center pr-[11px] pl-[7px] disabled:opacity-50"
-              >
-                +
-              </button>
-            </div>
+            <QuantitySelector
+              size="sm"
+              quantity={item.quantity}
+              onIncrease={() => onIncrease(item.id, item.quantity)}
+              onDecrease={() => onDecrease(item.id, item.quantity)}
+              disabled={isLoading}
+            />
 
             {/* Price */}
             <div className="text-right whitespace-nowrap">

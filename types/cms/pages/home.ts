@@ -112,7 +112,7 @@ export interface DoubleLinkImageSectionRecord {
 interface LinkBlockWithoutImage {
   id: string
   lineOne: string
-  lineTwo: string
+  lineTwo?: string
   link: string
   backgroundColour: string
   buttonText: string

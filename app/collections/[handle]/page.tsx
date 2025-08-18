@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import CollectionTemplatePage from '~/app/collections/[slug]/content'
+import CollectionTemplatePage from '~/app/collections/[handle]/content'
 import { fetchFromDatoAPI, getGraphQLQuery } from '~/helpers/cms'
 import { PageProps, _generateMetadata } from '~/helpers/next'
 import { getAllProducts, getProductsByCollectionHandle } from '~/lib/shopify'
@@ -11,7 +11,7 @@ export const dynamicParams = true
 export const revalidate = 0
 
 export const generateMetadata = async ({ params }: PageProps) => {
-  const { slug } = await params
+  const { handle } = await params
 
   const collectionQuery = getGraphQLQuery(GraphQlQueryEnum.AllCollections)
   const { allCollections }: { allCollections: DatoCMSCollection[] } = await fetchFromDatoAPI(collectionQuery)
@@ -20,7 +20,7 @@ export const generateMetadata = async ({ params }: PageProps) => {
     return notFound()
   }
 
-  const collection = allCollections.find((collection) => collection.shopifyCollection.handle === slug)
+  const collection = allCollections.find((collection) => collection.shopifyCollection.handle === handle)
   if (!collection) {
     return notFound()
   }
@@ -36,15 +36,15 @@ export const generateMetadata = async ({ params }: PageProps) => {
 //   const featureQuery = getGraphQLQuery(GraphQlQueryEnum.AllFeatureSlugs)
 //   const { allFeatures }: { allFeatures: Feature[] } = await fetchFromDatoAPI(featureQuery)
 
-//   const slugs = allFeatures.map((feature) => ({
-//     slug: feature.slug,
+//   const handles = allFeatures.map((feature) => ({
+//     handle: feature.handle,
 //   }))
 
-//   return slugs
+//   return handles
 // }
 
 export default async ({ params }: PageProps) => {
-  const { slug } = await params
+  const { handle } = await params
 
   const collectionQuery = getGraphQLQuery(GraphQlQueryEnum.AllCollections)
   const { allCollections }: { allCollections: DatoCMSCollection[] } = await fetchFromDatoAPI(collectionQuery)
@@ -53,7 +53,7 @@ export default async ({ params }: PageProps) => {
     return notFound()
   }
 
-  const collection = allCollections.find((collection) => collection.shopifyCollection.handle === slug)
+  const collection = allCollections.find((collection) => collection.shopifyCollection.handle === handle)
 
   if (!collection) {
     return notFound()

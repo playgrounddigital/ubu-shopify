@@ -39,6 +39,26 @@ const fullWidthBannerSectionQuery = `... on FullWidthBannerSectionRecord {
   height
 }`
 
+const textMarqueeSectionQuery = `... on TextMarqueeSectionRecord {
+  id
+  marqueeText
+  textColour
+}`
+
+const doubleLinkImageSectionQuery = `... on DoubleLinkImageSectionRecord {
+  id
+  linkBlock {
+    id
+    backgroundColour
+    lineOne
+    lineTwo
+    link
+    buttonText
+  }
+  image ${imageQuery}
+  shouldSwapOrder
+}`
+
 export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string> = {
   [GraphQlQueryEnum.SiteBanner]: () => `{
     siteBanner {
@@ -69,12 +89,7 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
         ${reasonsSectionQuery}
         ${featuredProductsSectionQuery}
         ${fullWidthBannerSectionQuery}
-        
-        ... on TextMarqueeSectionRecord {
-          id
-          marqueeText
-          textColour
-        }
+        ${textMarqueeSectionQuery}
         
         ... on DoubleLinkSectionRecord {
           id
@@ -101,19 +116,7 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
           }
         }
         
-        ... on DoubleLinkImageSectionRecord {
-          id
-          linkBlock {
-            id
-            backgroundColour
-            lineOne
-            lineTwo
-            link
-            buttonText
-          }
-          image ${imageQuery}
-          shouldSwapOrder
-        }
+        ${doubleLinkImageSectionQuery}
         
         ... on FullWidthBannerSectionRecord {
           id
@@ -127,6 +130,19 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
           shouldAddBorder
         }
         
+      }
+    }
+  }`,
+
+  [GraphQlQueryEnum.ProductPageTemplate]: () => `{
+    productPageTemplate {
+      content {
+        __typename
+        ${reasonsSectionQuery}
+        ${featuredProductsSectionQuery}
+        ${fullWidthBannerSectionQuery}
+        ${textMarqueeSectionQuery}
+        ${doubleLinkImageSectionQuery}
       }
     }
   }`,

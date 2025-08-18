@@ -1,6 +1,7 @@
 import cx from 'classnames'
 import { FC, ReactNode, RefObject, useEffect, useRef, useState } from 'react'
-import ChevronDownIcon from '~/public/img/icons/chevron-down.svg'
+import { iconStyles } from '~/constants/iconStyles'
+import PlusIcon from '~/public/img/icons/plus.svg'
 
 interface AccordionProps {
   isDisabled?: boolean
@@ -47,7 +48,7 @@ const Accordion: FC<AccordionProps> = ({
   }, [])
 
   return (
-    <div className={cx('h-fit w-full flex-shrink rounded-lg border', containerClassName, {})}>
+    <div className={cx('h-fit w-full flex-shrink border-b border-green', containerClassName)}>
       <ActivationButton
         isOpen={isOpen}
         isDisabled={isDisabled}
@@ -113,7 +114,7 @@ const ActivationButton: FC<ActivationButtonProps> = ({
   <button
     type="button"
     className={cx(
-      'flex h-20 w-full items-center justify-between gap-x-10 px-6 text-left transition-all',
+      'flex h-20 w-full items-center justify-between gap-x-10 text-left uppercase transition-all',
       buttonClassName,
       {
         'cursor-not-allowed': isDisabled,
@@ -123,9 +124,7 @@ const ActivationButton: FC<ActivationButtonProps> = ({
     onClick={onClick}
   >
     {label}
-    {!isDisabled && (
-      <ChevronDownIcon className={cx('size-[25px] min-w-[25px] transition-transform', { 'rotate-180': isOpen })} />
-    )}
+    {!isDisabled && <PlusIcon className={cx('transition-transform', iconStyles[12], { 'rotate-90': isOpen })} />}
   </button>
 )
 

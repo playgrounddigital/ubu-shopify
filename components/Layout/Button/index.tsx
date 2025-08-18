@@ -14,7 +14,7 @@ interface ButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonE
   size?: ButtonSize
   variant?: ButtonColours
   tabIndex?: number
-  containerClassName?: string
+  buttonClassName?: string
   className?: string
   children: string | ReactNode
 }
@@ -24,7 +24,7 @@ const Button: FC<ButtonProps> = ({
   variant = 'white-black',
   type = 'button',
   tabIndex,
-  containerClassName,
+  buttonClassName,
   className,
   children,
   ...props
@@ -39,9 +39,10 @@ const Button: FC<ButtonProps> = ({
   >
     <span
       className={cx(
-        'relative z-10 inline-flex items-center rounded-full',
+        'relative z-10 inline-flex items-center justify-center rounded-full text-center',
         BUTTON_SIZE[size],
-        BUTTON_COLOURS[variant].button
+        BUTTON_COLOURS[variant].button,
+        buttonClassName
       )}
     >
       <span
