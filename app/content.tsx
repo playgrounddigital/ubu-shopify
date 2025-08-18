@@ -21,19 +21,54 @@ const HomePage: FC<HomePageProps> = ({ content }) => {
       {content.content.map((section) => {
         switch (section.__typename) {
           case 'IntroSectionRecord':
-            return <IntroSection content={section} />
+            return (
+              <IntroSection
+                key={section.id}
+                content={section}
+              />
+            )
           case 'TextMarqueeSectionRecord':
-            return <TextMarqueeSection content={section} />
+            return (
+              <TextMarqueeSection
+                key={section.id}
+                content={section}
+              />
+            )
           case 'DoubleLinkSectionRecord':
-            return <DoubleLinkSection content={section} />
+            return (
+              <DoubleLinkSection
+                key={section.id}
+                content={section}
+              />
+            )
           case 'ReasonsSectionRecord':
-            return <ReasonsSection content={section} />
+            return (
+              <ReasonsSection
+                key={section.id}
+                content={section}
+              />
+            )
           case 'DoubleLinkImageSectionRecord':
-            return <DoubleLinkImageSection content={section} />
+            return (
+              <DoubleLinkImageSection
+                key={section.id}
+                content={section}
+              />
+            )
           case 'FeaturedProductsSectionRecord':
-            return <FeaturedProductsSection content={section} />
+            return (
+              <FeaturedProductsSection
+                key={section.id}
+                content={section}
+              />
+            )
           case 'FullWidthBannerSectionRecord':
-            return <FullWidthBannerSection content={section} />
+            return (
+              <FullWidthBannerSection
+                key={section.id}
+                content={section}
+              />
+            )
           default:
             return null
         }

@@ -124,4 +124,27 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
       }
     }
   }`,
+
+  [GraphQlQueryEnum.Footer]: () => `{
+    footer {
+      signUpText
+      
+      socialLinks {
+        id
+        image {
+          url
+        }
+        name
+        link
+      }
+      
+      acceptedPaymentMethods {
+        id
+        image {
+          url
+        }
+        name
+      }
+    }
+  }`,
 }
