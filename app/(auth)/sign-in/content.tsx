@@ -36,9 +36,8 @@ export default function SignInPage({ content }: { content: SignInContent }) {
       if (!res.ok) throw new Error(data?.error || 'Sign in failed')
       window.location.href = '/account'
     } catch (err: any) {
-      setError(err?.message || 'Sign in failed')
-    } finally {
       setLoading(false)
+      setError(err?.message || 'Sign in failed')
     }
   }
 

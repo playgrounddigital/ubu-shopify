@@ -63,7 +63,7 @@ export default function SignUpPage({ content }: { content: SignInContent }) {
         <AuthInput
           id="firstName"
           type="text"
-          placeholder="First name (optional)"
+          placeholder="First name"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
           autoComplete="given-name"
@@ -71,7 +71,7 @@ export default function SignUpPage({ content }: { content: SignInContent }) {
         <AuthInput
           id="lastName"
           type="text"
-          placeholder="Last name (optional)"
+          placeholder="Last name"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
           autoComplete="family-name"

@@ -47,7 +47,7 @@ export default function ForgotPasswordPage({ content }: { content: SignInContent
       {error && <div className="mb-6 rounded-md border border-red-500 bg-red-50 p-4 text-red-700">{error}</div>}
       {sent && (
         <div className="mb-6 rounded-md border border-green-500 bg-green-50 p-4 text-green-700">
-          Check your inbox for a reset link.
+          If you have an account with us, we've sent you an email with a link to reset your password.
         </div>
       )}
 

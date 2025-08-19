@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react'
+import { FC, useMemo, useRef, useState } from 'react'
 import Slider from 'react-slick'
 import CircleButton from '~/components/Layout/Button/Circle'
 import Container from '~/components/Layout/Container'
@@ -9,7 +9,7 @@ import { FeaturedProductsSectionRecord } from '~/types/cms/pages/home'
 import { SitePages } from '~/types/pages'
 import { Product } from '~/types/shopify'
 
-const SLIDES_TO_SHOW = 5
+const MIN_SLIDES_TO_SHOW = 5
 
 interface FeaturedProductsSectionProps {
   products: Product[]
@@ -21,26 +21,21 @@ const FeaturedProductsSection: FC<FeaturedProductsSectionProps> = ({ products, c
   const sliderRef = useRef<Slider>(null)
   const { products: cmsProducts } = content
 
-  const handleNext = () => {
-    sliderRef.current?.slickNext()
-  }
+  const handleNext = () => sliderRef.current?.slickNext()
 
-  const handlePrev = () => {
-    sliderRef.current?.slickPrev()
-  }
+  const handlePrev = () => sliderRef.current?.slickPrev()
 
-  const handleSlideChange = (_: number, nextSlide: number) => {
-    setCurrentSlide(nextSlide)
-  }
+  const handleSlideChange = (_: number, nextSlide: number) => setCurrentSlide(nextSlide)
 
-  let _cmsProducts = cmsProducts
+  const productsToShow = useMemo(() => {
+    let _cmsProducts = cmsProducts
 
-  // Make sure there are at least 5 products
-  if (cmsProducts.length < SLIDES_TO_SHOW) {
-    _cmsProducts = [...cmsProducts, ...cmsProducts, ...cmsProducts, ...cmsProducts, ...cmsProducts]
-  }
-
-  const productsToShow = _cmsProducts.slice(0, SLIDES_TO_SHOW)
+    // Make sure there are at least 5 products
+    if (cmsProducts.length < MIN_SLIDES_TO_SHOW) {
+      _cmsProducts = [...cmsProducts, ...cmsProducts, ...cmsProducts, ...cmsProducts, ...cmsProducts]
+    }
+    return _cmsProducts.slice(0, MIN_SLIDES_TO_SHOW)
+  }, [cmsProducts])
 
   return (
     <section>
@@ -86,7 +81,7 @@ const FeaturedProductsSection: FC<FeaturedProductsSectionProps> = ({ products, c
             onClick={handlePrev}
           />
           <CircleButton
-            disabled={currentSlide === productsToShow.length - SLIDES_TO_SHOW - 1}
+            disabled={currentSlide === productsToShow.length - MIN_SLIDES_TO_SHOW + 1}
             ariaLabel="Next product"
             variant="white-black"
             onClick={handleNext}

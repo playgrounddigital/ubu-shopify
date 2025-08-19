@@ -6,11 +6,10 @@ import FeaturedProductsSection from '~/components/Pages/Shared/FeaturedProductsS
 import FullWidthBannerSection from '~/components/Pages/Shared/FullWidthBannerSection'
 import ReasonsSection from '~/components/Pages/Shared/ReasonsSection'
 import { DatoCMSCollection } from '~/types/cms/models/collection'
-import { ShopContent } from '~/types/cms/pages/shop'
 import { Product } from '~/types/shopify'
 
 interface CollectionTemplatePageProps {
-  collection: DatoCMSCollection | ShopContent
+  collection: DatoCMSCollection
   products: Product[]
   productsForCollection: Product[]
 }

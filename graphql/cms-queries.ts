@@ -174,6 +174,22 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
     }
   }`,
 
+  [GraphQlQueryEnum.ShopPage]: () => `{
+    shopPage {
+      title
+      backgroundColour
+      image ${imageQuery}
+      description
+      
+      content {
+        __typename
+        ${reasonsSectionQuery}
+        ${featuredProductsSectionQuery}
+        ${fullWidthBannerSectionQuery}
+      }
+    }
+  }`,
+
   [GraphQlQueryEnum.Footer]: () => `{
     footer {
       signUpText

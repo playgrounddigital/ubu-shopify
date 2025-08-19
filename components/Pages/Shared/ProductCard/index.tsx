@@ -32,7 +32,7 @@ const ProductCard: FC<ProductCardProps> = ({ product, className }) => {
             }}
           >
             <OptimisedImage
-              src={product.images[0].url}
+              src={product.images[0]?.url}
               alt={product.title}
               layout="cover"
               imgClassName="group-hover/card:scale-105 transition-transform transform-gpu"
@@ -61,9 +61,9 @@ const ProductCard: FC<ProductCardProps> = ({ product, className }) => {
         </div>
       </div>
       {/* TITLE + VARIANT */}
-      <div className="mb-[3px] flex items-center justify-between">
-        <h3 className="text-product-title truncate">{productTitle}</h3>
-        <span className="text-lg leading-[21.6px] -tracking-[0.54px]">${productPrice}</span>
+      <div className="mb-[3px] flex justify-between gap-x-2">
+        <h3 className="text-product-title">{productTitle}</h3>
+        <span className="translate-y-0.5 text-lg leading-[21.6px] -tracking-[0.54px]">${productPrice}</span>
       </div>
       {/* PRICE */}
       <span className="text-[17px] leading-5 -tracking-[0.51px] text-grey">{variantTitle}</span>
