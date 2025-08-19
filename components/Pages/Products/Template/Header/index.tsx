@@ -6,6 +6,7 @@ import Container from '~/components/Layout/Container'
 import QuantitySelector from '~/components/Layout/QuantitySelector'
 import ProductImageGallery from '~/components/Pages/Shared/ProductImageGallery'
 import { useCart } from '~/context/CartContext'
+import CartIcon from '~/public/img/icons/cart.svg'
 import TruckIcon from '~/public/img/icons/truck.svg'
 import { Product } from '~/types/shopify'
 
@@ -21,7 +22,11 @@ const Header: FC<HeaderProps> = ({ product }) => {
   const productPrice = variant?.priceV2.amount
 
   const decreaseQty = () => setQuantity((q) => Math.max(1, q - 1))
-  const increaseQty = () => setQuantity((q) => q + 1)
+  const increaseQty = () =>
+    setQuantity((q) => {
+      const maxQty = variant?.quantityAvailable ?? Infinity
+      return Math.min(maxQty, q + 1)
+    })
 
   const handleAddToCart = () => {
     if (!variant) return
@@ -29,9 +34,11 @@ const Header: FC<HeaderProps> = ({ product }) => {
       variantId: variant.id,
       quantity,
       productTitle: product.title,
+      variantTitle: variant.title,
       priceAmount: productPrice ?? '0',
       currencyCode: 'USD',
       imageUrl: product.images[0]?.url,
+      quantityAvailable: variant.quantityAvailable,
     })
   }
 
@@ -66,6 +73,7 @@ const Header: FC<HeaderProps> = ({ product }) => {
                 onIncrease={increaseQty}
                 onDecrease={decreaseQty}
                 disabled={isLoading}
+                maxQuantity={variant?.quantityAvailable ?? null}
               />
 
               <Button
@@ -73,6 +81,8 @@ const Header: FC<HeaderProps> = ({ product }) => {
                 disabled={isLoading || !variant}
                 buttonClassName="w-full"
                 className="w-full"
+                icon={CartIcon}
+                iconClassName="!w-6 min-w-6 !h-[26px] !translate-x-0"
               >
                 ADD TO CART
               </Button>

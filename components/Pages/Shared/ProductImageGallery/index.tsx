@@ -46,7 +46,7 @@ const ProductImageGallery: FC<ProductImageGalleryProps> = ({ product }) => {
           <button
             key={img.id ?? index}
             onClick={() => handleImageClick(index)}
-            className={cx('h-[126px] w-[114px] overflow-hidden rounded-md border-[1.4px] transition-colors', {
+            className={cx('h-[126px] w-[114px] overflow-hidden rounded border-2 transition-colors', {
               'border-black': currentSlide === index,
               'border-off-white': currentSlide !== index,
             })}

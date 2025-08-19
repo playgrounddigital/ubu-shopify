@@ -32,7 +32,11 @@ const Cart: FC = () => {
   }
 
   const handleIncrease = (id: string, quantity: number) => {
-    updateCartItemQuantity({ id, quantity: quantity + 1 })
+    const item = cart?.lineItems.find((li) => li.id === id)
+    const maxQty = item?.variant?.quantityAvailable ?? Infinity
+    if (quantity < maxQty) {
+      updateCartItemQuantity({ id, quantity: quantity + 1 })
+    }
   }
 
   const handleDecrease = (id: string, quantity: number) => {

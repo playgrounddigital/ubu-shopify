@@ -36,6 +36,7 @@ export type CheckoutLineItem = {
   variant?: {
     id: string
     title: string
+    quantityAvailable?: number | null
     priceV2: Money
     image?: Image | null
   } | null
@@ -57,6 +58,7 @@ export type ProductVariant = {
   title: string
   sku?: string | null
   availableForSale: boolean
+  quantityAvailable?: number | null
   priceV2: Money
   compareAtPriceV2?: Money | null
   image?: Image | null

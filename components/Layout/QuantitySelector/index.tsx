@@ -9,6 +9,7 @@ interface QuantitySelectorProps {
   onDecrease: () => void
   disabled?: boolean
   className?: string
+  maxQuantity?: number | null
 }
 
 const QuantitySelector: FC<QuantitySelectorProps> = ({
@@ -18,7 +19,9 @@ const QuantitySelector: FC<QuantitySelectorProps> = ({
   onDecrease,
   disabled = false,
   className = '',
+  maxQuantity = null,
 }) => {
+  const isIncreaseDisabled = disabled || (maxQuantity !== null && quantity >= maxQuantity)
   return (
     <div
       className={cx('flex items-center rounded-full border border-green', className, {
@@ -46,7 +49,7 @@ const QuantitySelector: FC<QuantitySelectorProps> = ({
         {quantity}
       </div>
       <button
-        disabled={disabled}
+        disabled={isIncreaseDisabled}
         aria-label="Increase quantity"
         onClick={onIncrease}
         className={cx('flex items-center justify-center disabled:opacity-50', {

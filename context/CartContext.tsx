@@ -15,16 +15,20 @@ type CartContextState = {
     items:
       | (CheckoutLineItemAddInput & {
           productTitle?: string
+          variantTitle?: string
           imageUrl?: string
           priceAmount?: string
           currencyCode?: string
+          quantityAvailable?: number | null
         })
       | Array<
           CheckoutLineItemAddInput & {
             productTitle?: string
+            variantTitle?: string
             imageUrl?: string
             priceAmount?: string
             currencyCode?: string
+            quantityAvailable?: number | null
           }
         >
   ) => Promise<void>
@@ -141,21 +145,35 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
       items:
         | (CheckoutLineItemAddInput & {
             productTitle?: string
+            variantTitle?: string
             imageUrl?: string
             priceAmount?: string
             currencyCode?: string
+            quantityAvailable?: number | null
           })
         | Array<
             CheckoutLineItemAddInput & {
               productTitle?: string
+              variantTitle?: string
               imageUrl?: string
               priceAmount?: string
               currencyCode?: string
+              quantityAvailable?: number | null
             }
           >
     ) => {
       const itemsArray = (Array.isArray(items) ? items : [items]).filter((it) => it.quantity > 0)
       if (!itemsArray.length) return
+
+      // Validate inventory limits
+      for (const item of itemsArray) {
+        const currentCartQuantity = cart?.lineItems.find((li) => li.variant?.id === item.variantId)?.quantity ?? 0
+        const totalQuantity = currentCartQuantity + item.quantity
+
+        if (item.quantityAvailable !== null && totalQuantity > item.quantityAvailable) {
+          throw new Error(`Not enough inventory. Only ${item.quantityAvailable} available.`)
+        }
+      }
 
       // Optimistic update
       const previousCart = cart
@@ -179,7 +197,8 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
                     title: it.productTitle ?? '',
                     variant: {
                       id: variantId,
-                      title: '',
+                      title: it.variantTitle ?? '',
+                      quantityAvailable: it.quantityAvailable ?? null,
                       priceV2: {
                         amount: it.priceAmount ?? '0',
                         currencyCode: it.currencyCode ?? 'USD',
@@ -201,7 +220,8 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
               title: it.productTitle ?? '',
               variant: {
                 id: it.variantId,
-                title: '',
+                title: it.variantTitle ?? '',
+                quantityAvailable: it.quantityAvailable ?? null,
                 priceV2: { amount: it.priceAmount ?? '0', currencyCode: it.currencyCode ?? 'USD' },
                 image: it.imageUrl ? { url: it.imageUrl, altText: it.productTitle ?? null } : null,
               },
@@ -268,7 +288,6 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
               for (const it of updatesArray) {
                 const id = it.id
                 const existingIndex = next.findIndex((li) => li.id === id)
-                console.log(existingIndex)
                 // If quantity is 0, remove the item
                 if (it.quantity === 0) {
                   next.splice(existingIndex, 1)
@@ -288,6 +307,7 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
                     variant: {
                       id: '',
                       title: '',
+                      quantityAvailable: null,
                       priceV2: { amount: '0', currencyCode: 'AUD' },
                       image: null,
                     },

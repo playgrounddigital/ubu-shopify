@@ -47,6 +47,7 @@ const CartItem: FC<CartItemProps> = ({ item, isLoading, onIncrease, onDecrease, 
               onIncrease={() => onIncrease(item.id, item.quantity)}
               onDecrease={() => onDecrease(item.id, item.quantity)}
               disabled={isLoading}
+              maxQuantity={item.variant?.quantityAvailable ?? null}
             />
 
             {/* Price */}

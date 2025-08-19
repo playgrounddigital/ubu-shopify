@@ -51,6 +51,7 @@ const PRODUCT_SELECTION = `
 				title
 				sku
 				availableForSale
+				quantityAvailable
 				priceV2: price { amount currencyCode }
 				compareAtPriceV2: compareAtPrice { amount currencyCode }
 				image { id url altText }
@@ -72,6 +73,7 @@ const CART_SELECTION = `
 					... on ProductVariant {
 						id
 						title
+						quantityAvailable
 						priceV2: price { amount currencyCode }
 						image { id url altText }
 						product { title }
@@ -251,6 +253,7 @@ function mapProduct(node: any): Product {
     title: e.node.title,
     sku: e.node.sku ?? null,
     availableForSale: Boolean(e.node.availableForSale),
+    quantityAvailable: e.node.quantityAvailable ?? null,
     priceV2: e.node.priceV2,
     compareAtPriceV2: e.node.compareAtPriceV2 ?? null,
     image: e.node.image ?? null,
@@ -276,6 +279,7 @@ function mapCheckout(payload: any): Checkout {
       ? {
           id: merchandise.id,
           title: merchandise.title,
+          quantityAvailable: merchandise.quantityAvailable ?? null,
           priceV2: merchandise.priceV2,
           image: merchandise.image || null,
         }

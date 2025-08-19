@@ -17,8 +17,9 @@ const Header: FC<HeaderProps> = ({ content }) => {
     }
     return content.title
   })()
+
   return (
-    <section className="pt-[122px]">
+    <section className="pt-[126px]">
       <Container className="mb-5 grid h-[600px] gap-x-5 gap-y-2 lg:grid-cols-2">
         {/* LINK BLOCk */}
         <div
