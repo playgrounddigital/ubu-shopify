@@ -3,12 +3,9 @@ import cx from 'classnames'
 import { FC, useMemo } from 'react'
 import Button from '~/components/Layout/Button'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
-import { iconStyles } from '~/constants/iconStyles'
 import { useCart } from '~/context/CartContext'
 import FooterJSON from '~/public/footer.json'
 import ChevronLeftIcon from '~/public/img/icons/chevron-left.svg'
-import PlusIcon from '~/public/img/icons/plus.svg'
-import PresentIcon from '~/public/img/icons/present.svg'
 import TruckIcon from '~/public/img/icons/truck.svg'
 import CartItem from './CartItem'
 
@@ -128,7 +125,7 @@ const Cart: FC = () => {
           </div>
 
           {/* Gift wrapping bar */}
-          <div className="mt-10 flex h-10 items-center justify-between bg-pink px-10 text-sm text-black">
+          {/* <div className="mt-10 flex h-10 items-center justify-between bg-pink px-10 text-sm text-black">
             <div className="flex items-center gap-x-3">
               <PresentIcon className="size-[15px]" />
               <span>Add gift wrapping</span>
@@ -136,7 +133,7 @@ const Cart: FC = () => {
             <button aria-label="Add gift wrapping">
               <PlusIcon className={iconStyles[12]} />
             </button>
-          </div>
+          </div> */}
 
           {/* Footer / Total */}
           <div className="px-10 pt-4 pb-[38px]">

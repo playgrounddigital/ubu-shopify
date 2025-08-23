@@ -36,7 +36,7 @@ const Header: FC<HeaderProps> = ({ product }) => {
       productTitle: product.title,
       variantTitle: variant.title,
       priceAmount: productPrice ?? '0',
-      currencyCode: 'USD',
+      currencyCode: 'AUD',
       imageUrl: product.images[0]?.url,
       quantityAvailable: variant.quantityAvailable,
     })

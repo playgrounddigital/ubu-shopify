@@ -19,8 +19,10 @@ const siteBanner = SiteBannerJSON as SiteBanner
 
 const Navbar: FC = () => {
   const [hasScrolled, setHasScrolled] = useState(false)
-  const { openCart } = useCart()
+  const { cart, openCart } = useCart()
   const { isAuthenticated } = useAuth()
+
+  const cartItemsCount = cart?.lineItems.reduce((acc, item) => acc + item.quantity, 0) ?? 0
 
   const rightSideButtons = [
     {
@@ -37,6 +39,7 @@ const Navbar: FC = () => {
     },
     {
       label: 'Cart',
+      count: cartItemsCount,
       icon: CartIcon,
       iconClassName: 'w-4.5 min-w-4.5 h-5',
       onClick: openCart,
@@ -101,7 +104,7 @@ const Navbar: FC = () => {
 
           {/* Right side buttons */}
           <div className="flex items-center justify-end gap-x-2.5">
-            {rightSideButtons.map(({ label, icon: Icon, iconClassName, link, onClick }) => (
+            {rightSideButtons.map(({ label, icon: Icon, iconClassName, link, onClick, count }) => (
               <PageLink
                 key={label}
                 href={link}
@@ -116,6 +119,16 @@ const Navbar: FC = () => {
                     className={cx('absolute inset-0 rounded-full bg-green transition-[filter] group-hover:blur-sm')}
                   />
                   <Icon className={cx('relative z-10', iconClassName)} />
+                  <span
+                    className={cx(
+                      'absolute -top-[11px] -right-2 flex size-[23px] items-center justify-center rounded-full bg-black text-[13px] leading-[22.7px] font-medium text-white uppercase transition-opacity',
+                      {
+                        'opacity-0': !count,
+                      }
+                    )}
+                  >
+                    {count}
+                  </span>
                 </button>
               </PageLink>
             ))}

@@ -45,12 +45,13 @@ const ProductCard: FC<ProductCardProps> = ({ product, className }) => {
           <button
             onClick={() =>
               addToCart({
-                variantId: product.id,
+                variantId: variant?.id,
                 quantity: 1,
                 productTitle: productTitle,
+                variantTitle: variantTitle,
                 priceAmount: productPrice ?? '0',
-                currencyCode: 'USD',
-                imageUrl: product.images[0].url,
+                currencyCode: 'AUD',
+                imageUrl: product.images[0]?.url,
               })
             }
             className="group/button relative inline-flex h-[34px] w-fit items-center justify-center rounded-full px-4 text-center uppercase"

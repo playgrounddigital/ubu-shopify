@@ -201,7 +201,7 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
                       quantityAvailable: it.quantityAvailable ?? null,
                       priceV2: {
                         amount: it.priceAmount ?? '0',
-                        currencyCode: it.currencyCode ?? 'USD',
+                        currencyCode: it.currencyCode ?? 'AUD',
                       },
                       image: it.imageUrl ? { url: it.imageUrl, altText: it.productTitle ?? null } : null,
                     },
@@ -222,7 +222,7 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
                 id: it.variantId,
                 title: it.variantTitle ?? '',
                 quantityAvailable: it.quantityAvailable ?? null,
-                priceV2: { amount: it.priceAmount ?? '0', currencyCode: it.currencyCode ?? 'USD' },
+                priceV2: { amount: it.priceAmount ?? '0', currencyCode: it.currencyCode ?? 'AUD' },
                 image: it.imageUrl ? { url: it.imageUrl, altText: it.productTitle ?? null } : null,
               },
             })),
