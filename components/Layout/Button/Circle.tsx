@@ -7,7 +7,7 @@ interface CircleButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isFlipped?: boolean
   variant: ButtonColours
   ariaLabel: string
-  onClick: () => void
+  onClick?: () => void
 }
 
 const CircleButton: FC<CircleButtonProps> = ({ variant, ariaLabel, onClick, isFlipped, ...props }) => {

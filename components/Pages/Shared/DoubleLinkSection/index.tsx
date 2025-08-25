@@ -61,7 +61,10 @@ const DoubleLinkSection: FC<DoubleLinkSectionProps> = ({ content }) => {
                 </div>
 
                 {/* RIGHT SIDE */}
-                <CircleButton variant={i === 0 ? 'white-black' : 'black-green'} />
+                <CircleButton
+                  ariaLabel="Open link"
+                  variant={i === 0 ? 'white-black' : 'black-green'}
+                />
               </div>
             </div>
           )
