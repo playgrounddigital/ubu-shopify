@@ -48,6 +48,7 @@ export default async ({ params }: PageProps) => {
 
   return (
     <CollectionTemplatePage
+      title="Shop"
       collection={shopPage}
       productsForCollection={products}
       products={products}

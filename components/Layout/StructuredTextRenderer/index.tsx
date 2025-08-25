@@ -15,9 +15,10 @@ import { joinSmartTagsIntoString } from '~/helpers/cms'
 interface StructuredTextRendererProps {
   data: StructuredTextType
   paragraphClassName?: string
+  headingTwoClassName?: string
 }
 
-const StructuredTextRenderer: FC<StructuredTextRendererProps> = ({ data, paragraphClassName }) => (
+const StructuredTextRenderer: FC<StructuredTextRendererProps> = ({ data, paragraphClassName, headingTwoClassName }) => (
   <StructuredText
     data={data}
     customNodeRules={[
@@ -30,7 +31,9 @@ const StructuredTextRenderer: FC<StructuredTextRendererProps> = ({ data, paragra
             return (
               <h2
                 key={key}
-                className="text-heading mt-10 mb-4 font-medium"
+                className={cx(headingTwoClassName, {
+                  'text-heading mt-10 mb-4 font-medium': !headingTwoClassName,
+                })}
               >
                 {children}
               </h2>
@@ -71,7 +74,7 @@ const StructuredTextRenderer: FC<StructuredTextRendererProps> = ({ data, paragra
             return (
               <ul
                 key={key}
-                className="flex list-disc flex-col gap-y-2 pl-4"
+                className={cx('mb-8 flex list-disc flex-col gap-y-2 pl-6', paragraphClassName)}
               >
                 {children}
               </ul>
@@ -80,7 +83,7 @@ const StructuredTextRenderer: FC<StructuredTextRendererProps> = ({ data, paragra
             return (
               <ol
                 key={key}
-                className="flex list-decimal flex-col gap-y-2 pl-4"
+                className={cx('mb-8 flex list-decimal flex-col gap-y-2 pl-6', paragraphClassName)}
               >
                 {children}
               </ol>

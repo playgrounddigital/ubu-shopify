@@ -156,6 +156,16 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
     }
   }`,
 
+  [GraphQlQueryEnum.PrivacyPolicyPage]: () => `{
+    privacyPolicyPage {
+      title
+      image ${imageQuery}
+      content {
+        value
+      }
+    }
+  }`,
+
   [GraphQlQueryEnum.ProductPageTemplate]: () => `{
     productPageTemplate {
       content {

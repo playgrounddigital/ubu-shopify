@@ -3,15 +3,18 @@ import { FC } from 'react'
 import Container from '~/components/Layout/Container'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
 import { joinSmartTagsIntoString } from '~/helpers/cms'
+import { Image } from '~/types/cms/common'
 import { DatoCMSCollectionModel } from '~/types/cms/models/collection'
 import { ShopContent } from '~/types/cms/pages/shop'
 
 interface HeaderProps {
   title?: string
+  image?: Image
   content?: DatoCMSCollectionModel | ShopContent
+  backgroundClassName?: string
 }
 
-const Header: FC<HeaderProps> = ({ title, content }) => {
+const Header: FC<HeaderProps> = ({ title, image, content, backgroundClassName }) => {
   const _title = (() => {
     if (!content) return title || ''
     if ('shopifyCollection' in content) {
@@ -20,16 +23,28 @@ const Header: FC<HeaderProps> = ({ title, content }) => {
     return content.title
   })()
 
+  const _image = (() => {
+    if (!content) return image || { url: '/img/collections/hats-collection.jpg' }
+    if ('shopifyCollection' in content) {
+      return content.shopifyCollection.image
+    }
+    return content.image
+  })()
+
   return (
     <section className="pt-[126px]">
       <Container className="mb-5 grid h-[600px] gap-x-5 gap-y-2 lg:grid-cols-2">
         {/* LINK BLOCk */}
         <div
-          className={cx('relative inline-flex h-full items-end overflow-hidden p-[30px] pl-10', {
-            'bg-yellow': !content?.backgroundColour,
-          })}
+          className={cx(
+            'relative inline-flex h-full items-end overflow-hidden p-[30px] pl-10',
+            {
+              'bg-yellow': !content?.backgroundColour && !backgroundClassName,
+            },
+            backgroundClassName
+          )}
           style={{
-            backgroundColor: content?.backgroundColour,
+            backgroundColor: backgroundClassName ? undefined : content?.backgroundColour,
           }}
         >
           <div className="relative z-10 flex w-full items-end justify-between">
@@ -47,10 +62,10 @@ const Header: FC<HeaderProps> = ({ title, content }) => {
 
         {/* IMAGE BLOCK */}
         <OptimisedImage
-          src={content?.image?.url || '/img/collections/hats-collection.jpg'}
+          src={_image.url}
           alt={
-            content
-              ? joinSmartTagsIntoString(content.image.smartTags || [])
+            (_image as Image).smartTags
+              ? joinSmartTagsIntoString((_image as Image).smartTags || [])
               : 'Image of children wearing hats looking down to the ground'
           }
           layout="cover"
