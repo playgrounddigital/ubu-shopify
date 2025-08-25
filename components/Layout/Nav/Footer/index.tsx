@@ -1,32 +1,90 @@
 'use client'
-import { FC } from 'react'
+import { useForm } from '@formspree/react'
+import cx from 'classnames'
+import { FC, useEffect, useRef, useState } from 'react'
+import ReCAPTCHA from 'react-google-recaptcha'
 import Button from '~/components/Layout/Button'
 import Container from '~/components/Layout/Container'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
 import OutgoingLink from '~/components/Layout/OutgoingLink'
+import { isProduction } from '~/constants/environment'
 import FooterJSON from '~/public/footer.json'
 
+const FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID
+if (!FORM_ID) {
+  throw new Error('NEXT_PUBLIC_FORMSPREE_FORM_ID is not set')
+}
+const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+if (!SITE_KEY) {
+  throw new Error('NEXT_PUBLIC_RECAPTCHA_SITE_KEY is not set')
+}
+
 const Footer: FC = () => {
+  const [state, handleSubmit] = useForm(FORM_ID)
+  const [email, setEmail] = useState('')
+  const recaptchaRef = useRef<ReCAPTCHA>(null)
+
+  const hasSubmittedSuccessfully = state.succeeded
+  const isSubmitting = state.submitting
+
+  const validateForm = async () => {
+    if (isProduction) {
+      const token = await recaptchaRef.current.executeAsync()
+      if (!token) return false
+    }
+
+    return true
+  }
+
+  useEffect(() => {
+    if (hasSubmittedSuccessfully) {
+      setEmail('Success!')
+    }
+  }, [hasSubmittedSuccessfully])
+
   return (
     <footer className="bg-black text-white">
       <Container className="pt-16 pb-14">
         <div className="text-input mb-[50px] flex items-center justify-between">
           <p className="font-semibold">Sign up to our newsletter</p>
 
-          <div className="flex max-w-[650px] gap-x-10 border-b border-white pb-5">
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault()
+              if (isSubmitting || hasSubmittedSuccessfully) return
+              const isValid = await validateForm()
+              if (isValid) await handleSubmit({ email })
+            }}
+            className={cx('flex max-w-[650px] gap-x-10 border-b pb-5', {
+              'border-white': !hasSubmittedSuccessfully,
+              'border-green': hasSubmittedSuccessfully,
+              'cursor-not-allowed': hasSubmittedSuccessfully || isSubmitting,
+            })}
+          >
             <input
-              type="email"
+              type={hasSubmittedSuccessfully ? 'text' : 'email'}
               placeholder="Email"
-              className="w-full bg-transparent placeholder:text-white"
+              value={email}
+              onChange={(e) => {
+                if (hasSubmittedSuccessfully || isSubmitting) return
+                setEmail(e.target.value)
+              }}
+              className={cx('w-full bg-transparent placeholder:text-white', {
+                'text-green': hasSubmittedSuccessfully,
+              })}
             />
             <Button
               type="submit"
               size="md"
               variant="black-pink"
+              disabled={isSubmitting}
+              className={cx('transition-opacity', {
+                'pointer-events-none opacity-0': hasSubmittedSuccessfully,
+              })}
             >
-              Subscribe
+              {isSubmitting ? 'Submitting...' : 'Subscribe'}
             </Button>
-          </div>
+          </form>
         </div>
 
         <hr className="mb-16" />

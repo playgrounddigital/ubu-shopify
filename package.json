@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@datocms/cda-client": "^0.2.7",
+    "@formspree/react": "^3.0.0",
     "@svgr/webpack": "^6.3.1",
     "classnames": "^2.3.1",
     "framer-motion": "^6.3.4",
