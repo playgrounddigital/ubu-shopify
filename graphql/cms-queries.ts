@@ -190,6 +190,14 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
     }
   }`,
 
+  [GraphQlQueryEnum.ShippingReturnsInformation]: () => `{
+    shippingReturnsInformation {
+      content {
+        value
+      }
+    }
+  }`,
+
   [GraphQlQueryEnum.Footer]: () => `{
     footer {
       signUpText

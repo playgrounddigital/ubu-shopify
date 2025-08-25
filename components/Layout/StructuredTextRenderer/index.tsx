@@ -39,7 +39,7 @@ const StructuredTextRenderer: FC<StructuredTextRendererProps> = ({ data, paragra
             return (
               <h3
                 key={key}
-                className="mt-6 mb-4 text-xl font-medium"
+                className="mt-6 mb-4 text-xl font-medium first:mt-0"
               >
                 {children}
               </h3>

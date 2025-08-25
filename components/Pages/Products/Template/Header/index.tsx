@@ -4,10 +4,12 @@ import Accordion from '~/components/Layout/Accordion'
 import Button from '~/components/Layout/Button'
 import Container from '~/components/Layout/Container'
 import QuantitySelector from '~/components/Layout/QuantitySelector'
+import StructuredTextRenderer from '~/components/Layout/StructuredTextRenderer'
 import ProductImageGallery from '~/components/Pages/Shared/ProductImageGallery'
 import { useCart } from '~/context/CartContext'
 import CartIcon from '~/public/img/icons/cart.svg'
 import TruckIcon from '~/public/img/icons/truck.svg'
+import ShippingReturnsInformationJSON from '~/public/shipping-returns-information.json'
 import { Product } from '~/types/shopify'
 
 interface HeaderProps {
@@ -97,7 +99,9 @@ const Header: FC<HeaderProps> = ({ product }) => {
             {product.description ? <p className="mt-9 mb-[60px]">{product.description}</p> : null}
 
             <Accordion label="Shipping & Returns">
-              <p className="pb-6">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
+              <div className="pb-6">
+                <StructuredTextRenderer data={ShippingReturnsInformationJSON.content} />
+              </div>
             </Accordion>
           </div>
         </div>
