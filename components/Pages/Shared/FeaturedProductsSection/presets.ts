@@ -1,18 +1,19 @@
 import { Settings } from 'react-slick'
 
 export const featuredProductsSliderSettings: Settings = {
+  arrows: false,
   dots: false,
   infinite: false,
-  arrows: false,
   speed: 500,
   swipe: true,
-  slidesToScroll: 1,
-  slidesToShow: 4,
   draggable: true,
   responsive: [
     {
       breakpoint: 9999,
-      settings: 'unslick',
+      settings: {
+        slidesToScroll: 1,
+        slidesToShow: 4,
+      },
     },
     {
       breakpoint: 1025,
