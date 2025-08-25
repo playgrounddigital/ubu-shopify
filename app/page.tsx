@@ -4,7 +4,9 @@ import { _generateMetadata, PageProps } from '~/helpers/next'
 import { getAllProducts } from '~/lib/shopify'
 import { HomeContent } from '~/types/cms/pages/home'
 import { GraphQlQueryEnum } from '~/types/graphql'
-import { SitePages } from '~/types/pages'
+
+export const dynamicParams = true
+export const revalidate = 0
 
 export const generateMetadata = async ({ params }: PageProps) => {
   const homePageQuery = getGraphQLQuery(GraphQlQueryEnum.HomePage)
@@ -16,9 +18,9 @@ export const generateMetadata = async ({ params }: PageProps) => {
   })
 }
 
-export const generateStaticParams = async () => {
-  return [{ slug: SitePages.Home }]
-}
+// export const generateStaticParams = async () => {
+//   return [{ slug: SitePages.Home }]
+// }
 
 export default async () => {
   const homePageQuery = getGraphQLQuery(GraphQlQueryEnum.HomePage)
