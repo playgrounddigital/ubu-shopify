@@ -149,6 +149,20 @@ const PRODUCT_BY_HANDLE_QUERY = gql`
 	}
 `
 
+const COLLECTION_SELECTION = `
+	id
+	title
+	handle
+	description
+	image { id url altText }
+`
+
+const COLLECTION_BY_HANDLE_QUERY = gql`
+	query CollectionByHandle($handle: String!) {
+		collectionByHandle(handle: $handle) { ${COLLECTION_SELECTION} }
+	}
+`
+
 const CART_CREATE_MUTATION = gql`
 	mutation CartCreate($input: CartInput) {
 		cartCreate(input: $input) {
@@ -382,6 +396,12 @@ export async function getProductByHandle(handle: string): Promise<Product | null
   const data = await client.request<{ productByHandle: any | null }>(PRODUCT_BY_HANDLE_QUERY, { handle })
   if (!data.productByHandle) return null
   return mapProduct(data.productByHandle)
+}
+
+export async function getCollectionByHandle(handle: string): Promise<Collection | null> {
+  const data = await client.request<{ collectionByHandle: any | null }>(COLLECTION_BY_HANDLE_QUERY, { handle })
+  if (!data.collectionByHandle) return null
+  return data.collectionByHandle
 }
 
 export async function createCheckout(lineItems: CheckoutLineItemAddInput[] = []): Promise<Checkout> {

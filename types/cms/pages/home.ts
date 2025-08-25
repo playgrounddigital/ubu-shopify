@@ -1,5 +1,6 @@
 import { StructuredTextGraphQlResponse } from 'react-datocms/structured-text'
 import { Image, PageContent } from '~/types/cms/common'
+import { DatoCMSShopifyCollection } from '~/types/cms/models/collection'
 
 export interface HomeContent extends PageContent {
   heroSlides: HeroSlide[]
@@ -43,6 +44,7 @@ export interface FeaturedProductsSectionRecord {
   __typename: 'FeaturedProductsSectionRecord'
   id: string
   title: string
+  collectionLink?: DatoCMSShopifyCollection
   products: DatoCMSShopifyProduct[]
 }
 
@@ -92,7 +94,10 @@ interface LinkBlockWithImage {
   image: Image
   lineOne: string
   lineTwo: string
-  link: string
+  link: {
+    collection?: DatoCMSShopifyCollection
+    product?: DatoCMSShopifyProduct
+  }
 }
 
 export interface IntroSectionRecord {
@@ -113,7 +118,10 @@ interface LinkBlockWithoutImage {
   id: string
   lineOne: string
   lineTwo?: string
-  link: string
+  link: {
+    collection?: DatoCMSShopifyCollection
+    product?: DatoCMSShopifyProduct
+  }
   backgroundColour: string
   buttonText: string
 }

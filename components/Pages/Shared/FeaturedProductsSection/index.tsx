@@ -44,7 +44,11 @@ const FeaturedProductsSection: FC<FeaturedProductsSectionProps> = ({ products, c
           <h2 className="heading-2">{content.title}</h2>
 
           <PageLink
-            href={SitePages.Shop}
+            href={
+              content.collectionLink?.handle
+                ? `${SitePages.Collections}/${content.collectionLink.handle}`
+                : SitePages.Shop
+            }
             className="uppercase hover:underline"
           >
             View all

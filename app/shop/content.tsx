@@ -5,17 +5,17 @@ import ProductsGrid from '~/components/Pages/Collections/ProductsGrid'
 import FeaturedProductsSection from '~/components/Pages/Shared/FeaturedProductsSection'
 import FullWidthBannerSection from '~/components/Pages/Shared/FullWidthBannerSection'
 import ReasonsSection from '~/components/Pages/Shared/ReasonsSection'
-import { DatoCMSCollection } from '~/types/cms/models/collection'
+import { DatoCMSCollectionModel } from '~/types/cms/models/collection'
 import { Product } from '~/types/shopify'
 
 interface CollectionTemplatePageProps {
-  collection: DatoCMSCollection
+  collection: DatoCMSCollectionModel
   products: Product[]
   productsForCollection: Product[]
 }
 
 export interface CollectionTemplatePageSectionProps {
-  collection: DatoCMSCollection
+  collection: DatoCMSCollectionModel
 }
 
 const CollectionTemplatePage: FC<CollectionTemplatePageProps> = ({ collection, products, productsForCollection }) => {

@@ -6,7 +6,7 @@ import {
 } from '~/types/cms/pages/home'
 import { Image } from '~/types/shopify'
 
-export interface DatoCMSCollection {
+export interface DatoCMSCollectionModel {
   shopifyCollection: DatoCMSShopifyCollection
   backgroundColour: string
   image: DatoCMSImage

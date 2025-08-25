@@ -2,8 +2,8 @@ import { notFound } from 'next/navigation'
 import CollectionTemplatePage from '~/app/collections/[handle]/content'
 import { fetchFromDatoAPI, getGraphQLQuery } from '~/helpers/cms'
 import { PageProps, _generateMetadata } from '~/helpers/next'
-import { getAllProducts, getProductsByCollectionHandle } from '~/lib/shopify'
-import { DatoCMSCollection } from '~/types/cms/models/collection'
+import { getAllProducts, getCollectionByHandle, getProductsByCollectionHandle } from '~/lib/shopify'
+import { DatoCMSCollectionModel } from '~/types/cms/models/collection'
 import { GraphQlQueryEnum } from '~/types/graphql'
 
 // Fetch dynamic routes not pre-rendered
@@ -14,21 +14,20 @@ export const generateMetadata = async ({ params }: PageProps) => {
   const { handle } = await params
 
   const collectionQuery = getGraphQLQuery(GraphQlQueryEnum.AllCollections)
-  const { allCollections }: { allCollections: DatoCMSCollection[] } = await fetchFromDatoAPI(collectionQuery)
+  const { allCollections }: { allCollections: DatoCMSCollectionModel[] } = await fetchFromDatoAPI(collectionQuery)
 
-  if (!allCollections) {
-    return notFound()
-  }
+  const collection = allCollections?.find((collection) => collection.shopifyCollection.handle === handle)
 
-  const collection = allCollections.find((collection) => collection.shopifyCollection.handle === handle)
-  if (!collection) {
+  // Fetch the collection from Shopify. If it doesn't exist, return 404.
+  const shopifyCollection = await getCollectionByHandle(handle)
+  if (!shopifyCollection) {
     return notFound()
   }
 
   return await _generateMetadata(await params, {
-    title: collection.shopifyCollection.title,
-    description: collection.description,
-    image: collection.image.url,
+    title: collection?.shopifyCollection.title || shopifyCollection?.title,
+    description: collection?.description || shopifyCollection?.description,
+    image: collection?.image.url || shopifyCollection?.image?.url,
   })
 }
 
@@ -47,23 +46,22 @@ export default async ({ params }: PageProps) => {
   const { handle } = await params
 
   const collectionQuery = getGraphQLQuery(GraphQlQueryEnum.AllCollections)
-  const { allCollections }: { allCollections: DatoCMSCollection[] } = await fetchFromDatoAPI(collectionQuery)
+  const { allCollections }: { allCollections: DatoCMSCollectionModel[] } = await fetchFromDatoAPI(collectionQuery)
 
-  if (!allCollections) {
-    return notFound()
-  }
-
-  const collection = allCollections.find((collection) => collection.shopifyCollection.handle === handle)
-
-  if (!collection) {
-    return notFound()
-  }
+  const collection = allCollections?.find((collection) => collection.shopifyCollection.handle === handle)
 
   const products = await getAllProducts()
-  const productsForCollection = await getProductsByCollectionHandle(collection.shopifyCollection.handle)
+  const productsForCollection = await getProductsByCollectionHandle(handle)
+
+  // Fetch the collection from Shopify. If it doesn't exist, return 404.
+  const shopifyCollection = await getCollectionByHandle(handle)
+  if (!shopifyCollection) {
+    return notFound()
+  }
 
   return (
     <CollectionTemplatePage
+      title={shopifyCollection?.title || ''}
       collection={collection}
       products={products}
       productsForCollection={productsForCollection}

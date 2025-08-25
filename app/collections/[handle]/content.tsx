@@ -5,26 +5,35 @@ import ProductsGrid from '~/components/Pages/Collections/ProductsGrid'
 import FeaturedProductsSection from '~/components/Pages/Shared/FeaturedProductsSection'
 import FullWidthBannerSection from '~/components/Pages/Shared/FullWidthBannerSection'
 import ReasonsSection from '~/components/Pages/Shared/ReasonsSection'
-import { DatoCMSCollection } from '~/types/cms/models/collection'
+import { DatoCMSCollectionModel } from '~/types/cms/models/collection'
 import { ShopContent } from '~/types/cms/pages/shop'
 import { Product } from '~/types/shopify'
 
 interface CollectionTemplatePageProps {
-  collection: DatoCMSCollection | ShopContent
+  title: string
+  collection: DatoCMSCollectionModel | ShopContent
   products: Product[]
   productsForCollection: Product[]
 }
 
 export interface CollectionTemplatePageSectionProps {
-  collection: DatoCMSCollection
+  collection?: DatoCMSCollectionModel
 }
 
-const CollectionTemplatePage: FC<CollectionTemplatePageProps> = ({ collection, products, productsForCollection }) => {
+const CollectionTemplatePage: FC<CollectionTemplatePageProps> = ({
+  title,
+  collection,
+  products,
+  productsForCollection,
+}) => {
   return (
     <>
-      <Header content={collection} />
+      <Header
+        title={title}
+        content={collection}
+      />
       <ProductsGrid products={productsForCollection} />
-      {collection.content.map((section) => {
+      {collection?.content.map((section) => {
         switch (section.__typename) {
           case 'ReasonsSectionRecord':
             return (

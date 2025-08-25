@@ -22,6 +22,7 @@ const reasonsSectionQuery = `... on ReasonsSectionRecord {
 const featuredProductsSectionQuery = `... on FeaturedProductsSectionRecord {
   id
   title
+  collectionLink
   products {
     product
   }
@@ -45,6 +46,16 @@ const textMarqueeSectionQuery = `... on TextMarqueeSectionRecord {
   textColour
 }`
 
+const productOrCollectionLinkQuery = `{
+  __typename
+  ... on CollectionLinkRecord {
+    collection
+  }
+  ... on ProductLinkRecord {
+    product
+  }
+}`
+
 const doubleLinkImageSectionQuery = `... on DoubleLinkImageSectionRecord {
   id
   linkBlock {
@@ -52,7 +63,7 @@ const doubleLinkImageSectionQuery = `... on DoubleLinkImageSectionRecord {
     backgroundColour
     lineOne
     lineTwo
-    link
+    link ${productOrCollectionLinkQuery}
     buttonText
   }
   image ${imageQuery}
@@ -98,7 +109,7 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
             image ${imageQuery}
             lineOne
             lineTwo
-            link
+            link ${productOrCollectionLinkQuery}
           }
         }
         

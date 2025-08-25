@@ -14,6 +14,8 @@ export type Collection = {
   id: string
   title: string
   handle: string
+  description?: string | null
+  image?: Image | null
 }
 
 export type Product = {
