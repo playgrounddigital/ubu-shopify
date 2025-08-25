@@ -83,7 +83,7 @@ body {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  @apply bg-black;
+  @apply bg-white;
 }
 
 /* Handle */

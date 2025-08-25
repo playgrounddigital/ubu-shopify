@@ -4,6 +4,7 @@ import { FC, useMemo, useRef, useState } from 'react'
 import Slider from 'react-slick'
 import CircleButton from '~/components/Layout/Button/Circle'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
+import { productImageGallerySliderSettings } from '~/components/Pages/Shared/ProductImageGallery/presets'
 import { Product } from '~/types/shopify'
 
 interface ProductImageGalleryProps {
@@ -15,16 +16,6 @@ export interface ProductImageGalleryRef {
   goToNext: () => void
   currentSlide: number
   totalSlides: number
-}
-
-const sliderSettings = {
-  dots: false,
-  arrows: false,
-  infinite: false,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  swipeToSlide: true,
 }
 
 const ProductImageGallery: FC<ProductImageGalleryProps> = ({ product }) => {
@@ -65,7 +56,7 @@ const ProductImageGallery: FC<ProductImageGalleryProps> = ({ product }) => {
       <div className="flex w-full max-w-[630px] flex-col">
         <div className="relative w-full overflow-hidden rounded-[10px] border-2 border-green">
           <Slider
-            {...sliderSettings}
+            {...productImageGallerySliderSettings}
             ref={sliderRef}
             beforeChange={handleSlideChange}
             className="h-full w-full"

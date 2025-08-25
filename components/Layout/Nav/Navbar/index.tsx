@@ -1,6 +1,7 @@
 'use client'
 import cx from 'classnames'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 import Container from '~/components/Layout/Container'
 import { navLinks } from '~/components/Layout/Nav/Navbar/presets'
@@ -21,6 +22,9 @@ const Navbar: FC = () => {
   const [hasScrolled, setHasScrolled] = useState(false)
   const { cart, openCart } = useCart()
   const { isAuthenticated } = useAuth()
+  const pathname = usePathname()
+
+  const isOnHomePage = pathname === SitePages.Home
 
   const cartItemsCount = cart?.lineItems.reduce((acc, item) => acc + item.quantity, 0) ?? 0
 
@@ -69,7 +73,8 @@ const Navbar: FC = () => {
       )}
       <div
         className={cx('w-full transition-colors', {
-          'bg-white': hasScrolled,
+          'bg-white': hasScrolled || !isOnHomePage,
+          'bg-white xl:bg-transparent': !hasScrolled && isOnHomePage,
         })}
       >
         <Container className="grid h-[88px] grid-cols-3">

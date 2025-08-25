@@ -18,7 +18,7 @@ const ProductCard: FC<ProductCardProps> = ({ product, className }) => {
   const productPrice = variant?.priceV2.amount
   const variantTitle = variant?.title
   return (
-    <div className={cx('group/card relative !w-[305px]', className)}>
+    <div className={cx('group/card relative min-w-[305px]', className)}>
       {/* IMAGE AND CART BUTTON */}
       <div className="relative mb-4">
         <PageLink href={`${SitePages.Products}/${product.handle}`}>

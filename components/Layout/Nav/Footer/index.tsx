@@ -45,7 +45,7 @@ const Footer: FC = () => {
   return (
     <footer className="bg-black text-white">
       <Container className="pt-16 pb-14">
-        <div className="text-input mb-[50px] flex items-center justify-between">
+        <div className="text-input mb-[50px] flex flex-col gap-y-5 lg:gap-y-10 xl:flex-row xl:items-center xl:justify-between">
           <p className="font-semibold">Sign up to our newsletter</p>
 
           <form
@@ -55,7 +55,7 @@ const Footer: FC = () => {
               const isValid = await validateForm()
               if (isValid) await handleSubmit({ email })
             }}
-            className={cx('flex max-w-[650px] gap-x-10 border-b pb-5', {
+            className={cx('flex gap-x-10 border-b pb-5 xl:max-w-[650px]', {
               'border-white': !hasSubmittedSuccessfully,
               'border-green': hasSubmittedSuccessfully,
               'cursor-not-allowed': hasSubmittedSuccessfully || isSubmitting,
@@ -87,7 +87,7 @@ const Footer: FC = () => {
           </form>
         </div>
 
-        <hr className="mb-16" />
+        <hr className="mb-16 hidden xl:block" />
 
         <div className="mb-[168px] flex justify-end">
           <div className="flex gap-x-5">
@@ -105,6 +105,8 @@ const Footer: FC = () => {
             ))}
           </div>
         </div>
+
+        <hr className="mb-16 xl:hidden" />
 
         {/* Accepted Payment Methods */}
         <div className="flex justify-end">

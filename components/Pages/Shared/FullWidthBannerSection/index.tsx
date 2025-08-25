@@ -23,18 +23,17 @@ const FullWidthBannerSection: FC<FullWidthBannerSectionProps> = ({ content }) =>
         src={content.image.url}
         alt={content.title}
         layout="cover"
-        imgClassName="object-right"
         className="absolute inset-0"
       />
       <Container
         className={cx('z-10 flex items-end pt-10', {
-          'h-[480px] pb-10': content.height === 'md',
-          'h-[600px] pb-[150px]': content.height === 'lg',
+          'pb-10 xl:h-[480px]': content.height === 'md',
+          'pb-[150px] xl:h-[600px]': content.height === 'lg',
         })}
       >
         <div
           className={cx({
-            'max-w-[531px]': content.height === 'md',
+            'max-w-[450px] xl:max-w-[531px]': content.height === 'md',
             'max-w-[424px]': content.height === 'lg',
           })}
         >

@@ -9,7 +9,7 @@ import RectangleBackground from '~/public/img/home/header/rectangle-background.s
 
 const Header: FC<HomePageSectionProps> = ({ content }) => {
   return (
-    <section className="relative z-0 aspect-video overflow-hidden">
+    <section className="relative z-0 overflow-hidden">
       <Slider {...heroSliderSettings}>
         {content.heroSlides.map((slide) => (
           <div
@@ -21,7 +21,7 @@ const Header: FC<HomePageSectionProps> = ({ content }) => {
               alt={joinSmartTagsIntoString(slide.image.smartTags)}
               layout="cover"
               imgClassName="object-bottom"
-              className="aspect-video w-full"
+              className="h-svh w-full xl:aspect-video xl:h-auto"
             />
             {/* Text overlay on top */}
             <Container className="!absolute bottom-0 left-1/2 flex -translate-x-1/2 justify-end pb-6">
