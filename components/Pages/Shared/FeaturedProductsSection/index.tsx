@@ -61,7 +61,7 @@ const FeaturedProductsSection: FC<FeaturedProductsSectionProps> = ({ products, c
           className="lg:min-w-[calc(100%+40px)]"
         >
           {productsToShow.map((cmsProduct) => {
-            const shopifyProduct = products.find((p) => p.variants.find((v) => v.id === cmsProduct.product.id))
+            const shopifyProduct = products.find((p) => p.id === cmsProduct.product.id)
             if (!shopifyProduct) {
               console.error(`Product ${cmsProduct.product.id} not found in Shopify products`)
               return null

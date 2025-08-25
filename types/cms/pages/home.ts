@@ -4,7 +4,7 @@ import { DatoCMSShopifyCollection } from '~/types/cms/models/collection'
 
 export interface HomeContent extends PageContent {
   heroSlides: HeroSlide[]
-  content: Content[]
+  content: SectionContent[]
 }
 
 export interface HeroSlide {
@@ -17,7 +17,7 @@ export interface HeroSlide {
   description: string
 }
 
-type Content =
+export type SectionContent =
   | ReasonsSectionRecord
   | FeaturedProductsSectionRecord
   | FullWidthBannerSectionRecord
@@ -104,6 +104,7 @@ export interface IntroSectionRecord {
   __typename: 'IntroSectionRecord'
   id: string
   description: StructuredTextGraphQlResponse
+  shouldAddPaddingBelow: boolean
 }
 
 export interface DoubleLinkImageSectionRecord {

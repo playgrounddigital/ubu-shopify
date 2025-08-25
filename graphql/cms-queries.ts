@@ -125,6 +125,63 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
               }
             }
           }
+          shouldAddPaddingBelow
+        }
+        
+        ${doubleLinkImageSectionQuery}
+        
+        ... on FullWidthBannerSectionRecord {
+          id
+          image ${imageQuery}
+          imageMobile ${imageQuery}
+          title
+          buttonText
+          buttonColour
+          link
+          height
+          shouldAddBorder
+        }
+        
+      }
+    }
+  }`,
+  [GraphQlQueryEnum.AboutPage]: () => `{
+    aboutPage {
+      image ${imageQuery}
+      imageMobile ${imageQuery}
+
+      content {
+        __typename 
+
+        ${reasonsSectionQuery}
+        ${featuredProductsSectionQuery}
+        ${fullWidthBannerSectionQuery}
+        ${textMarqueeSectionQuery}
+        
+        ... on DoubleLinkSectionRecord {
+          id
+          linkBlocks {
+            id
+            image ${imageQuery}
+            lineOne
+            lineTwo
+            link ${productOrCollectionLinkQuery}
+          }
+        }
+        
+        ... on IntroSectionRecord {
+          id
+          description {
+            value
+            inlineBlocks {
+              __typename
+              ... on ImageRecord {
+                id
+                image ${imageQuery}
+              }
+            }
+          }
+          shouldAddPaddingBelow
         }
         
         ${doubleLinkImageSectionQuery}
