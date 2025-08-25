@@ -38,7 +38,7 @@ const ReasonsSection: FC<ReasonsSectionProps> = ({ content }) => {
           <h2 className="heading-2 mb-[88px] text-center">{renderTitleWithIcon(content.title)}</h2>
         )}
         <div
-          className="mx-auto grid w-full max-w-[1052px] justify-between gap-x-10"
+          className="mx-auto grid w-full max-w-[1052px] items-start justify-between gap-x-10"
           style={{
             gridTemplateColumns: `repeat(${content.reasons.length}, minmax(0, 1fr))`,
           }}

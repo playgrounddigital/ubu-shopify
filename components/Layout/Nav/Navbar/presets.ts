@@ -8,7 +8,7 @@ export const navLinks = [
   },
   {
     label: 'Gifts',
-    href: `${SitePages.Shop}?c=gifts`,
+    href: `${SitePages.Collections}/gifts`,
     backgroundColour: 'bg-yellow',
   },
   {
