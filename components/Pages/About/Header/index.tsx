@@ -1,9 +1,9 @@
 import { FC } from 'react'
-import { AboutPageProps } from '~/app/about/content'
+import { AboutPageSectionProps } from '~/app/about/content'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
 import { joinSmartTagsIntoString } from '~/helpers/cms'
 
-const Header: FC<AboutPageProps> = ({ content }) => {
+const Header: FC<AboutPageSectionProps> = ({ content }) => {
   return (
     <section>
       <OptimisedImage
