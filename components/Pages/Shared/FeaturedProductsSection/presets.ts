@@ -7,6 +7,8 @@ export const featuredProductsSliderSettings: Settings = {
   speed: 500,
   swipe: true,
   draggable: true,
+  slidesToScroll: 1,
+  slidesToShow: 4,
   responsive: [
     {
       breakpoint: 9999,
