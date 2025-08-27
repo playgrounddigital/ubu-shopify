@@ -54,12 +54,12 @@ const ProductImageGallery: FC<ProductImageGalleryProps> = ({ product }) => {
 
       {/* Main slider */}
       <div className="flex w-full max-w-[630px] flex-col">
-        <div className="relative w-full overflow-hidden rounded-[10px] border-2 border-green">
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[10px] border-2 border-green">
           <Slider
             {...productImageGallerySliderSettings}
             ref={sliderRef}
             beforeChange={handleSlideChange}
-            className="h-full w-full"
+            className="h-full w-[630px]"
           >
             {images.map((img, index) => (
               <OptimisedImage
@@ -67,27 +67,29 @@ const ProductImageGallery: FC<ProductImageGalleryProps> = ({ product }) => {
                 src={img.url}
                 alt={product.title}
                 layout="cover"
-                className="h-[700px] w-full"
+                className="aspect-[4/5] w-[630px]"
               />
             ))}
           </Slider>
         </div>
         {/* Bottom slider navigation */}
-        <div className="mt-10 flex gap-x-4">
-          <CircleButton
-            isFlipped
-            disabled={currentSlide === 0}
-            ariaLabel="Previous image"
-            variant="white-black"
-            onClick={() => handlePrev()}
-          />
-          <CircleButton
-            disabled={currentSlide === images.length - 1}
-            ariaLabel="Next image"
-            variant="white-black"
-            onClick={() => handleNext()}
-          />
-        </div>
+        {images.length > 1 && (
+          <div className="mt-10 flex gap-x-4">
+            <CircleButton
+              isFlipped
+              disabled={currentSlide === 0}
+              ariaLabel="Previous image"
+              variant="white-black"
+              onClick={() => handlePrev()}
+            />
+            <CircleButton
+              disabled={currentSlide === images.length - 1}
+              ariaLabel="Next image"
+              variant="white-black"
+              onClick={() => handleNext()}
+            />
+          </div>
+        )}
       </div>
     </div>
   )
