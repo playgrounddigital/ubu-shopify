@@ -3,12 +3,14 @@ import { FC } from 'react'
 import CircleButton from '~/components/Layout/Button/Circle'
 import Container from '~/components/Layout/Container'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
+import PageLink from '~/components/Layout/PageLink'
 import { joinSmartTagsIntoString } from '~/helpers/cms'
 import LinkOneLineOneRectangle from '~/public/img/home/double-link-section/link-one-line-one-rectangle.svg'
 import LinkOneLineTwoRectangle from '~/public/img/home/double-link-section/link-one-line-two-rectangle.svg'
 import LinkTwoLineOneRectangle from '~/public/img/home/double-link-section/link-two-line-one-rectangle.svg'
 import LinkTwoLineTwoRectangle from '~/public/img/home/double-link-section/link-two-line-two-rectangle.svg'
 import { DoubleLinkSectionRecord } from '~/types/cms/pages/home'
+import { SitePages } from '~/types/pages'
 
 const rectangleClassNames = {
   0: {
@@ -32,6 +34,18 @@ const DoubleLinkSection: FC<DoubleLinkSectionProps> = ({ content }) => {
         {content.linkBlocks.map((linkBlock, i) => {
           const LineOneRectangle = i === 0 ? LinkOneLineOneRectangle : LinkTwoLineOneRectangle
           const LineTwoRectangle = i === 0 ? LinkOneLineTwoRectangle : LinkTwoLineTwoRectangle
+          const link = (() => {
+            if (!linkBlock.link) {
+              return SitePages.Shop
+            }
+            if (linkBlock.link.collection) {
+              return `${SitePages.Collections}/${linkBlock.link.collection.handle}`
+            }
+            if (linkBlock.link.product) {
+              return `${SitePages.Products}/${linkBlock.link.product.product.handle}`
+            }
+          })()
+
           return (
             <div
               key={linkBlock.id}
@@ -61,10 +75,12 @@ const DoubleLinkSection: FC<DoubleLinkSectionProps> = ({ content }) => {
                 </div>
 
                 {/* RIGHT SIDE */}
-                <CircleButton
-                  ariaLabel="Open link"
-                  variant={i === 0 ? 'white-black' : 'black-green'}
-                />
+                <PageLink href={link}>
+                  <CircleButton
+                    ariaLabel="Open link"
+                    variant={i === 0 ? 'white-black' : 'black-green'}
+                  />
+                </PageLink>
               </div>
             </div>
           )

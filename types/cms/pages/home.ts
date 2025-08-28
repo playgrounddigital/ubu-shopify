@@ -59,6 +59,7 @@ export interface DatoCMSShopifyProduct {
     }
     productId: string
     imageUrl: string
+    handle: string
   }
 }
 
@@ -71,7 +72,10 @@ export interface FullWidthBannerSectionRecord {
   titleColour: 'black' | 'white'
   buttonText: string
   buttonColour: 'pink' | 'yellow' | 'blue' | 'green'
-  link: string
+  link?: {
+    collection?: DatoCMSShopifyCollection
+    product?: DatoCMSShopifyProduct['product']
+  }
   height: 'md' | 'lg'
   shouldAddBorder: boolean
 }
@@ -94,7 +98,7 @@ interface LinkBlockWithImage {
   image: Image
   lineOne: string
   lineTwo: string
-  link: {
+  link?: {
     collection?: DatoCMSShopifyCollection
     product?: DatoCMSShopifyProduct
   }

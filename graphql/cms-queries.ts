@@ -137,7 +137,7 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
           title
           buttonText
           buttonColour
-          link
+          link ${productOrCollectionLinkQuery}
           height
           shouldAddBorder
         }

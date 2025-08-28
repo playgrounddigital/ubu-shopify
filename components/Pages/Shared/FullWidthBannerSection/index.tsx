@@ -3,13 +3,27 @@ import { FC } from 'react'
 import Button from '~/components/Layout/Button'
 import Container from '~/components/Layout/Container'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
+import PageLink from '~/components/Layout/PageLink'
 import { FullWidthBannerSectionRecord } from '~/types/cms/pages/home'
+import { SitePages } from '~/types/pages'
 
 interface FullWidthBannerSectionProps {
   content: FullWidthBannerSectionRecord
 }
 
 const FullWidthBannerSection: FC<FullWidthBannerSectionProps> = ({ content }) => {
+  const link = (() => {
+    if (!content.link) {
+      return SitePages.Shop
+    }
+    if (content.link.collection) {
+      return `${SitePages.Collections}/${content.link.collection.handle}`
+    }
+    if (content.link.product) {
+      return `${SitePages.Products}/${content.link.product.handle}`
+    }
+  })()
+
   return (
     <section
       className={cx('relative', {
@@ -45,23 +59,25 @@ const FullWidthBannerSection: FC<FullWidthBannerSectionProps> = ({ content }) =>
           >
             {content.title}
           </h2>
-          <Button
-            size="md"
-            variant={(() => {
-              switch (content.buttonColour) {
-                case 'green':
-                  return 'black-green'
-                case 'blue':
-                  return 'black-blue'
-                case 'pink':
-                  return 'black-pink'
-                case 'yellow':
-                  return 'black-yellow'
-              }
-            })()}
-          >
-            {content.buttonText}
-          </Button>
+          <PageLink href={link}>
+            <Button
+              size="md"
+              variant={(() => {
+                switch (content.buttonColour) {
+                  case 'green':
+                    return 'black-green'
+                  case 'blue':
+                    return 'black-blue'
+                  case 'pink':
+                    return 'black-pink'
+                  case 'yellow':
+                    return 'black-yellow'
+                }
+              })()}
+            >
+              {content.buttonText}
+            </Button>
+          </PageLink>
         </div>
       </Container>
     </section>
