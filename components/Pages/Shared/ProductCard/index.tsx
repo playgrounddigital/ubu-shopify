@@ -17,6 +17,15 @@ const ProductCard: FC<ProductCardProps> = ({ product, className }) => {
   const variant = product.variants[0]
   const productPrice = variant?.priceV2.amount
   const variantTitle = variant?.title
+  const colorMetafield = product.metafields[0]?.references[0]?.fields.find((field) => field.key === 'label')?.value
+
+  const secondaryTitleToUse = (() => {
+    if (variantTitle === 'Default Title' && colorMetafield) {
+      return colorMetafield
+    }
+    return variantTitle
+  })()
+
   return (
     <div className={cx('group/card relative min-w-[305px]', className)}>
       {/* IMAGE AND CART BUTTON */}
@@ -67,7 +76,7 @@ const ProductCard: FC<ProductCardProps> = ({ product, className }) => {
         <span className="translate-y-0.5 text-lg leading-[21.6px] -tracking-[0.54px]">${productPrice}</span>
       </div>
       {/* PRICE */}
-      <span className="text-[17px] leading-5 -tracking-[0.51px] text-grey">{variantTitle}</span>
+      <span className="text-[17px] leading-5 -tracking-[0.51px] text-grey">{secondaryTitleToUse}</span>
     </div>
   )
 }

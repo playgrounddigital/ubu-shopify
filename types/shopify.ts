@@ -18,6 +18,28 @@ export type Collection = {
   image?: Image | null
 }
 
+export type MetaobjectField = {
+  key: string
+  value: string
+  type: string
+}
+
+export type Metaobject = {
+  id: string
+  type: string
+  handle: string
+  fields: MetaobjectField[]
+}
+
+export type Metafield = {
+  id: string
+  namespace: string
+  key: string
+  value: string
+  type: string
+  references?: Metaobject[]
+}
+
 export type Product = {
   id: string
   title: string
@@ -29,6 +51,7 @@ export type Product = {
   }
   images: Image[]
   variants: ProductVariant[]
+  metafields: Metafield[]
 }
 
 export type CheckoutLineItem = {

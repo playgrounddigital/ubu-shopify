@@ -9,6 +9,7 @@ import {
   CustomerAccessToken,
   CustomerWithOrders,
   Image,
+  Metafield,
   Order,
   Product,
   ProductVariant,
@@ -59,6 +60,59 @@ const PRODUCT_SELECTION = `
 		}
 	}
 `
+
+// Helper function to generate metafields selection with specific identifiers
+function getMetafieldsSelection(identifiers: { namespace: string; key: string }[]) {
+  if (!identifiers.length) return ''
+  return `
+	metafields(identifiers: [${identifiers.map((id) => `{namespace: "${id.namespace}", key: "${id.key}"}`).join(', ')}]) {
+		id
+		namespace
+		key
+		value
+		type
+	}
+  `
+}
+
+// Helper function to generate color metafield selection with metaobject references
+function getColorMetafieldSelection() {
+  return `
+	colorMetafield: metafield(namespace: "shopify", key: "color-pattern") {
+		id
+		namespace
+		key
+		value
+		type
+		references(first: 10) {
+			edges {
+				node {
+					... on Metaobject {
+						id
+						type
+						handle
+						fields {
+							key
+							value
+							type
+						}
+					}
+				}
+			}
+		}
+	}
+  `
+}
+
+// Product selection with metafields support
+// function getProductSelectionWithMetafields(metafieldIdentifiers: { namespace: string; key: string }[] = []) {
+//   return PRODUCT_SELECTION + getMetafieldsSelection(metafieldIdentifiers)
+// }
+
+// Product selection with color metafields
+function getProductSelectionWithColorMetafields() {
+  return PRODUCT_SELECTION + getColorMetafieldSelection()
+}
 
 const CART_SELECTION = `
 	id
@@ -272,6 +326,42 @@ function mapProduct(node: any): Product {
     compareAtPriceV2: e.node.compareAtPriceV2 ?? null,
     image: e.node.image ?? null,
   }))
+
+  // Handle metafields - they're returned as a direct array, not edges/node structure
+  let metafields: Metafield[] = (node.metafields ?? []).map((metafield: any) => ({
+    id: metafield.id,
+    namespace: metafield.namespace,
+    key: metafield.key,
+    value: metafield.value,
+    type: metafield.type,
+  }))
+
+  // Handle color metafield with metaobject references
+  if (node.colorMetafield) {
+    const references = (node.colorMetafield.references?.edges ?? []).map((edge: any) => {
+      const metaobject = edge.node
+      return {
+        id: metaobject.id,
+        type: metaobject.type,
+        handle: metaobject.handle,
+        fields: (metaobject.fields ?? []).map((field: any) => ({
+          key: field.key,
+          value: field.value,
+          type: field.type,
+        })),
+      }
+    })
+
+    metafields.push({
+      id: node.colorMetafield.id,
+      namespace: node.colorMetafield.namespace,
+      key: node.colorMetafield.key,
+      value: node.colorMetafield.value,
+      type: node.colorMetafield.type,
+      references,
+    })
+  }
+
   return {
     id: node.id,
     title: node.title,
@@ -280,6 +370,7 @@ function mapProduct(node: any): Product {
     priceRange: node.priceRange,
     images,
     variants,
+    metafields,
   }
 }
 
@@ -336,66 +427,6 @@ export async function getAllCollections(): Promise<Collection[]> {
   }
 
   return results
-}
-
-export async function getAllProducts(): Promise<Product[]> {
-  const results: Product[] = []
-  let after: string | null = null
-  const pageSize = 250
-
-  while (true) {
-    const data = await client.request<{
-      products: { edges: { cursor: string; node: any }[]; pageInfo: { hasNextPage: boolean; endCursor: string | null } }
-    }>(PRODUCTS_QUERY, { first: pageSize, after })
-
-    for (const edge of data.products.edges) results.push(mapProduct(edge.node))
-
-    if (data.products.pageInfo.hasNextPage && data.products.pageInfo.endCursor) {
-      after = data.products.pageInfo.endCursor
-      continue
-    }
-    break
-  }
-
-  return results
-}
-
-export async function getProductsByCollectionHandle(handle: string): Promise<Product[]> {
-  const results: Product[] = []
-  let after: string | null = null
-  const pageSize = 250
-
-  while (true) {
-    const data = await client.request<{
-      collection: {
-        id: string
-        title: string
-        handle: string
-        products: {
-          edges: { cursor: string; node: any }[]
-          pageInfo: { hasNextPage: boolean; endCursor: string | null }
-        }
-      } | null
-    }>(COLLECTION_PRODUCTS_QUERY, { handle, first: pageSize, after })
-
-    if (!data.collection) return results
-
-    for (const edge of data.collection.products.edges) results.push(mapProduct(edge.node))
-
-    if (data.collection.products.pageInfo.hasNextPage && data.collection.products.pageInfo.endCursor) {
-      after = data.collection.products.pageInfo.endCursor
-      continue
-    }
-    break
-  }
-
-  return results
-}
-
-export async function getProductByHandle(handle: string): Promise<Product | null> {
-  const data = await client.request<{ productByHandle: any | null }>(PRODUCT_BY_HANDLE_QUERY, { handle })
-  if (!data.productByHandle) return null
-  return mapProduct(data.productByHandle)
 }
 
 export async function getCollectionByHandle(handle: string): Promise<Collection | null> {
@@ -555,3 +586,187 @@ export async function resetCustomerPasswordByUrl(resetUrl: string, password: str
   if (!customerAccessToken) throw new Error('Unable to reset password. The link may be invalid or expired.')
   return { accessToken: customerAccessToken.accessToken, expiresAt: customerAccessToken.expiresAt }
 }
+
+// ===== Metafields Support =====
+
+export async function getProductByHandle(handle: string): Promise<Product | null> {
+  const PRODUCT_BY_HANDLE_WITH_METAFIELDS_QUERY = gql`
+    query ProductByHandleWithMetafields($handle: String!) {
+      productByHandle(handle: $handle) { ${getProductSelectionWithColorMetafields()} }
+    }
+  `
+  const data = await client.request<{ productByHandle: any | null }>(PRODUCT_BY_HANDLE_WITH_METAFIELDS_QUERY, {
+    handle,
+  })
+  if (!data.productByHandle) return null
+  return mapProduct(data.productByHandle)
+}
+
+export async function getAllProducts(): Promise<Product[]> {
+  const results: Product[] = []
+  let after: string | null = null
+  const pageSize = 250
+
+  const PRODUCTS_WITH_METAFIELDS_QUERY = gql`
+    query ProductsWithMetafields($first: Int!, $after: String) {
+      products(first: $first, after: $after) {
+        edges { cursor node { ${getProductSelectionWithColorMetafields()} } }
+        pageInfo { hasNextPage endCursor }
+      }
+    }
+  `
+
+  while (true) {
+    const data = await client.request<{
+      products: { edges: { cursor: string; node: any }[]; pageInfo: { hasNextPage: boolean; endCursor: string | null } }
+    }>(PRODUCTS_WITH_METAFIELDS_QUERY, { first: pageSize, after })
+
+    for (const edge of data.products.edges) results.push(mapProduct(edge.node))
+
+    if (data.products.pageInfo.hasNextPage && data.products.pageInfo.endCursor) {
+      after = data.products.pageInfo.endCursor
+      continue
+    }
+    break
+  }
+
+  return results
+}
+
+export async function getProductsByCollectionHandle(handle: string): Promise<Product[]> {
+  const results: Product[] = []
+  let after: string | null = null
+  const pageSize = 250
+
+  const COLLECTION_PRODUCTS_WITH_METAFIELDS_QUERY = gql`
+    query CollectionProductsWithMetafields($handle: String!, $first: Int!, $after: String) {
+      collection(handle: $handle) {
+        id
+        title
+        handle
+        products(first: $first, after: $after) {
+          edges { cursor node { ${getProductSelectionWithColorMetafields()} } }
+          pageInfo { hasNextPage endCursor }
+        }
+      }
+    }
+  `
+
+  while (true) {
+    const data = await client.request<{
+      collection: {
+        id: string
+        title: string
+        handle: string
+        products: {
+          edges: { cursor: string; node: any }[]
+          pageInfo: { hasNextPage: boolean; endCursor: string | null }
+        }
+      } | null
+    }>(COLLECTION_PRODUCTS_WITH_METAFIELDS_QUERY, { handle, first: pageSize, after })
+
+    if (!data.collection) return results
+
+    for (const edge of data.collection.products.edges) results.push(mapProduct(edge.node))
+
+    if (data.collection.products.pageInfo.hasNextPage && data.collection.products.pageInfo.endCursor) {
+      after = data.collection.products.pageInfo.endCursor
+      continue
+    }
+    break
+  }
+
+  return results
+}
+
+// ===== Color Metafields Support =====
+
+// export async function getProductByHandle(handle: string): Promise<Product | null> {
+//   const PRODUCT_BY_HANDLE_WITH_COLOR_METAFIELDS_QUERY = gql`
+//     query ProductByHandleWithColorMetafields($handle: String!) {
+//       productByHandle(handle: $handle) { ${getProductSelectionWithColorMetafields()} }
+//     }
+//   `
+//   const data = await client.request<{ productByHandle: any | null }>(PRODUCT_BY_HANDLE_WITH_COLOR_METAFIELDS_QUERY, {
+//     handle,
+//   })
+//   if (!data.productByHandle) return null
+//   return mapProduct(data.productByHandle)
+// }
+
+export async function getAllProductsWithColorMetafields(): Promise<Product[]> {
+  const results: Product[] = []
+  let after: string | null = null
+  const pageSize = 250
+
+  const PRODUCTS_WITH_COLOR_METAFIELDS_QUERY = gql`
+    query ProductsWithColorMetafields($first: Int!, $after: String) {
+      products(first: $first, after: $after) {
+        edges { cursor node { ${getProductSelectionWithColorMetafields()} } }
+        pageInfo { hasNextPage endCursor }
+      }
+    }
+  `
+
+  while (true) {
+    const data = await client.request<{
+      products: { edges: { cursor: string; node: any }[]; pageInfo: { hasNextPage: boolean; endCursor: string | null } }
+    }>(PRODUCTS_WITH_COLOR_METAFIELDS_QUERY, { first: pageSize, after })
+
+    for (const edge of data.products.edges) results.push(mapProduct(edge.node))
+
+    if (data.products.pageInfo.hasNextPage && data.products.pageInfo.endCursor) {
+      after = data.products.pageInfo.endCursor
+      continue
+    }
+    break
+  }
+
+  return results
+}
+
+// export async function getProductsByCollectionHandle(handle: string): Promise<Product[]> {
+//   const results: Product[] = []
+//   let after: string | null = null
+//   const pageSize = 250
+
+//   const COLLECTION_PRODUCTS_WITH_COLOR_METAFIELDS_QUERY = gql`
+//     query CollectionProductsWithColorMetafields($handle: String!, $first: Int!, $after: String) {
+//       collection(handle: $handle) {
+//         id
+//         title
+//         handle
+//         products(first: $first, after: $after) {
+//           edges { cursor node { ${getProductSelectionWithColorMetafields()} } }
+//           pageInfo { hasNextPage endCursor }
+//         }
+//       }
+//     }
+//   `
+
+//   while (true) {
+//     const data = await client.request<{
+//       collection: {
+//         id: string
+//         title: string
+//         handle: string
+//         products: {
+//           edges: { cursor: string; node: any }[]
+//           pageInfo: { hasNextPage: boolean; endCursor: string | null }
+//         }
+//       } | null
+//     }>(COLLECTION_PRODUCTS_WITH_COLOR_METAFIELDS_QUERY, { handle, first: pageSize, after })
+
+//     if (!data.collection) return results
+
+//     for (const edge of data.collection.products.edges) results.push(mapProduct(edge.node))
+
+//     if (data.collection.products.pageInfo.hasNextPage && data.collection.products.pageInfo.endCursor) {
+//       after = data.collection.products.pageInfo.endCursor
+//       continue
+//     }
+//     break
+//   }
+
+//   return results
+// }

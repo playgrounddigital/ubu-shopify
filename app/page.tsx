@@ -1,7 +1,7 @@
 import HomePage from '~/app/content'
 import { fetchFromDatoAPI, getGraphQLQuery } from '~/helpers/cms'
 import { _generateMetadata, PageProps } from '~/helpers/next'
-import { getAllProducts } from '~/lib/shopify'
+import { getAllProductsWithColorMetafields } from '~/lib/shopify'
 import { HomeContent } from '~/types/cms/pages/home'
 import { GraphQlQueryEnum } from '~/types/graphql'
 
@@ -26,7 +26,7 @@ export default async () => {
   const homePageQuery = getGraphQLQuery(GraphQlQueryEnum.HomePage)
   const { homePage }: { homePage: HomeContent } = await fetchFromDatoAPI(homePageQuery)
 
-  const products = await getAllProducts()
+  const products = await getAllProductsWithColorMetafields()
 
   return (
     <HomePage
