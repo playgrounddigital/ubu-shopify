@@ -37,8 +37,18 @@ const FullWidthBannerSection: FC<FullWidthBannerSectionProps> = ({ content }) =>
         src={content.image.url}
         alt={content.title}
         layout="cover"
-        className="absolute inset-0"
+        className={cx('absolute inset-0', {
+          'hidden lg:block': content.imageMobile?.url,
+        })}
       />
+      {content.imageMobile?.url && (
+        <OptimisedImage
+          src={content.imageMobile.url}
+          alt={content.title}
+          layout="cover"
+          className="absolute inset-0 lg:hidden"
+        />
+      )}
       <Container
         className={cx('z-10 flex items-end pt-10', {
           'pb-10 xl:h-[480px]': content.height === 'md',

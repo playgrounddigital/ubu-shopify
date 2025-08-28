@@ -276,6 +276,12 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
     }
   }`,
 
+  [GraphQlQueryEnum.FreeShippingBanner]: () => `{
+    freeShippingBanner {
+      bannerText
+      freeShippingThreshold
+    }
+  }`,
   [GraphQlQueryEnum.Footer]: () => `{
     footer {
       signUpText

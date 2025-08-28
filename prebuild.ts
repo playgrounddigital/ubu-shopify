@@ -3,6 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import { fetchFromDatoAPI, getGraphQLQuery } from '~/helpers/cms'
 import { Footer } from '~/types/cms/models/footer'
+import { FreeShippingBanner } from '~/types/cms/models/free-shipping-banner'
 import { ShippingReturnsInformationContent } from '~/types/cms/models/shipping-returns-information'
 import { SiteBanner } from '~/types/cms/models/site-banner'
 import { GraphQlQueryEnum } from '~/types/graphql'
@@ -16,21 +17,19 @@ const fetchContent = async () => {
   const siteBannerQuery = getGraphQLQuery(GraphQlQueryEnum.SiteBanner)
   const footerQuery = getGraphQLQuery(GraphQlQueryEnum.Footer)
   const shippingReturnsInformationQuery = getGraphQLQuery(GraphQlQueryEnum.ShippingReturnsInformation)
-  const {
-    siteBanner,
-  }: {
-    siteBanner: SiteBanner
-  } = await fetchFromDatoAPI(siteBannerQuery)
-  const {
-    footer,
-  }: {
-    footer: Footer
-  } = await fetchFromDatoAPI(footerQuery)
-  const {
-    shippingReturnsInformation,
-  }: {
-    shippingReturnsInformation: ShippingReturnsInformationContent
-  } = await fetchFromDatoAPI(shippingReturnsInformationQuery)
+  const freeShippingBannerQuery = getGraphQLQuery(GraphQlQueryEnum.FreeShippingBanner)
+
+  const [{ siteBanner }, { footer }, { shippingReturnsInformation }, { freeShippingBanner }]: [
+    { siteBanner: SiteBanner },
+    { footer: Footer },
+    { shippingReturnsInformation: ShippingReturnsInformationContent },
+    { freeShippingBanner: FreeShippingBanner },
+  ] = await Promise.all([
+    fetchFromDatoAPI(siteBannerQuery),
+    fetchFromDatoAPI(footerQuery),
+    fetchFromDatoAPI(shippingReturnsInformationQuery),
+    fetchFromDatoAPI(freeShippingBannerQuery),
+  ])
 
   const siteBannerJson = JSON.stringify(siteBanner)
   fs.writeFileSync(path.join(publicDir, 'site-banner.json'), siteBannerJson)
@@ -40,6 +39,9 @@ const fetchContent = async () => {
 
   const shippingReturnsInformationJson = JSON.stringify(shippingReturnsInformation)
   fs.writeFileSync(path.join(publicDir, 'shipping-returns-information.json'), shippingReturnsInformationJson)
+
+  const freeShippingBannerJson = JSON.stringify(freeShippingBanner)
+  fs.writeFileSync(path.join(publicDir, 'free-shipping-banner.json'), freeShippingBannerJson)
 }
 
 fetchContent().then(() => process.exit(0))

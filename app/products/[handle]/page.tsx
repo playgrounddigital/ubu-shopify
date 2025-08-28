@@ -3,6 +3,7 @@ import ProductPageContent from '~/app/products/[handle]/content'
 import { fetchFromDatoAPI, getGraphQLQuery } from '~/helpers/cms'
 import { PageProps, _generateMetadata } from '~/helpers/next'
 import { getAllProducts, getProductByHandle } from '~/lib/shopify'
+import { FreeShippingBanner } from '~/types/cms/models/free-shipping-banner'
 import { ProductPageTemplate } from '~/types/cms/models/product-page-template'
 import { GraphQlQueryEnum } from '~/types/graphql'
 
@@ -30,12 +31,17 @@ export default async ({ params }: PageProps) => {
   const { productPageTemplate }: { productPageTemplate: ProductPageTemplate } =
     await fetchFromDatoAPI(productPageTemplateQuery)
 
+  const freeShippingBannerQuery = getGraphQLQuery(GraphQlQueryEnum.FreeShippingBanner)
+  const { freeShippingBanner }: { freeShippingBanner: FreeShippingBanner } =
+    await fetchFromDatoAPI(freeShippingBannerQuery)
+
   const products = await getAllProducts()
 
   return (
     <ProductPageContent
       product={product}
       products={products}
+      freeShippingBanner={freeShippingBanner}
       content={productPageTemplate.content}
     />
   )

@@ -10,5 +10,6 @@ export enum GraphQlQueryEnum {
   AllCollections = 'AllCollections',
 
   ShippingReturnsInformation = 'ShippingReturnsInformation',
+  FreeShippingBanner = 'FreeShippingBanner',
   Footer = 'Footer',
 }

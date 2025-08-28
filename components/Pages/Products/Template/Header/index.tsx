@@ -10,13 +10,15 @@ import { useCart } from '~/context/CartContext'
 import CartIcon from '~/public/img/icons/cart.svg'
 import TruckIcon from '~/public/img/icons/truck.svg'
 import ShippingReturnsInformationJSON from '~/public/shipping-returns-information.json'
+import { FreeShippingBanner } from '~/types/cms/models/free-shipping-banner'
 import { Product } from '~/types/shopify'
 
 interface HeaderProps {
   product: Product
+  freeShippingBanner: FreeShippingBanner
 }
 
-const Header: FC<HeaderProps> = ({ product }) => {
+const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
   const { addToCart, isLoading } = useCart()
   const [quantity, setQuantity] = useState(1)
 
@@ -92,7 +94,7 @@ const Header: FC<HeaderProps> = ({ product }) => {
 
             <div className="flex items-center justify-center gap-x-3 text-sm">
               <TruckIcon className="h-[15px] w-[17px]" />
-              <p>Free Standard Delivery over $99</p>
+              <p>{freeShippingBanner.bannerText}</p>
             </div>
 
             {/* Description */}

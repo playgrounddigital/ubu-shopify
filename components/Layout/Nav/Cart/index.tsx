@@ -4,12 +4,14 @@ import { FC, useMemo } from 'react'
 import Button from '~/components/Layout/Button'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
 import { useCart } from '~/context/CartContext'
+import { formatCurrency } from '~/helpers/formatters'
 import FooterJSON from '~/public/footer.json'
+import FreeShippingBannerJSON from '~/public/free-shipping-banner.json'
 import ChevronLeftIcon from '~/public/img/icons/chevron-left.svg'
 import TruckIcon from '~/public/img/icons/truck.svg'
 import CartItem from './CartItem'
 
-const FREE_SHIPPING_LIMIT = 99
+const FREE_SHIPPING_LIMIT = FreeShippingBannerJSON.freeShippingThreshold
 
 const Cart: FC = () => {
   const { cart, isCartOpen, closeCart, updateCartItemQuantity, isLoading, checkoutUrl } = useCart()
@@ -23,6 +25,16 @@ const Cart: FC = () => {
     const percentValue = Math.min(100, (subtotalValue / FREE_SHIPPING_LIMIT) * 100)
     return { subtotal: subtotalValue, remaining: remainingValue, percent: percentValue }
   }, [cart])
+
+  const freeShippingText = (() => {
+    if (cart?.lineItems?.length === 0) {
+      return FreeShippingBannerJSON.bannerText
+    }
+    if (remaining > 0) {
+      return `${formatCurrency(remaining)} away from free shipping!`
+    }
+    return 'You have free shipping!'
+  })()
 
   const handleDelete = (id: string) => {
     updateCartItemQuantity({ id, quantity: 0 })
@@ -39,8 +51,6 @@ const Cart: FC = () => {
   const handleDecrease = (id: string, quantity: number) => {
     updateCartItemQuantity({ id, quantity: quantity - 1 })
   }
-
-  const formatCurrency = (value: number) => `$${value.toFixed(2)}`
 
   const goToCheckout = () => {
     if (!checkoutUrl) return
@@ -91,9 +101,7 @@ const Cart: FC = () => {
           <div className="mb-12 px-10">
             <div className="mb-3 flex items-center gap-x-3 text-sm">
               <TruckIcon className="h-[15px] w-[17px]" />
-              <p>
-                {remaining > 0 ? `${formatCurrency(remaining)} away from free shipping!` : 'You have free shipping!'}
-              </p>
+              <p>{freeShippingText}</p>
             </div>
             <div className="h-2 w-full rounded-full bg-black/10">
               <div

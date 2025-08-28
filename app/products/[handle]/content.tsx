@@ -5,19 +5,24 @@ import FeaturedProductsSection from '~/components/Pages/Shared/FeaturedProductsS
 import FullWidthBannerSection from '~/components/Pages/Shared/FullWidthBannerSection'
 import ReasonsSection from '~/components/Pages/Shared/ReasonsSection'
 import TextMarqueeSection from '~/components/Pages/Shared/TextMarqueeSection'
+import { FreeShippingBanner } from '~/types/cms/models/free-shipping-banner'
 import { ProductPageTemplate } from '~/types/cms/models/product-page-template'
 import { Product } from '~/types/shopify'
 
 interface ProductPageContentProps {
   product: Product
   products: Product[]
+  freeShippingBanner: FreeShippingBanner
   content: ProductPageTemplate['content']
 }
 
-const ProductPageContent: FC<ProductPageContentProps> = ({ product, products, content }) => {
+const ProductPageContent: FC<ProductPageContentProps> = ({ product, products, freeShippingBanner, content }) => {
   return (
     <>
-      <Header product={product} />
+      <Header
+        product={product}
+        freeShippingBanner={freeShippingBanner}
+      />
       {content.map((section) => {
         switch (section.__typename) {
           case 'ReasonsSectionRecord':
