@@ -1,3 +1,4 @@
+import cx from 'classnames'
 import { FC, useMemo, useRef, useState } from 'react'
 import Slider from 'react-slick'
 import CircleButton from '~/components/Layout/Button/Circle'
@@ -5,11 +6,13 @@ import Container from '~/components/Layout/Container'
 import PageLink from '~/components/Layout/PageLink'
 import { featuredProductsSliderSettings } from '~/components/Pages/Shared/FeaturedProductsSection/presets'
 import ProductCard from '~/components/Pages/Shared/ProductCard'
+import useBreakpoints from '~/hooks/useBreakpoints'
 import { FeaturedProductsSectionRecord } from '~/types/cms/pages/home'
 import { SitePages } from '~/types/pages'
 import { Product } from '~/types/shopify'
 
 const MIN_SLIDES_TO_SHOW = 5
+const MIN_SLIDES_TO_SHOW_MOBILE = 2
 
 interface FeaturedProductsSectionProps {
   products: Product[]
@@ -19,6 +22,7 @@ interface FeaturedProductsSectionProps {
 const FeaturedProductsSection: FC<FeaturedProductsSectionProps> = ({ products, content }) => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const sliderRef = useRef<Slider>(null)
+  const { isDesktop } = useBreakpoints()
   const { products: cmsProducts } = content
 
   const handleNext = () => sliderRef.current?.slickNext()
@@ -27,15 +31,12 @@ const FeaturedProductsSection: FC<FeaturedProductsSectionProps> = ({ products, c
 
   const handleSlideChange = (_: number, nextSlide: number) => setCurrentSlide(nextSlide)
 
-  const productsToShow = useMemo(() => {
-    let _cmsProducts = cmsProducts
-
-    // Make sure there are at least 5 products
-    if (cmsProducts.length < MIN_SLIDES_TO_SHOW) {
-      _cmsProducts = [...cmsProducts, ...cmsProducts, ...cmsProducts, ...cmsProducts, ...cmsProducts]
+  const isNextDisabled = useMemo(() => {
+    if (isDesktop) {
+      return currentSlide === cmsProducts.length - MIN_SLIDES_TO_SHOW + 1
     }
-    return _cmsProducts.slice(0, MIN_SLIDES_TO_SHOW)
-  }, [cmsProducts])
+    return currentSlide === cmsProducts.length - 2
+  }, [currentSlide, cmsProducts.length, isDesktop])
 
   return (
     <section>
@@ -49,7 +50,7 @@ const FeaturedProductsSection: FC<FeaturedProductsSectionProps> = ({ products, c
                 ? `${SitePages.Collections}/${content.collectionLink.handle}`
                 : SitePages.Shop
             }
-            className="uppercase hover:underline"
+            className="whitespace-nowrap uppercase hover:underline"
           >
             View all
           </PageLink>
@@ -58,9 +59,9 @@ const FeaturedProductsSection: FC<FeaturedProductsSectionProps> = ({ products, c
           {...featuredProductsSliderSettings}
           ref={sliderRef}
           beforeChange={handleSlideChange}
-          className="lg:min-w-[calc(100%+40px)]"
+          className="min-w-[calc(100%+24px)] lg:min-w-[calc(100%+40px)]"
         >
-          {productsToShow.map((cmsProduct) => {
+          {cmsProducts.map((cmsProduct) => {
             const shopifyProduct = products.find(
               (p) => p.id === cmsProduct.product.id || p.variants.find((v) => v.id === cmsProduct.product.id)
             )
@@ -76,9 +77,21 @@ const FeaturedProductsSection: FC<FeaturedProductsSectionProps> = ({ products, c
               />
             )
           })}
+          {/* Add an additional slide to make sure the last slide is visible */}
+          {!isDesktop && (
+            <div
+              aria-hidden
+              className="mr-6"
+            />
+          )}
         </Slider>
         {/* Show next and prev buttons */}
-        <div className="mt-[52px] flex gap-x-4">
+        <div
+          className={cx('mt-[52px] flex gap-x-4', {
+            'lg:hidden': cmsProducts.length < MIN_SLIDES_TO_SHOW,
+            '!hidden lg:flex': cmsProducts.length < MIN_SLIDES_TO_SHOW_MOBILE && !isDesktop,
+          })}
+        >
           <CircleButton
             isFlipped
             disabled={currentSlide === 0}
@@ -87,7 +100,7 @@ const FeaturedProductsSection: FC<FeaturedProductsSectionProps> = ({ products, c
             onClick={handlePrev}
           />
           <CircleButton
-            disabled={currentSlide === productsToShow.length - MIN_SLIDES_TO_SHOW + 1}
+            disabled={isNextDisabled}
             ariaLabel="Next product"
             variant="white-black"
             onClick={handleNext}

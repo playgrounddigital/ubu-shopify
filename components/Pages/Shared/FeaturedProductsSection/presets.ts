@@ -5,7 +5,6 @@ export const featuredProductsSliderSettings: Settings = {
   dots: false,
   infinite: false,
   speed: 500,
-  swipe: true,
   draggable: true,
   slidesToScroll: 1,
   slidesToShow: 4,
@@ -13,12 +12,17 @@ export const featuredProductsSliderSettings: Settings = {
     {
       breakpoint: 9999,
       settings: {
-        slidesToScroll: 1,
         slidesToShow: 4,
       },
     },
     {
-      breakpoint: 1025,
+      breakpoint: 1279,
+      settings: {
+        slidesToShow: 3,
+      },
+    },
+    {
+      breakpoint: 1023,
       settings: {
         slidesToShow: 3,
         variableWidth: true,

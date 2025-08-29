@@ -4,10 +4,12 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 import Container from '~/components/Layout/Container'
+import HamburgerButton from '~/components/Layout/Nav/Navbar/HamburgerButton'
 import { navLinks } from '~/components/Layout/Nav/Navbar/presets'
 import PageLink from '~/components/Layout/PageLink'
 import { useAuth } from '~/context/AuthContext'
 import { useCart } from '~/context/CartContext'
+import useOpenState from '~/hooks/useOpenState'
 import CartIcon from '~/public/img/icons/cart.svg'
 import SearchIcon from '~/public/img/icons/search.svg'
 import UserIcon from '~/public/img/icons/user.svg'
@@ -19,6 +21,7 @@ import { SitePages } from '~/types/pages'
 const siteBanner = SiteBannerJSON as SiteBanner
 
 const Navbar: FC = () => {
+  const { isOpen: isHamburgerMenuOpen, toggle: toggleHamburgerMenu, close: closeHamburgerMenu } = useOpenState()
   const [hasScrolled, setHasScrolled] = useState(false)
   const { cart, openCart } = useCart()
   const { isAuthenticated } = useAuth()
@@ -40,6 +43,7 @@ const Navbar: FC = () => {
       icon: UserIcon,
       iconClassName: 'w-4 min-w-4 h-4.5',
       link: isAuthenticated ? SitePages.Account : SitePages.SignIn,
+      className: 'lg:block hidden',
     },
     {
       label: 'Cart',
@@ -79,7 +83,7 @@ const Navbar: FC = () => {
       >
         <Container className="grid h-[88px] grid-cols-3">
           {/* Left links */}
-          <div className="inline-flex items-center gap-x-2.5">
+          <div className="hidden items-center gap-x-2.5 lg:inline-flex">
             {navLinks.map((link) => (
               <PageLink
                 key={link.href}
@@ -100,6 +104,12 @@ const Navbar: FC = () => {
             ))}
           </div>
 
+          {/* Hamburger button */}
+          <HamburgerButton
+            isOpen={isHamburgerMenuOpen}
+            onClick={toggleHamburgerMenu}
+          />
+
           {/* Logo */}
           <div className="flex items-center justify-center">
             <Link href={SitePages.Home}>
@@ -109,10 +119,11 @@ const Navbar: FC = () => {
 
           {/* Right side buttons */}
           <div className="flex items-center justify-end gap-x-2.5">
-            {rightSideButtons.map(({ label, icon: Icon, iconClassName, link, onClick, count }) => (
+            {rightSideButtons.map(({ label, icon: Icon, iconClassName, link, onClick, count, className }) => (
               <PageLink
                 key={label}
                 href={link}
+                className={cx(className)}
               >
                 <button
                   key={label}

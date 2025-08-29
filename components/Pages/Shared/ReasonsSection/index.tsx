@@ -3,6 +3,7 @@ import { FC } from 'react'
 import Container from '~/components/Layout/Container'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
 import { joinSmartTagsIntoString } from '~/helpers/cms'
+import useBreakpoints from '~/hooks/useBreakpoints'
 import DefaultReasonIcon from '~/public/img/icons/default-reason.svg'
 import OSquiggleIcon from '~/public/img/icons/o-squiggle.svg'
 import { ReasonsSectionRecord } from '~/types/cms/pages/home'
@@ -12,6 +13,7 @@ interface ReasonsSectionProps {
 }
 
 const ReasonsSection: FC<ReasonsSectionProps> = ({ content }) => {
+  const { isDesktop } = useBreakpoints()
   const renderTitleWithIcon = (title: string) => {
     const lastOIndex = title.lastIndexOf('o')
     if (lastOIndex === -1) {
@@ -35,12 +37,14 @@ const ReasonsSection: FC<ReasonsSectionProps> = ({ content }) => {
     <section>
       <Container className="pt-[90px] pb-20">
         {content.shouldShowTitle && (
-          <h2 className="heading-2 mb-[88px] text-center">{renderTitleWithIcon(content.title)}</h2>
+          <h2 className="heading-2 mx-auto mb-[88px] max-w-[400px] text-center lg:max-w-[unset]">
+            {renderTitleWithIcon(content.title)}
+          </h2>
         )}
         <div
-          className="mx-auto grid w-full max-w-[1052px] items-start justify-between gap-x-10"
+          className="mx-auto grid w-full max-w-[1052px] grid-cols-2 items-start justify-between gap-y-6 lg:gap-x-10"
           style={{
-            gridTemplateColumns: `repeat(${content.reasons.length}, minmax(0, 1fr))`,
+            gridTemplateColumns: isDesktop ? `repeat(${content.reasons.length}, minmax(0, 1fr))` : undefined,
           }}
         >
           {content.reasons.map((reason) => (
@@ -64,7 +68,7 @@ const ReasonsSection: FC<ReasonsSectionProps> = ({ content }) => {
                   <DefaultReasonIcon className="size-full" />
                 )}
               </div>
-              <span className="text-subheading">{reason.title}</span>
+              <span className="text-subheading max-w-[200px] lg:max-w-[unset]">{reason.title}</span>
             </div>
           ))}
         </div>

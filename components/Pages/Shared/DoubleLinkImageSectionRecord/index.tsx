@@ -13,12 +13,15 @@ interface DoubleLinkImageSectionProps {
 const DoubleLinkImageSection: FC<DoubleLinkImageSectionProps> = ({ content }) => {
   return (
     <section>
-      <Container className="grid h-[600px] gap-x-5 gap-y-2 pt-5 lg:grid-cols-2">
+      <Container className="flex flex-col gap-y-2 pt-5 lg:grid lg:h-[600px] lg:grid-cols-2 lg:gap-x-5">
         {/* LINK BLOCk */}
         <div
-          className={cx('relative inline-flex h-full items-end overflow-hidden p-[30px] pl-10', {
-            'order-1': content.shouldSwapOrder,
-          })}
+          className={cx(
+            'relative inline-flex h-[277px] items-end overflow-hidden p-[30px] pl-10 md:h-[480px] lg:h-full',
+            {
+              'order-1': content.shouldSwapOrder,
+            }
+          )}
           style={{
             backgroundColor: content.linkBlock.backgroundColour,
           }}
@@ -50,6 +53,7 @@ const DoubleLinkImageSection: FC<DoubleLinkImageSectionProps> = ({ content }) =>
           src={content.image.url}
           alt={joinSmartTagsIntoString(content.image.smartTags)}
           layout="cover"
+          className="h-[480px] lg:h-full"
         />
       </Container>
     </section>
