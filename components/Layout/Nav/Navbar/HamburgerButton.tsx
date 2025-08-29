@@ -11,7 +11,9 @@ interface HamburgerButtonProps {
 const HamburgerButton: FC<HamburgerButtonProps> = ({ isOpen, onClick }) => (
   <button
     onClick={onClick}
-    className={cx('sharpen-transform relative inline-flex w-[28px] flex-col items-center justify-center gap-y-[7px]')}
+    className={cx(
+      'sharpen-transform relative inline-flex w-[28px] flex-col items-center justify-center gap-y-[7px] lg:hidden'
+    )}
   >
     <span
       className={cx(lineStyles, {
