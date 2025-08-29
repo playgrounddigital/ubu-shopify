@@ -27,12 +27,12 @@ const ProductCard: FC<ProductCardProps> = ({ product, className }) => {
   })()
 
   return (
-    <div className={cx('group/card relative min-w-[305px]', className)}>
+    <div className={cx('group/card relative md:min-w-[305px]', className)}>
       {/* IMAGE AND CART BUTTON */}
       <div className="relative mb-4">
         <PageLink href={`${SitePages.Products}/${product.handle}`}>
           <div
-            className="h-[406px] w-[305px] overflow-hidden rounded-[10px]"
+            className="aspect-[305/406] overflow-hidden rounded-[10px]"
             style={{
               maskImage: 'url(/img/shared/product-card-mask.svg)',
               maskSize: 'cover',
@@ -50,7 +50,7 @@ const ProductCard: FC<ProductCardProps> = ({ product, className }) => {
           </div>
         </PageLink>
         {/* Absolute Add button */}
-        <div className="absolute right-0 bottom-0 flex w-full justify-end p-[11px]">
+        <div className="absolute right-0 bottom-0 flex w-full justify-end p-[6.4px] md:p-[11px]">
           <button
             onClick={() =>
               addToCart({
@@ -63,10 +63,10 @@ const ProductCard: FC<ProductCardProps> = ({ product, className }) => {
                 imageUrl: product.images[0]?.url,
               })
             }
-            className="group/button relative inline-flex h-[34px] w-fit items-center justify-center rounded-full px-4 text-center uppercase"
+            className="group/button relative inline-flex h-[27px] w-fit max-w-[61px] items-center justify-center rounded-full px-3 text-center uppercase md:h-[34px] md:max-w-[unset] md:px-4"
           >
             <span className="absolute inset-0 rounded-full bg-black transition-[filter] group-hover/button:blur-sm" />
-            <span className="relative z-10 text-white">+ ADD</span>
+            <span className="relative z-10 text-xs whitespace-nowrap text-white md:text-base">+ ADD</span>
           </button>
         </div>
       </div>

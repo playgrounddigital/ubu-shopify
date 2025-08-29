@@ -17,7 +17,7 @@ const CircleButton: FC<CircleButtonProps> = ({ variant, ariaLabel, onClick, isFl
       onClick={onClick}
       className={cx(
         BUTTON_COLOURS[variant].button,
-        'group/button relative inline-flex size-[85px] items-center justify-center',
+        'group/button relative inline-flex size-[60px] items-center justify-center md:size-[85px]',
         {
           'pointer-events-none': props.disabled,
         }
@@ -34,7 +34,7 @@ const CircleButton: FC<CircleButtonProps> = ({ variant, ariaLabel, onClick, isFl
         )}
       />
       <ArrowRightIcon
-        className={cx('relative z-10 size-[50px] transition-transform', {
+        className={cx('relative z-10 size-[35px] transition-transform md:size-[50px]', {
           'group-hover/button:translate-x-0.5': !isFlipped,
           'rotate-180 group-hover/button:-translate-x-0.5': isFlipped,
         })}

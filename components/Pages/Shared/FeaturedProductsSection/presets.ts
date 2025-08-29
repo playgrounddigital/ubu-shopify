@@ -28,5 +28,12 @@ export const featuredProductsSliderSettings: Settings = {
         variableWidth: true,
       },
     },
+    {
+      breakpoint: 767,
+      settings: {
+        slidesToShow: 2,
+        variableWidth: true,
+      },
+    },
   ],
 }

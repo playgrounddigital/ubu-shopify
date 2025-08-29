@@ -30,7 +30,11 @@ interface DoubleLinkSectionProps {
 const DoubleLinkSection: FC<DoubleLinkSectionProps> = ({ content }) => {
   return (
     <section>
-      <Container className="flex flex-col gap-y-2 pt-5 lg:grid lg:h-[600px] lg:grid-cols-2 lg:gap-x-5">
+      <Container
+        noPaddingTablet
+        noPaddingMobile
+        className="flex flex-col gap-y-2 pt-5 lg:grid lg:h-[600px] lg:grid-cols-2 lg:gap-x-5"
+      >
         {content.linkBlocks.map((linkBlock, i) => {
           const LineOneRectangle = i === 0 ? LinkOneLineOneRectangle : LinkTwoLineOneRectangle
           const LineTwoRectangle = i === 0 ? LinkOneLineTwoRectangle : LinkTwoLineTwoRectangle

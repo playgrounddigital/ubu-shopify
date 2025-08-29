@@ -24,7 +24,7 @@ const Header: FC<HomePageSectionProps> = ({ content }) => {
               className="h-svh w-full xl:aspect-video xl:h-auto"
             />
             {/* Text overlay on top */}
-            <Container className="!absolute bottom-0 left-1/2 flex -translate-x-1/2 justify-end pb-6">
+            <Container className="!absolute bottom-0 left-1/2 flex -translate-x-1/2 justify-end pb-22 md:pb-6">
               <div className="relative pt-2 pr-3.5 pb-3.5 pl-[31px]">
                 <p className="text-subheading relative z-10 max-w-[259px] text-white">{slide.description}</p>
                 <RectangleBackground className="absolute inset-0" />

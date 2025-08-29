@@ -47,13 +47,13 @@ button:not(:disabled),
     @apply text-[270px] leading-[243px] font-extrabold -tracking-[5.4px];
   }
   .heading-2 {
-    @apply text-[84px] leading-[75.6px] font-extrabold -tracking-[4.2px];
+    @apply text-[52px] leading-[47px] font-extrabold -tracking-[2.6px] md:text-[84px] md:leading-[75.6px] md:-tracking-[4.2px];
   }
   .heading-3 {
-    @apply text-[76px] leading-[68.4px] font-semibold -tracking-[4.56px];
+    @apply text-[50px] leading-[45px] font-semibold -tracking-[3px] md:text-[76px] md:leading-[68.4px] md:-tracking-[4.56px];
   }
   .text-subheading {
-    @apply text-2xl leading-7 font-semibold -tracking-[0.72px];
+    @apply font-semibold -tracking-[0.48px] md:text-2xl md:leading-7 md:-tracking-[0.72px];
   }
   .text-collection-title {
     @apply text-[100px] leading-[90px] font-extrabold -tracking-[2px];
@@ -62,7 +62,7 @@ button:not(:disabled),
     @apply text-xl leading-7 font-bold -tracking-[0.78px];
   }
   .text-introduction {
-    @apply text-[35px] leading-[42px] font-semibold -tracking-[1.05px];
+    @apply font-semibold -tracking-[0.48px] md:text-[35px] md:leading-[42px] md:-tracking-[1.05px];
   }
   .body-large {
     @apply text-xl leading-7 font-normal -tracking-[0.6px];

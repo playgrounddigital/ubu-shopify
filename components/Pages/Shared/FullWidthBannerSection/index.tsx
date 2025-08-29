@@ -4,6 +4,7 @@ import Button from '~/components/Layout/Button'
 import Container from '~/components/Layout/Container'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
 import PageLink from '~/components/Layout/PageLink'
+import useBreakpoints from '~/hooks/useBreakpoints'
 import { FullWidthBannerSectionRecord } from '~/types/cms/pages/home'
 import { SitePages } from '~/types/pages'
 
@@ -12,6 +13,7 @@ interface FullWidthBannerSectionProps {
 }
 
 const FullWidthBannerSection: FC<FullWidthBannerSectionProps> = ({ content }) => {
+  const { isMobile } = useBreakpoints()
   const link = (() => {
     if (!content.link) {
       return SitePages.Shop
@@ -50,8 +52,8 @@ const FullWidthBannerSection: FC<FullWidthBannerSectionProps> = ({ content }) =>
         />
       )}
       <Container
-        className={cx('z-10 flex items-end pt-10', {
-          'pb-10 xl:h-[480px]': content.height === 'md',
+        className={cx('z-10 flex items-end', {
+          'pt-[50px] pb-[306px] lg:pt-[70px] lg:pb-10 xl:h-[480px]': content.height === 'md',
           'pb-[150px] xl:h-[600px]': content.height === 'lg',
         })}
       >
@@ -71,7 +73,7 @@ const FullWidthBannerSection: FC<FullWidthBannerSectionProps> = ({ content }) =>
           </h2>
           <PageLink href={link}>
             <Button
-              size="md"
+              size={isMobile ? 'sm' : 'md'}
               variant={(() => {
                 switch (content.buttonColour) {
                   case 'green':

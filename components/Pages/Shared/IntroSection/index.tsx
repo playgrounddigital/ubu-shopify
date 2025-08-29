@@ -13,7 +13,7 @@ const IntroSection: FC<IntroSectionProps> = ({ content }) => {
     <section className="bg-black">
       <Container
         className={cx('flex items-end', {
-          'pt-[272px] pb-4.5': !content.shouldAddPaddingBelow,
+          'pt-12 pb-4.5 md:pt-[272px]': !content.shouldAddPaddingBelow,
           'py-[220px] lg:!px-20': content.shouldAddPaddingBelow,
         })}
       >

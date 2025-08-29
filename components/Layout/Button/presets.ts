@@ -3,10 +3,10 @@ export type ButtonSize = 'sm' | 'md'
 export type ButtonColours = 'white-black' | 'black-green' | 'black-pink' | 'black-yellow' | 'black-blue'
 
 export const defaultButtonClasses =
-  'group relative font-mono flex select-none items-center justify-between gap-x-2 overflow-hidden border text-[9.5px] leading-4 tracking-[0.765px] uppercase font-normal transition-all'
+  'group relative font-mono flex select-none items-center justify-between gap-x-2 overflow-hidden border uppercase font-normal transition-all'
 
 export const BUTTON_SIZE: Record<ButtonSize, string> = {
-  sm: 'h-[34px] px-4',
+  sm: 'h-[34px] px-4 text-base tracking-[0.1px]',
   md: 'h-[58px] px-[27px] text-[23px] leading-[45.5px]',
 }
 

@@ -11,13 +11,13 @@ const TextMarqueeSection: FC<TextMarqueeSectionProps> = ({ content }) => {
     <section className="bg-black">
       <Marquee
         speed={100}
-        className="h-[240px] overflow-hidden"
+        className="h-[78px] overflow-hidden md:h-[240px]"
       >
         {[...Array(10)].map((_, index) => (
           <span
             key={index}
             style={{ color: content.textColour }}
-            className="heading-1 inline-block -translate-y-6"
+            className="md:heading-1 inline-block text-[87px] leading-[78px] font-extrabold -tracking-[1.74px] md:-translate-y-6"
           >
             {content.marqueeText}
           </span>

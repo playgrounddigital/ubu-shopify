@@ -69,7 +69,7 @@ const Navbar: FC = () => {
   return (
     <header className="fixed top-0 left-0 z-50 w-full">
       {siteBanner.isBannerActive && (
-        <div className="flex h-[38px] items-center justify-center bg-black text-center text-white">
+        <div className="flex h-[34px] items-center justify-center bg-black text-center text-white md:h-[38px]">
           <Container>
             <p>{siteBanner.bannerText}</p>
           </Container>
@@ -81,7 +81,7 @@ const Navbar: FC = () => {
           'bg-white xl:bg-transparent': !hasScrolled && isOnHomePage,
         })}
       >
-        <Container className="grid h-[88px] grid-cols-3">
+        <Container className="grid h-[51px] grid-cols-3 md:h-[88px]">
           {/* Left links */}
           <div className="hidden items-center gap-x-2.5 lg:inline-flex">
             {navLinks.map((link) => (
@@ -113,12 +113,12 @@ const Navbar: FC = () => {
           {/* Logo */}
           <div className="flex items-center justify-center">
             <Link href={SitePages.Home}>
-              <UBULogo className="h-[61px] w-[202px]" />
+              <UBULogo className="h-[31px] w-[101px] md:h-[61px] md:w-[202px]" />
             </Link>
           </div>
 
           {/* Right side buttons */}
-          <div className="flex items-center justify-end gap-x-2.5">
+          <div className="flex items-center justify-end gap-x-[7px] md:gap-x-2.5">
             {rightSideButtons.map(({ label, icon: Icon, iconClassName, link, onClick, count, className }) => (
               <PageLink
                 key={label}
@@ -129,15 +129,16 @@ const Navbar: FC = () => {
                   key={label}
                   aria-label={label}
                   onClick={onClick}
-                  className="group relative inline-flex h-[34px] items-center justify-center rounded-full px-4"
+                  className="group relative inline-flex h-[34px] max-w-[44px] items-center justify-center rounded-full px-4 md:max-w-[50px]"
                 >
                   <span
                     className={cx('absolute inset-0 rounded-full bg-green transition-[filter] group-hover:blur-sm')}
                   />
                   <Icon className={cx('relative z-10', iconClassName)} />
                   <span
+                    aria-hidden={!count}
                     className={cx(
-                      'absolute -top-[11px] -right-2 flex size-[23px] items-center justify-center rounded-full bg-black text-[13px] leading-[22.7px] font-medium text-white uppercase transition-opacity',
+                      'absolute -top-[7px] -right-2 flex size-[23px] items-center justify-center rounded-full bg-black text-[13px] leading-[22.7px] font-medium text-white uppercase transition-opacity md:-top-[11px]',
                       {
                         'opacity-0': !count,
                       }

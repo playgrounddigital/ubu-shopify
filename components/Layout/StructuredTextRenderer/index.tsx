@@ -113,7 +113,7 @@ const StructuredTextRenderer: FC<StructuredTextRendererProps> = ({ data, paragra
             <img
               src={record.image.url}
               alt={record.image.alt || joinSmartTagsIntoString(record.image.smartTags)}
-              className="mr-2 inline-block h-9 w-[117px]"
+              className="mr-0.5 inline-block h-[15px] w-[50px] md:mr-2 md:h-9 md:w-[117px]"
             />
           )
         default:

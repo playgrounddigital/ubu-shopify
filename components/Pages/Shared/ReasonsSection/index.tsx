@@ -27,7 +27,7 @@ const ReasonsSection: FC<ReasonsSectionProps> = ({ content }) => {
     return (
       <>
         {beforeO}
-        <OSquiggleIcon className="inline h-[57px] w-[47px] text-green" />
+        <OSquiggleIcon className="inline h-[36px] w-[29px] text-green md:h-[57px] md:w-[47px]" />
         {afterO}
       </>
     )
@@ -35,9 +35,9 @@ const ReasonsSection: FC<ReasonsSectionProps> = ({ content }) => {
 
   return (
     <section>
-      <Container className="pt-[90px] pb-20">
+      <Container className="pt-12 pb-20 md:pt-[90px]">
         {content.shouldShowTitle && (
-          <h2 className="heading-2 mx-auto mb-[88px] max-w-[400px] text-center lg:max-w-[unset]">
+          <h2 className="heading-2 mx-auto mb-[50px] max-w-[257px] text-center md:mb-[88px] md:max-w-[400px] lg:max-w-[unset]">
             {renderTitleWithIcon(content.title)}
           </h2>
         )}
@@ -68,7 +68,7 @@ const ReasonsSection: FC<ReasonsSectionProps> = ({ content }) => {
                   <DefaultReasonIcon className="size-full" />
                 )}
               </div>
-              <span className="text-subheading max-w-[200px] lg:max-w-[unset]">{reason.title}</span>
+              <span className="text-subheading max-w-[150px] md:max-w-[200px] lg:max-w-[unset]">{reason.title}</span>
             </div>
           ))}
         </div>

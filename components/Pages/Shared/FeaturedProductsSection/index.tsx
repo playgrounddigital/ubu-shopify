@@ -22,7 +22,7 @@ interface FeaturedProductsSectionProps {
 const FeaturedProductsSection: FC<FeaturedProductsSectionProps> = ({ products, content }) => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const sliderRef = useRef<Slider>(null)
-  const { isDesktop } = useBreakpoints()
+  const { isMobile, isDesktop } = useBreakpoints()
   const { products: cmsProducts } = content
 
   const handleNext = () => sliderRef.current?.slickNext()
@@ -35,13 +35,16 @@ const FeaturedProductsSection: FC<FeaturedProductsSectionProps> = ({ products, c
     if (isDesktop) {
       return currentSlide === cmsProducts.length - MIN_SLIDES_TO_SHOW + 1
     }
+    if (isMobile) {
+      return currentSlide === cmsProducts.length - 1
+    }
     return currentSlide === cmsProducts.length - 2
   }, [currentSlide, cmsProducts.length, isDesktop])
 
   return (
     <section>
       <Container className="pt-[88px] pb-20">
-        <div className="mb-[52px] flex items-end justify-between">
+        <div className="mb-[52px] flex flex-col gap-y-4 md:flex-row md:items-end md:justify-between md:gap-x-9">
           <h2 className="heading-2">{content.title}</h2>
 
           <PageLink
@@ -73,21 +76,29 @@ const FeaturedProductsSection: FC<FeaturedProductsSectionProps> = ({ products, c
               <ProductCard
                 key={cmsProduct.product.id}
                 product={shopifyProduct}
-                className="mr-6 xl:mr-10"
+                className="mr-2 min-w-[225px] md:mr-6 md:min-w-[305px] xl:mr-10"
               />
             )
           })}
           {/* Add an additional slide to make sure the last slide is visible */}
           {!isDesktop && (
-            <div
-              aria-hidden
-              className="mr-6"
-            />
+            <>
+              <div
+                aria-hidden
+                className="mr-2 md:mr-6"
+              />
+              {isMobile && (
+                <div
+                  aria-hidden
+                  className="mr-2 md:mr-6"
+                />
+              )}
+            </>
           )}
         </Slider>
         {/* Show next and prev buttons */}
         <div
-          className={cx('mt-[52px] flex gap-x-4', {
+          className={cx('mt-[34px] flex gap-x-4 md:mt-[52px]', {
             'lg:hidden': cmsProducts.length < MIN_SLIDES_TO_SHOW,
             '!hidden lg:flex': cmsProducts.length < MIN_SLIDES_TO_SHOW_MOBILE && !isDesktop,
           })}

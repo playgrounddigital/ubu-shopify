@@ -8,6 +8,7 @@ import Container from '~/components/Layout/Container'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
 import OutgoingLink from '~/components/Layout/OutgoingLink'
 import { isProduction } from '~/constants/environment'
+import useBreakpoints from '~/hooks/useBreakpoints'
 import FooterJSON from '~/public/footer.json'
 
 const FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID
@@ -23,6 +24,8 @@ const Footer: FC = () => {
   const [state, handleSubmit] = useForm(FORM_ID)
   const [email, setEmail] = useState('')
   const recaptchaRef = useRef<ReCAPTCHA>(null)
+
+  const { isMobile } = useBreakpoints()
 
   const hasSubmittedSuccessfully = state.succeeded
   const isSubmitting = state.submitting
@@ -45,8 +48,8 @@ const Footer: FC = () => {
   return (
     <footer className="bg-black text-white">
       <Container className="pt-16 pb-14">
-        <div className="text-input mb-[50px] flex flex-col gap-y-5 lg:gap-y-10 xl:flex-row xl:items-center xl:justify-between">
-          <p className="font-semibold">Sign up to our newsletter</p>
+        <div className="mb-[50px] flex flex-col gap-y-5 lg:gap-y-10 xl:flex-row xl:items-center xl:justify-between">
+          <p className="text-input font-semibold">Sign up to our newsletter</p>
 
           <form
             onSubmit={async (e) => {
@@ -62,6 +65,7 @@ const Footer: FC = () => {
             })}
           >
             <input
+              name="email"
               type={hasSubmittedSuccessfully ? 'text' : 'email'}
               placeholder="Email"
               value={email}
@@ -69,13 +73,16 @@ const Footer: FC = () => {
                 if (hasSubmittedSuccessfully || isSubmitting) return
                 setEmail(e.target.value)
               }}
-              className={cx('w-full bg-transparent placeholder:text-white', {
-                'text-green': hasSubmittedSuccessfully,
-              })}
+              className={cx(
+                'md:text-input w-full bg-transparent text-[26px] leading-6 -tracking-[1px] placeholder:text-white',
+                {
+                  'text-green': hasSubmittedSuccessfully,
+                }
+              )}
             />
             <Button
               type="submit"
-              size="md"
+              size={isMobile ? 'sm' : 'md'}
               variant="black-pink"
               disabled={isSubmitting}
               className={cx('transition-opacity', {
@@ -89,7 +96,7 @@ const Footer: FC = () => {
 
         <hr className="mb-16 hidden xl:block" />
 
-        <div className="mb-[168px] flex justify-end">
+        <div className="mb-[168px] flex lg:justify-end">
           <div className="flex gap-x-5">
             {FooterJSON.socialLinks.map((item) => (
               <OutgoingLink
@@ -109,8 +116,8 @@ const Footer: FC = () => {
         <hr className="mb-16 xl:hidden" />
 
         {/* Accepted Payment Methods */}
-        <div className="flex justify-end">
-          <div className="flex gap-x-5">
+        <div className="flex justify-center lg:justify-end">
+          <div className="flex flex-wrap justify-center gap-x-5 gap-y-4">
             {FooterJSON.acceptedPaymentMethods.map((item) => (
               <OptimisedImage
                 key={item.id}
