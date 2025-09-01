@@ -44,7 +44,7 @@ button:not(:disabled),
     @apply w-full min-w-[320px] bg-white font-sans text-base leading-5 font-normal whitespace-pre-line text-black;
   }
   .heading-1 {
-    @apply text-[270px] leading-[243px] font-extrabold -tracking-[5.4px];
+    @apply text-[87px] leading-[78px] font-extrabold -tracking-[1.74px] md:text-[270px] md:leading-[243px] md:-tracking-[5.4px];
   }
   .heading-2 {
     @apply text-[52px] leading-[47px] font-extrabold -tracking-[2.6px] md:text-[84px] md:leading-[75.6px] md:-tracking-[4.2px];

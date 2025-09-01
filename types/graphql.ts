@@ -1,4 +1,5 @@
 export enum GraphQlQueryEnum {
+  Metadata = 'Metadata',
   SiteBanner = 'SiteBanner',
   HomePage = 'HomePage',
   AboutPage = 'AboutPage',

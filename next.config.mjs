@@ -5,15 +5,17 @@ const nextConfig = {
   trailingSlash: false,
   reactStrictMode: true,
   env: {
-    siteDomain: 'ubu-shopify.vercel.app',
+    siteDomain: 'ubu-store.vercel.app',
     siteName: 'UBU Store',
     siteTitle: ' | UBU Store',
     siteDescription:
       'UBU is a creative kids’ accessories brand for the trendsetters, letting you be you and express yourself.',
-    siteUrl: 'https://ubu-shopify.vercel.app',
+    siteUrl: 'https://ubu-store.vercel.app',
+    publisher: 'UBU Store',
     siteImagePreviewURL: '/share-preview.jpg',
     siteLogo: '/logo.svg',
-    siteFavicon: '/favicon.png',
+    siteFaviconDark: '/favicon-dark.png',
+    siteFaviconLight: '/favicon-light.png',
   },
   devIndicators: false,
 

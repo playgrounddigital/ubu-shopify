@@ -1,22 +1,22 @@
-// const excludeUrls = ['/privacy-policy', '/workbook', '/terms-of-access']
+const excludeUrls = ['/privacy-policy']
 
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://ubu-shopify.vercel.app',
+  siteUrl: 'https://ubu-store.vercel.app',
   generateRobotsTxt: true,
-  // robotsTxtOptions: {
-  //   policies: [
-  //     {
-  //       userAgent: '*',
-  //       allow: '/',
-  //       disallow: excludeUrls,
-  //     },
-  //     {
-  //       userAgent: 'Googlebot',
-  //       allow: '/',
-  //       disallow: excludeUrls,
-  //     },
-  //   ],
-  // },
-  // exclude: excludeUrls,
+  robotsTxtOptions: {
+    policies: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: excludeUrls,
+      },
+      {
+        userAgent: 'Googlebot',
+        allow: '/',
+        disallow: excludeUrls,
+      },
+    ],
+  },
+  exclude: excludeUrls,
 }

@@ -71,6 +71,21 @@ const doubleLinkImageSectionQuery = `... on DoubleLinkImageSectionRecord {
 }`
 
 export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string> = {
+  [GraphQlQueryEnum.Metadata]: () => `{
+    _site {
+      favicon {
+        url
+      }
+      globalSeo {
+        siteName
+        titleSuffix
+        fallbackSeo {
+          description
+          image ${imageQuery}
+        }
+      }
+    }
+  }`,
   [GraphQlQueryEnum.SiteBanner]: () => `{
     siteBanner {
       id

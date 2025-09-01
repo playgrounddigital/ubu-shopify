@@ -1,4 +1,7 @@
 import { Metadata } from 'next'
+import { fetchFromDatoAPI, getGraphQLQuery } from '~/helpers/cms'
+import { DatoCMSMetadata } from '~/types/cms/common'
+import { GraphQlQueryEnum } from '~/types/graphql'
 
 interface ParamsProps {
   handle?: string // use for slug etc later
@@ -22,38 +25,24 @@ export const _generateMetadata = async (
   params: ParamsProps,
   { title, description, image }: PageInformation
 ): Promise<Metadata> => {
-  // const metadataQuery = getGraphQLQuery(GraphQlQueryEnum.Metadata)
-  // const {
-  //   _site: cmsMetadata,
-  // }: {
-  //   _site: DatoCMSMetadata
-  // } = await fetchFromDatoAPI(metadataQuery)
+  const metadataQuery = getGraphQLQuery(GraphQlQueryEnum.Metadata)
+  const {
+    _site: cmsMetadata,
+  }: {
+    _site: DatoCMSMetadata
+  } = await fetchFromDatoAPI(metadataQuery)
 
   const {
-    favicon,
+    // favicon,
     globalSeo: {
       siteName,
       titleSuffix,
       fallbackSeo: { title: fallbackTitle, image: fallbackImage, description: fallbackDescription },
     },
-  } = {
-    favicon: {
-      url: '',
-    },
-    globalSeo: {
-      siteName: '',
-      titleSuffix: '',
-      fallbackSeo: {
-        title: '',
-        image: {
-          url: '',
-        },
-        description: '',
-      },
-    },
-  }
+  } = cmsMetadata
 
-  const _favicon = favicon.url || process.env.siteFavicon
+  const faviconDark = process.env.siteFaviconDark
+  const faviconLight = process.env.siteFaviconLight
 
   const _title = `${title || fallbackTitle} ${titleSuffix || process.env.siteTitle}`
   const _image = image || fallbackImage?.url || process.env.siteImagePreviewURL
@@ -62,7 +51,6 @@ export const _generateMetadata = async (
   const _siteName = siteName || process.env.siteName
   const siteUrl = process.env.siteUrl
   const metaTitle = _siteName
-  const metaDescription = _description
   const publisher = process.env.publisher
   const imagePreview = _image?.includes('https://') ? _image : `${process.env.siteUrl}${_image}`
 
@@ -72,13 +60,13 @@ export const _generateMetadata = async (
   return {
     metadataBase: new URL(siteUrl),
     title: _title,
-    description: description || metaDescription,
+    description: _description,
     openGraph: {
       title: _title,
       type: 'website',
       url: `${siteUrl}${params.pathname}`,
       images: currentImage,
-      siteName: siteName,
+      siteName: _siteName,
       description: description,
     },
     twitter: {
@@ -90,7 +78,18 @@ export const _generateMetadata = async (
     creator: publisher,
     publisher,
     icons: {
-      icon: _favicon,
+      icon: [
+        {
+          media: '(prefers-color-scheme: light)',
+          url: faviconLight,
+          href: faviconLight,
+        },
+        {
+          media: '(prefers-color-scheme: dark)',
+          url: faviconDark,
+          href: faviconDark,
+        },
+      ],
     },
   }
 }
