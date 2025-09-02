@@ -30,7 +30,7 @@ const DoubleLinkImageSection: FC<DoubleLinkImageSectionProps> = ({ content }) =>
             backgroundColor: content.linkBlock.backgroundColour,
           }}
         >
-          <div className="relative z-10 flex w-full flex-col md:items-end md:justify-between">
+          <div className="relative z-10 flex w-full flex-col md:flex-row md:items-end md:justify-between">
             {/* LEFT SIDE */}
             <p className="heading-3 mb-[22px] md:mb-0">
               {content.linkBlock.lineOne}

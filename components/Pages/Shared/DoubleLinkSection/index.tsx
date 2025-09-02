@@ -54,12 +54,13 @@ const DoubleLinkSection: FC<DoubleLinkSectionProps> = ({ content }) => {
             <PageLink
               href={link}
               key={linkBlock.id}
-              className="relative inline-flex h-[480px] items-end overflow-hidden p-[30px] pl-10 lg:h-full"
+              className="group/button relative inline-flex h-[480px] items-end overflow-hidden p-[30px] pl-10 lg:h-full"
             >
               <OptimisedImage
                 src={linkBlock.image.url}
                 alt={joinSmartTagsIntoString(linkBlock.image.smartTags)}
                 layout="cover"
+                imgClassName="group-hover/button:scale-105 transition-transform transform-gpu"
                 className="absolute inset-0"
               />
               <div className="relative z-10 flex w-full items-end justify-between">
@@ -69,11 +70,21 @@ const DoubleLinkSection: FC<DoubleLinkSectionProps> = ({ content }) => {
                     'text-white': i === 0,
                   })}
                 >
-                  <div className="relative w-fit">
+                  <div
+                    className={cx('relative w-fit transform-gpu transition-transform', {
+                      'group-hover/button:-translate-y-2 group-hover/button:rotate-3': i === 0,
+                      'group-hover/button:-translate-y-2 group-hover/button:-rotate-3': i === 1,
+                    })}
+                  >
                     <LineOneRectangle className={rectangleClassNames[i].lineOne} />
                     <span className="heading-3 relative z-10">{linkBlock.lineOne}</span>
                   </div>
-                  <div className="relative w-fit">
+                  <div
+                    className={cx('relative w-fit transform-gpu transition-transform', {
+                      'group-hover/button:translate-y-1 group-hover/button:-rotate-3': i === 0,
+                      'group-hover/button:translate-y-2 group-hover/button:rotate-3': i === 1,
+                    })}
+                  >
                     <LineTwoRectangle className={rectangleClassNames[i].lineTwo} />
                     <span className="heading-3 relative z-10">{linkBlock.lineTwo}</span>
                   </div>
