@@ -3,6 +3,7 @@ import { FC } from 'react'
 import Container from '~/components/Layout/Container'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
 import { joinSmartTagsIntoString } from '~/helpers/cms'
+import useBreakpoints from '~/hooks/useBreakpoints'
 import { Image } from '~/types/cms/common'
 import { DatoCMSCollectionModel } from '~/types/cms/models/collection'
 import { SearchContent } from '~/types/cms/pages/search'
@@ -16,6 +17,8 @@ interface HeaderProps {
 }
 
 const Header: FC<HeaderProps> = ({ title, image, content, backgroundClassName }) => {
+  const { isMobile } = useBreakpoints()
+
   const _title = (() => {
     if (!content) return title || ''
     if ('shopifyCollection' in content) {
@@ -51,9 +54,10 @@ const Header: FC<HeaderProps> = ({ title, image, content, backgroundClassName })
           <div className="relative z-10 flex w-full items-end justify-between">
             {/* LEFT SIDE */}
             <h1
-              className={cx('text-[48px] leading-[58px] font-extrabold -tracking-[1.44px]', {
-                'md:heading-1': _title.length < 4,
-                'md:text-collection-title': _title.length >= 4,
+              className={cx({
+                'text-[48px] leading-[58px] font-extrabold -tracking-[1.44px]': isMobile,
+                'heading-1': _title.length < 4 && !isMobile,
+                'text-collection-title': _title.length >= 4 && !isMobile,
               })}
             >
               {_title}
