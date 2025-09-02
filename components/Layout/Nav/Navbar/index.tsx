@@ -1,6 +1,5 @@
 'use client'
 import cx from 'classnames'
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 import Container from '~/components/Layout/Container'
@@ -106,8 +105,11 @@ const Navbar: FC = () => {
                   onMouseEnter={() => {
                     if (link.href === SitePages.Shop) {
                       openShopMenu()
+                    } else {
+                      closeShopMenu()
                     }
                   }}
+                  onClick={closeShopMenu}
                   className={cx(
                     'group relative inline-flex h-[34px] items-center justify-center px-4 text-center uppercase',
                     link.className
@@ -132,9 +134,12 @@ const Navbar: FC = () => {
 
             {/* Logo */}
             <div className="flex items-center justify-center">
-              <Link href={SitePages.Home}>
+              <PageLink
+                href={SitePages.Home}
+                onClick={closeShopMenu}
+              >
                 <UBULogo className="h-[31px] w-[101px] md:h-[61px] md:w-[202px]" />
-              </Link>
+              </PageLink>
             </div>
 
             {/* Right side buttons */}
@@ -148,7 +153,10 @@ const Navbar: FC = () => {
                   <button
                     key={label}
                     aria-label={label}
-                    onClick={onClick}
+                    onClick={() => {
+                      onClick?.()
+                      closeShopMenu()
+                    }}
                     className="group relative inline-flex h-[34px] max-w-[44px] items-center justify-center rounded-full px-4 md:max-w-[50px]"
                   >
                     <span

@@ -31,6 +31,7 @@ const ShopNavigationMenu: FC<ShopNavigationMenuProps> = ({
     >
       <div className="mx-auto min-h-[418px] rounded-[10px] bg-white p-[30px] pl-12 shadow-shop-nav-menu">
         <AnimateOnUpdate
+          duration={0.25}
           disableTransition={currentHoveredMenu === null}
           updateKey={currentHoveredMenu}
           className="flex justify-between gap-x-4"
