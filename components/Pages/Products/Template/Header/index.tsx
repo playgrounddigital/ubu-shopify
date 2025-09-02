@@ -1,5 +1,6 @@
 'use client'
-import { FC, useState } from 'react'
+import cx from 'classnames'
+import { FC, useEffect, useMemo, useState } from 'react'
 import Accordion from '~/components/Layout/Accordion'
 import Button from '~/components/Layout/Button'
 import Container from '~/components/Layout/Container'
@@ -22,7 +23,43 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
   const { addToCart, isLoading } = useCart()
   const [quantity, setQuantity] = useState(1)
 
-  const variant = product.variants[0]
+  // Build option groups from variant titles, e.g. "M/L / Blue"
+  const optionGroups = useMemo(() => {
+    const groups: string[][] = []
+    for (const v of product.variants) {
+      const parts = (v.title || '').split(' / ').filter(Boolean)
+      // Skip Shopify's default single variant label
+      if (parts.length === 1 && parts[0] === 'Default Title') continue
+      parts.forEach((part, idx) => {
+        if (!groups[idx]) groups[idx] = []
+        if (!groups[idx].includes(part)) groups[idx].push(part)
+      })
+    }
+    return groups
+  }, [product.variants])
+
+  const hasOptions = optionGroups.length > 0
+
+  // Preselect the first option from each group
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([])
+  useEffect(() => {
+    if (!hasOptions) return
+    setSelectedOptions(optionGroups.map((opts) => opts[0]))
+  }, [hasOptions, optionGroups])
+
+  // Resolve the currently selected variant from selectedOptions
+  const selectedVariant = useMemo(() => {
+    if (!hasOptions) return product.variants[0]
+    const match = product.variants.find((v) => {
+      const parts = (v.title || '').split(' / ')
+      return selectedOptions.every((val, i) => parts[i] === val)
+    })
+    return match || product.variants[0]
+  }, [hasOptions, product.variants, selectedOptions])
+
+  console.log(selectedVariant)
+
+  const variant = selectedVariant
   const productPrice = variant?.priceV2.amount
   const variantTitle = variant?.title
   const colorMetafield = product.metafields[0]?.references[0]?.fields.find((field) => field.key === 'label')?.value
@@ -77,6 +114,46 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
                 </div>
               ) : null}
             </div>
+
+            {/* Variant options */}
+            {hasOptions ? (
+              <div className="mb-6 space-y-4">
+                {optionGroups.map((options, groupIdx) => {
+                  if (options.length === 1) return null
+                  const groupLabel = groupIdx === 1 ? 'SIZE' : groupIdx === 2 ? 'COLOUR' : `OPTION ${groupIdx + 1}`
+                  const selected = selectedOptions[groupIdx]
+                  return (
+                    <div
+                      key={groupIdx}
+                      className="flex flex-wrap items-center gap-x-3 gap-y-2"
+                    >
+                      <span className="inline-flex h-[34px] items-center justify-center bg-black px-4 text-white">
+                        {groupLabel}
+                      </span>
+                      {options.map((opt) => (
+                        <button
+                          key={opt}
+                          type="button"
+                          onClick={() => {
+                            setSelectedOptions((prev) => {
+                              const next = [...prev]
+                              next[groupIdx] = opt
+                              return next
+                            })
+                          }}
+                          className={cx(
+                            'h-[34px] rounded-full border border-black px-4 font-medium transition-colors',
+                            selected === opt ? 'bg-green text-black' : 'bg-white text-black'
+                          )}
+                        >
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
+                  )
+                })}
+              </div>
+            ) : null}
 
             {/* Quantity + Add to cart */}
             <div className="mb-5 flex items-center gap-x-3">
