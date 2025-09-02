@@ -4,7 +4,7 @@ import { FC, useEffect, useMemo, useState } from 'react'
 import MobileNavMenuFeatured from '~/components/Layout/Nav/Navbar/MobileNavMenu/MobileNavMenuFeatured'
 import MobileNavMenuRoot from '~/components/Layout/Nav/Navbar/MobileNavMenu/MobileNavMenuRoot'
 import MobileNavMenuShop from '~/components/Layout/Nav/Navbar/MobileNavMenu/MobileNavMenuShop'
-import { TIMEOUT_500MS } from '~/constants/timeouts'
+import { TIMEOUT_300MS } from '~/constants/timeouts'
 import allShopNavigationMenusJSON from '~/public/all-shop-navigation-menus.json'
 import { ShopNavigationMenu as ShopNavigationMenuType } from '~/types/cms/models/shop-navigation-menu'
 
@@ -36,7 +36,7 @@ const MobileNavMenu: FC<MobileNavMenuProps> = ({ isOpen, isAuthenticated, onClos
       const timeout = setTimeout(() => {
         setActiveView('root')
         setCurrentShopMenuId(null)
-      }, TIMEOUT_500MS)
+      }, TIMEOUT_300MS)
       return () => clearTimeout(timeout)
     }
   }, [isOpen])
@@ -57,46 +57,37 @@ const MobileNavMenu: FC<MobileNavMenuProps> = ({ isOpen, isAuthenticated, onClos
         }
       )}
     >
-      {/* Header bar with close */}
-      <div className="flex items-center justify-between px-5 pt-4 pb-2">
-        <span className="text-sm font-medium uppercase">Menu</span>
-        <span className="w-6" />
-      </div>
+      <div
+        className={cx('absolute inset-0 flex w-[300%] pt-26 transition-transform md:pt-12', {
+          'translate-x-0': activeView === 'root',
+          '-translate-x-1/3': activeView === 'shop',
+          '-translate-x-2/3': activeView === 'featured',
+        })}
+        style={{ willChange: 'transform' }}
+      >
+        {/* Level 1: Root */}
+        <MobileNavMenuRoot
+          isOpen={isOpen}
+          isAuthenticated={isAuthenticated}
+          onClose={onClose}
+          onOpenShop={openShop}
+        />
 
-      {/* Views wrapper for horizontal slide between levels */}
-      <div className="relative h-[calc(100dvh-46px)] overflow-hidden">
-        <div
-          className={cx('absolute inset-0 flex w-[300%] transition-transform', {
-            'translate-x-0': activeView === 'root',
-            '-translate-x-1/3': activeView === 'shop',
-            '-translate-x-2/3': activeView === 'featured',
-          })}
-          style={{ willChange: 'transform' }}
-        >
-          {/* Level 1: Root */}
-          <MobileNavMenuRoot
-            isOpen={isOpen}
-            isAuthenticated={isAuthenticated}
-            onClose={onClose}
-            onOpenShop={openShop}
-          />
+        {/* Level 2: Shop categories */}
+        <MobileNavMenuShop
+          isOpen={isOpen}
+          onClose={onClose}
+          onBack={closeShop}
+          onOpenFeatured={openFeatured}
+        />
 
-          {/* Level 2: Shop categories */}
-          <MobileNavMenuShop
-            isOpen={isOpen}
-            onClose={onClose}
-            onBack={closeShop}
-            onOpenFeatured={openFeatured}
-          />
-
-          {/* Level 3: Featured collection (repurposed from desktop) */}
-          <MobileNavMenuFeatured
-            isOpen={isOpen}
-            menu={currentMenu}
-            onClose={onClose}
-            onBack={closeFeatured}
-          />
-        </div>
+        {/* Level 3: Featured collection (repurposed from desktop) */}
+        <MobileNavMenuFeatured
+          isOpen={isOpen}
+          menu={currentMenu}
+          onClose={onClose}
+          onBack={closeFeatured}
+        />
       </div>
     </div>
   )

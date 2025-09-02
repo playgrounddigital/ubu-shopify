@@ -52,6 +52,7 @@ export type Product = {
   images: Image[]
   variants: ProductVariant[]
   metafields: Metafield[]
+  collections: Collection[]
 }
 
 export type CheckoutLineItem = {

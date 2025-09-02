@@ -5,12 +5,13 @@ import OptimisedImage from '~/components/Layout/OptimisedImage'
 import { joinSmartTagsIntoString } from '~/helpers/cms'
 import { Image } from '~/types/cms/common'
 import { DatoCMSCollectionModel } from '~/types/cms/models/collection'
+import { SearchContent } from '~/types/cms/pages/search'
 import { ShopContent } from '~/types/cms/pages/shop'
 
 interface HeaderProps {
   title?: string
   image?: Image
-  content?: DatoCMSCollectionModel | ShopContent
+  content?: DatoCMSCollectionModel | ShopContent | SearchContent
   backgroundClassName?: string
 }
 
@@ -37,7 +38,7 @@ const Header: FC<HeaderProps> = ({ title, image, content, backgroundClassName })
         {/* LINK BLOCk */}
         <div
           className={cx(
-            'relative inline-flex h-[221px] items-end overflow-hidden p-[30px] pl-10 md:h-[270px] lg:h-full',
+            'relative inline-flex h-[221px] items-end overflow-hidden p-4 pl-4.5 md:h-[270px] md:p-[30px] md:pl-10 lg:h-full',
             {
               'bg-yellow': !content?.backgroundColour && !backgroundClassName,
             },
@@ -50,9 +51,9 @@ const Header: FC<HeaderProps> = ({ title, image, content, backgroundClassName })
           <div className="relative z-10 flex w-full items-end justify-between">
             {/* LEFT SIDE */}
             <h1
-              className={cx({
-                'heading-1': _title.length < 4,
-                'text-collection-title': _title.length >= 4,
+              className={cx('text-[48px] leading-[58px] font-extrabold -tracking-[1.44px]', {
+                'md:heading-1': _title.length < 4,
+                'md:text-collection-title': _title.length >= 4,
               })}
             >
               {_title}
@@ -72,7 +73,7 @@ const Header: FC<HeaderProps> = ({ title, image, content, backgroundClassName })
           className="h-[333px] md:aspect-square md:h-full lg:aspect-auto"
         />
       </Container>
-      {content && (
+      {content && 'description' in content && (
         <div className="bg-black pt-[100px] pb-[43px]">
           <Container>
             <p className="text-introduction max-w-[824px] text-white">{content.description}</p>

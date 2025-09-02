@@ -5,6 +5,7 @@ export enum GraphQlQueryEnum {
   AboutPage = 'AboutPage',
   SignInPage = 'SignInPage',
   ShopPage = 'ShopPage',
+  SearchPage = 'SearchPage',
   PrivacyPolicyPage = 'PrivacyPolicyPage',
   ProductPageTemplate = 'ProductPageTemplate',
 

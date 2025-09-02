@@ -51,7 +51,8 @@ const DoubleLinkSection: FC<DoubleLinkSectionProps> = ({ content }) => {
           })()
 
           return (
-            <div
+            <PageLink
+              href={link}
               key={linkBlock.id}
               className="relative inline-flex h-[480px] items-end overflow-hidden p-[30px] pl-10 lg:h-full"
             >
@@ -79,14 +80,12 @@ const DoubleLinkSection: FC<DoubleLinkSectionProps> = ({ content }) => {
                 </div>
 
                 {/* RIGHT SIDE */}
-                <PageLink href={link}>
-                  <CircleButton
-                    ariaLabel="Open link"
-                    variant={i === 0 ? 'white-black' : 'black-green'}
-                  />
-                </PageLink>
+                <CircleButton
+                  ariaLabel="Open link"
+                  variant={i === 0 ? 'white-black' : 'black-green'}
+                />
               </div>
-            </div>
+            </PageLink>
           )
         })}
       </Container>

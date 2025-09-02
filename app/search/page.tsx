@@ -1,9 +1,9 @@
 import { notFound } from 'next/navigation'
-import CollectionTemplatePage from '~/app/collections/[handle]/content'
+import SearchPage from '~/app/search/content'
 import { fetchFromDatoAPI, getGraphQLQuery } from '~/helpers/cms'
 import { PageProps, _generateMetadata } from '~/helpers/next'
 import { getAllProducts } from '~/lib/shopify'
-import { ShopContent } from '~/types/cms/pages/shop'
+import { SearchContent } from '~/types/cms/pages/search'
 import { GraphQlQueryEnum } from '~/types/graphql'
 
 // Fetch dynamic routes not pre-rendered
@@ -11,17 +11,16 @@ export const dynamicParams = true
 export const revalidate = 0
 
 export const generateMetadata = async ({ params }: PageProps) => {
-  const shopPageQuery = getGraphQLQuery(GraphQlQueryEnum.ShopPage)
-  const { shopPage }: { shopPage: ShopContent } = await fetchFromDatoAPI(shopPageQuery)
+  const searchPageQuery = getGraphQLQuery(GraphQlQueryEnum.SearchPage)
+  const { searchPage }: { searchPage: SearchContent } = await fetchFromDatoAPI(searchPageQuery)
 
-  if (!shopPage) {
+  if (!searchPage) {
     return notFound()
   }
 
   return await _generateMetadata(await params, {
-    title: shopPage.title,
-    description: shopPage.description,
-    image: shopPage.image.url,
+    title: searchPage.title,
+    image: searchPage.image.url,
   })
 }
 
@@ -37,20 +36,19 @@ export const generateMetadata = async ({ params }: PageProps) => {
 // }
 
 export default async ({ params }: PageProps) => {
-  const shopPageQuery = getGraphQLQuery(GraphQlQueryEnum.ShopPage)
-  const { shopPage }: { shopPage: ShopContent } = await fetchFromDatoAPI(shopPageQuery)
+  const searchPageQuery = getGraphQLQuery(GraphQlQueryEnum.SearchPage)
+  const { searchPage }: { searchPage: SearchContent } = await fetchFromDatoAPI(searchPageQuery)
 
-  if (!shopPage) {
+  if (!searchPage) {
     return notFound()
   }
 
   const products = await getAllProducts()
 
   return (
-    <CollectionTemplatePage
-      title={shopPage.title}
-      collection={shopPage}
-      productsForCollection={products}
+    <SearchPage
+      title={searchPage.title}
+      collection={searchPage}
       products={products}
     />
   )

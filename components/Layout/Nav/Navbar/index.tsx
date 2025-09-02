@@ -11,6 +11,7 @@ import ShopMenuBar from '~/components/Layout/Nav/Navbar/ShopMenu/Bar'
 import PageLink from '~/components/Layout/PageLink'
 import { useAuth } from '~/context/AuthContext'
 import { useCart } from '~/context/CartContext'
+import { disableScroll, enableScroll } from '~/helpers/common'
 import useOpenState from '~/hooks/useOpenState'
 import CartIcon from '~/public/img/icons/cart.svg'
 import SearchIcon from '~/public/img/icons/search.svg'
@@ -39,6 +40,7 @@ const Navbar: FC = () => {
       label: 'Search',
       icon: SearchIcon,
       iconClassName: 'size-4.5 min-w-4.5',
+      link: SitePages.Search,
       onClick: () => {},
     },
     {
@@ -56,6 +58,15 @@ const Navbar: FC = () => {
       onClick: openCart,
     },
   ]
+
+  // Disable scroll on mobile menu open
+  useEffect(() => {
+    if (isHamburgerMenuOpen) {
+      disableScroll()
+    } else {
+      enableScroll()
+    }
+  }, [isHamburgerMenuOpen])
 
   useEffect(() => {
     const handleScroll = () => setHasScrolled(window.scrollY > 0)

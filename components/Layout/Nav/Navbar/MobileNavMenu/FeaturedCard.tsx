@@ -40,10 +40,10 @@ const FeaturedCard: FC<FeaturedCardProps> = ({ menu, onClose }) => {
           src={menu.image?.url}
           alt={menu.collectionLink.title}
           layout={menu.isLarge ? 'contain' : 'cover'}
-          imgClassName={cx('object-top', {
+          imgClassName={cx('object-top')}
+          className={cx('z-10 h-full w-full', {
             'mix-blend-darken': menu.isLarge,
           })}
-          className="z-10 h-full w-full"
         />
       </div>
       <span

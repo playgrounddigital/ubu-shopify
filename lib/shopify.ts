@@ -59,6 +59,16 @@ const PRODUCT_SELECTION = `
 			}
 		}
 	}
+	collections(first: 10) {
+		edges {
+			node {
+				id
+				title
+				handle
+				description
+			}
+		}
+	}
 `
 
 // Helper function to generate metafields selection with specific identifiers
@@ -327,6 +337,14 @@ function mapProduct(node: any): Product {
     image: e.node.image ?? null,
   }))
 
+  const collections: Collection[] = (node.collections?.edges ?? []).map((e: any) => ({
+    id: e.node.id,
+    title: e.node.title,
+    handle: e.node.handle,
+    description: e.node.description ?? null,
+    image: null, // Collections in product queries don't include image data
+  }))
+
   // Handle metafields - they're returned as a direct array, not edges/node structure
   let metafields: Metafield[] = (node.metafields ?? []).map((metafield: any) => ({
     id: metafield.id,
@@ -371,6 +389,7 @@ function mapProduct(node: any): Product {
     images,
     variants,
     metafields,
+    collections,
   }
 }
 

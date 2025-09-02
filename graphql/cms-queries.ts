@@ -242,6 +242,20 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
       }
     }
   }`,
+  [GraphQlQueryEnum.SearchPage]: () => `{
+    searchPage {
+      title
+      backgroundColour
+      image ${imageQuery}
+      
+      content {
+        __typename
+        ${reasonsSectionQuery}
+        ${featuredProductsSectionQuery}
+        ${fullWidthBannerSectionQuery}
+      }
+    }
+  }`,
   [GraphQlQueryEnum.PrivacyPolicyPage]: () => `{
     privacyPolicyPage {
       title
