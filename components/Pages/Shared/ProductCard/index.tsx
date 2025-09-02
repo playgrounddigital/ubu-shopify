@@ -25,7 +25,7 @@ const ProductCard: FC<ProductCardProps> = ({ isSmall, product, onClick, classNam
     if (variantTitle === 'Default Title' && colorMetafield) {
       return colorMetafield
     }
-    return variantTitle
+    return ''
   })()
 
   return (
@@ -70,7 +70,7 @@ const ProductCard: FC<ProductCardProps> = ({ isSmall, product, onClick, classNam
                   variantId: variant?.id,
                   quantity: 1,
                   productTitle: productTitle,
-                  variantTitle: variantTitle,
+                  variantTitle: secondaryTitleToUse,
                   priceAmount: productPrice ?? '0',
                   currencyCode: 'AUD',
                   imageUrl: product.images[0]?.url,

@@ -14,6 +14,8 @@ interface CartItemProps {
 }
 
 const CartItem: FC<CartItemProps> = ({ item, isLoading, onIncrease, onDecrease, onDelete, formatCurrency }) => {
+  const variantTitle = item.variant?.title
+
   return (
     <li className="flex items-center justify-between gap-x-4 text-[13px] leading-4 font-medium -tracking-[0.39px]">
       {/* Image */}
@@ -38,7 +40,7 @@ const CartItem: FC<CartItemProps> = ({ item, isLoading, onIncrease, onDecrease, 
 
         {/* Quantity controls */}
         <div className="flex items-center justify-between">
-          {item.variant?.title ? <p className="text-grey">{item.variant.title}</p> : null}
+          {variantTitle ? <p className="text-grey">{variantTitle}</p> : null}
 
           <div className="flex items-center gap-x-3">
             <QuantitySelector

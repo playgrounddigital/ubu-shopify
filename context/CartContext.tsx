@@ -237,11 +237,12 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
           const checkout = await createCheckoutAPI(
             itemsArray.map(({ variantId, quantity }) => ({ variantId, quantity }))
           )
-          // Update the checkout object with the image url
+          // Update the checkout object with the image url and variant title
           checkout.lineItems.forEach((item) => {
             const originalItem = itemsArray.find((it) => it.variantId === item.variant?.id)
             if (originalItem) {
               item.variant.image = { url: originalItem.imageUrl ?? '', altText: originalItem.productTitle ?? null }
+              item.variant.title = originalItem.variantTitle ?? ''
             }
           })
           setCart(checkout)
@@ -251,11 +252,12 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
             checkoutId,
             add: itemsArray.map(({ variantId, quantity }) => ({ variantId, quantity })),
           })
-          // Update the checkout object with the image url
+          // Update the checkout object with the image url and variant title
           checkout.lineItems.forEach((item) => {
             const originalItem = itemsArray.find((it) => it.variantId === item.variant?.id)
             if (originalItem) {
               item.variant.image = { url: originalItem.imageUrl ?? '', altText: originalItem.productTitle ?? null }
+              item.variant.title = originalItem.variantTitle ?? ''
             }
           })
           setCart(checkout)
@@ -328,7 +330,7 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
 
       try {
         const checkout = await updateCheckoutAPI({ checkoutId, update: updatesArray })
-        // Update the checkout object with the image url
+        // Update the checkout object with the image url and variant title
         checkout.lineItems.forEach((item) => {
           const originalItem = previousCart?.lineItems.find((li) => li.variant?.id === item.variant?.id)
           if (originalItem) {
@@ -336,6 +338,7 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
               url: originalItem.variant?.image?.url ?? '',
               altText: originalItem.variant?.image?.altText ?? null,
             }
+            item.variant.title = originalItem.variant?.title ?? ''
           }
         })
         setCart(checkout)

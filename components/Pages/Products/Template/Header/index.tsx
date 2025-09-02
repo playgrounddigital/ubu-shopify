@@ -84,7 +84,7 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
       variantId: variant.id,
       quantity,
       productTitle: product.title,
-      variantTitle: variant.title,
+      variantTitle: secondaryTitleToUse,
       priceAmount: productPrice ?? '0',
       currencyCode: 'AUD',
       imageUrl: product.images[0]?.url,
