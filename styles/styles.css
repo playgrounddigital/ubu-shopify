@@ -31,6 +31,9 @@
   --color-off-white: #f2f2f2;
 
   --font-sans: 'Inter', sans-serif;
+
+  /* Custom shadow */
+  --shadow-shop-nav-menu: 14px 7px 13.9px 0 rgba(0, 0, 0, 0.24);
 }
 
 /* Override cursor-pointer becoming default */
@@ -63,6 +66,9 @@ button:not(:disabled),
   }
   .text-introduction {
     @apply font-semibold -tracking-[0.48px] md:text-[35px] md:leading-[42px] md:-tracking-[1.05px];
+  }
+  .text-general-title {
+    @apply text-[39px] leading-[46.8px] font-bold -tracking-[1.17px];
   }
   .body-large {
     @apply text-xl leading-7 font-normal -tracking-[0.6px];

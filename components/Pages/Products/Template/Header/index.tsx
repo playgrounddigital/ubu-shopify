@@ -56,7 +56,7 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
           {/* Right: Details */}
           <div className="flex w-full flex-col pt-12">
             <div className="mb-14">
-              <h1 className="mb-3 text-[39px] leading-[46.8px] font-bold -tracking-[1.17px]">{product.title}</h1>
+              <h1 className="text-general-title mb-3">{product.title}</h1>
               {variant?.priceV2?.amount ? (
                 <div className="mb-6 text-[27px] leading-[32.4px] font-medium -tracking-[0.81px]">
                   ${Number(variant.priceV2.amount).toFixed(2)}

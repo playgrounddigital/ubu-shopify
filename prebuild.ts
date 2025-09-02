@@ -5,6 +5,7 @@ import { fetchFromDatoAPI, getGraphQLQuery } from '~/helpers/cms'
 import { Footer } from '~/types/cms/models/footer'
 import { FreeShippingBanner } from '~/types/cms/models/free-shipping-banner'
 import { ShippingReturnsInformationContent } from '~/types/cms/models/shipping-returns-information'
+import { ShopNavigationMenu } from '~/types/cms/models/shop-navigation-menu'
 import { SiteBanner } from '~/types/cms/models/site-banner'
 import { GraphQlQueryEnum } from '~/types/graphql'
 dotenv.config()
@@ -18,17 +19,26 @@ const fetchContent = async () => {
   const footerQuery = getGraphQLQuery(GraphQlQueryEnum.Footer)
   const shippingReturnsInformationQuery = getGraphQLQuery(GraphQlQueryEnum.ShippingReturnsInformation)
   const freeShippingBannerQuery = getGraphQLQuery(GraphQlQueryEnum.FreeShippingBanner)
+  const allShopNavigationMenusQuery = getGraphQLQuery(GraphQlQueryEnum.AllShopNavigationMenus)
 
-  const [{ siteBanner }, { footer }, { shippingReturnsInformation }, { freeShippingBanner }]: [
+  const [
+    { siteBanner },
+    { footer },
+    { shippingReturnsInformation },
+    { freeShippingBanner },
+    { allShopNavigationMenus },
+  ]: [
     { siteBanner: SiteBanner },
     { footer: Footer },
     { shippingReturnsInformation: ShippingReturnsInformationContent },
     { freeShippingBanner: FreeShippingBanner },
+    { allShopNavigationMenus: ShopNavigationMenu[] },
   ] = await Promise.all([
     fetchFromDatoAPI(siteBannerQuery),
     fetchFromDatoAPI(footerQuery),
     fetchFromDatoAPI(shippingReturnsInformationQuery),
     fetchFromDatoAPI(freeShippingBannerQuery),
+    fetchFromDatoAPI(allShopNavigationMenusQuery),
   ])
 
   const siteBannerJson = JSON.stringify(siteBanner)
@@ -42,6 +52,9 @@ const fetchContent = async () => {
 
   const freeShippingBannerJson = JSON.stringify(freeShippingBanner)
   fs.writeFileSync(path.join(publicDir, 'free-shipping-banner.json'), freeShippingBannerJson)
+
+  const allShopNavigationMenusJson = JSON.stringify(allShopNavigationMenus)
+  fs.writeFileSync(path.join(publicDir, 'all-shop-navigation-menus.json'), allShopNavigationMenusJson)
 }
 
 fetchContent().then(() => process.exit(0))

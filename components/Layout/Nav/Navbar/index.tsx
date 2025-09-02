@@ -6,6 +6,7 @@ import { FC, useEffect, useState } from 'react'
 import Container from '~/components/Layout/Container'
 import HamburgerButton from '~/components/Layout/Nav/Navbar/HamburgerButton'
 import { navLinks } from '~/components/Layout/Nav/Navbar/presets'
+import ShopMenuBar from '~/components/Layout/Nav/Navbar/ShopMenu/Bar'
 import PageLink from '~/components/Layout/PageLink'
 import { useAuth } from '~/context/AuthContext'
 import { useCart } from '~/context/CartContext'
@@ -21,6 +22,7 @@ import { SitePages } from '~/types/pages'
 const siteBanner = SiteBannerJSON as SiteBanner
 
 const Navbar: FC = () => {
+  const { isOpen: isShopMenuOpen, toggle: toggleShopMenu, close: closeShopMenu } = useOpenState()
   const { isOpen: isHamburgerMenuOpen, toggle: toggleHamburgerMenu, close: closeHamburgerMenu } = useOpenState()
   const [hasScrolled, setHasScrolled] = useState(false)
   const { cart, openCart } = useCart()
@@ -67,92 +69,109 @@ const Navbar: FC = () => {
   }, [])
 
   return (
-    <header className="fixed top-0 left-0 z-50 w-full">
-      {siteBanner.isBannerActive && (
-        <div className="flex h-[34px] items-center justify-center bg-black text-center text-white md:h-[38px]">
-          <Container>
-            <p>{siteBanner.bannerText}</p>
-          </Container>
-        </div>
-      )}
-      <div
-        className={cx('w-full transition-colors', {
-          'bg-white': hasScrolled || !isOnHomePage,
-          'bg-white xl:bg-transparent': !hasScrolled && isOnHomePage,
-        })}
-      >
-        <Container className="grid h-[51px] grid-cols-3 md:h-[88px]">
-          {/* Left links */}
-          <div className="hidden items-center gap-x-2.5 lg:inline-flex">
-            {navLinks.map((link) => (
-              <PageLink
-                key={link.href}
-                href={link.href}
-                className={cx(
-                  'group relative inline-flex h-[34px] items-center justify-center px-4 text-center uppercase',
-                  link.className
-                )}
-              >
-                <span
+    <>
+      <header className="fixed top-0 left-0 z-50 w-full">
+        {siteBanner.isBannerActive && (
+          <div className="flex h-[34px] items-center justify-center bg-black text-center text-white md:h-[38px]">
+            <Container>
+              <p>{siteBanner.bannerText}</p>
+            </Container>
+          </div>
+        )}
+        <div
+          className={cx('w-full transition-colors', {
+            'bg-white': hasScrolled || !isOnHomePage || isShopMenuOpen,
+            'bg-white xl:bg-transparent': !hasScrolled && isOnHomePage,
+          })}
+        >
+          <Container className="grid h-[51px] grid-cols-3 md:h-[88px]">
+            {/* Left links */}
+            <div className="hidden items-center gap-x-2.5 lg:inline-flex">
+              {navLinks.map((link) => (
+                <PageLink
+                  key={link.href}
+                  href={link.href}
+                  onMouseEnter={() => {
+                    if (link.href === SitePages.Shop) {
+                      toggleShopMenu()
+                    }
+                  }}
                   className={cx(
-                    'absolute inset-0 rounded-full transition-[filter] group-hover:blur-sm',
-                    link.backgroundColour
+                    'group relative inline-flex h-[34px] items-center justify-center px-4 text-center uppercase',
+                    link.className
                   )}
-                />
-                <span className="relative z-10">{link.label}</span>
-              </PageLink>
-            ))}
-          </div>
-
-          {/* Hamburger button */}
-          <HamburgerButton
-            isOpen={isHamburgerMenuOpen}
-            onClick={toggleHamburgerMenu}
-          />
-
-          {/* Logo */}
-          <div className="flex items-center justify-center">
-            <Link href={SitePages.Home}>
-              <UBULogo className="h-[31px] w-[101px] md:h-[61px] md:w-[202px]" />
-            </Link>
-          </div>
-
-          {/* Right side buttons */}
-          <div className="flex items-center justify-end gap-x-[7px] md:gap-x-2.5">
-            {rightSideButtons.map(({ label, icon: Icon, iconClassName, link, onClick, count, className }) => (
-              <PageLink
-                key={label}
-                href={link}
-                className={cx(className)}
-              >
-                <button
-                  key={label}
-                  aria-label={label}
-                  onClick={onClick}
-                  className="group relative inline-flex h-[34px] max-w-[44px] items-center justify-center rounded-full px-4 md:max-w-[50px]"
                 >
                   <span
-                    className={cx('absolute inset-0 rounded-full bg-green transition-[filter] group-hover:blur-sm')}
-                  />
-                  <Icon className={cx('relative z-10', iconClassName)} />
-                  <span
-                    aria-hidden={!count}
                     className={cx(
-                      'absolute -top-[7px] -right-2 flex size-[23px] items-center justify-center rounded-full bg-black text-[13px] leading-[22.7px] font-medium text-white uppercase transition-opacity md:-top-[11px]',
-                      {
-                        'opacity-0': !count,
-                      }
+                      'absolute inset-0 rounded-full transition-[filter] group-hover:blur-sm',
+                      link.backgroundColour
                     )}
+                  />
+                  <span className="relative z-10">{link.label}</span>
+                </PageLink>
+              ))}
+            </div>
+
+            {/* Hamburger button */}
+            <HamburgerButton
+              isOpen={isHamburgerMenuOpen}
+              onClick={toggleHamburgerMenu}
+            />
+
+            {/* Logo */}
+            <div className="flex items-center justify-center">
+              <Link href={SitePages.Home}>
+                <UBULogo className="h-[31px] w-[101px] md:h-[61px] md:w-[202px]" />
+              </Link>
+            </div>
+
+            {/* Right side buttons */}
+            <div className="flex items-center justify-end gap-x-[7px] md:gap-x-2.5">
+              {rightSideButtons.map(({ label, icon: Icon, iconClassName, link, onClick, count, className }) => (
+                <PageLink
+                  key={label}
+                  href={link}
+                  className={cx(className)}
+                >
+                  <button
+                    key={label}
+                    aria-label={label}
+                    onClick={onClick}
+                    className="group relative inline-flex h-[34px] max-w-[44px] items-center justify-center rounded-full px-4 md:max-w-[50px]"
                   >
-                    {count}
-                  </span>
-                </button>
-              </PageLink>
-            ))}
-          </div>
-        </Container>
-      </div>
-    </header>
+                    <span
+                      className={cx('absolute inset-0 rounded-full bg-green transition-[filter] group-hover:blur-sm')}
+                    />
+                    <Icon className={cx('relative z-10', iconClassName)} />
+                    <span
+                      aria-hidden={!count}
+                      className={cx(
+                        'absolute -top-[7px] -right-2 flex size-[23px] items-center justify-center rounded-full bg-black text-[13px] leading-[22.7px] font-medium text-white uppercase transition-opacity md:-top-[11px]',
+                        {
+                          'opacity-0': !count,
+                        }
+                      )}
+                    >
+                      {count}
+                    </span>
+                  </button>
+                </PageLink>
+              ))}
+            </div>
+          </Container>
+        </div>
+      </header>
+      <div
+        className={cx('fixed inset-0 z-30 bg-black/60 transition-opacity', {
+          'pointer-events-none opacity-0': !isShopMenuOpen,
+        })}
+      />
+      <ShopMenuBar
+        isBannerActive={siteBanner.isBannerActive}
+        isOpen={isShopMenuOpen}
+        onClose={closeShopMenu}
+      />
+    </>
   )
 }
 

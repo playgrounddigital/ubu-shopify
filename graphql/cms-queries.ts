@@ -267,6 +267,29 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
     }
   }`,
 
+  [GraphQlQueryEnum.AllShopNavigationMenus]: () => `{
+    allShopNavigationMenus {
+      id
+      title
+      menuLists {
+        id
+        title
+        collections {
+          id
+          title
+          collection
+        }
+      }
+      
+      featuredTitle
+      image {
+        url
+      }
+      collectionLink
+      isLarge
+    }
+  }`,
+
   [GraphQlQueryEnum.ShopPage]: () => `{
     shopPage {
       title
