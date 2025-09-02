@@ -24,6 +24,15 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
 
   const variant = product.variants[0]
   const productPrice = variant?.priceV2.amount
+  const variantTitle = variant?.title
+  const colorMetafield = product.metafields[0]?.references[0]?.fields.find((field) => field.key === 'label')?.value
+
+  const secondaryTitleToUse = (() => {
+    if (variantTitle === 'Default Title' && colorMetafield) {
+      return colorMetafield
+    }
+    return variantTitle
+  })()
 
   const decreaseQty = () => setQuantity((q) => Math.max(1, q - 1))
   const increaseQty = () =>
@@ -62,9 +71,9 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
                   ${Number(variant.priceV2.amount).toFixed(2)}
                 </div>
               ) : null}
-              {variant?.title ? (
+              {secondaryTitleToUse ? (
                 <div className="text-[19px] leading-[22.8px] font-medium -tracking-[0.57px] text-grey">
-                  {variant.title}
+                  {secondaryTitleToUse}
                 </div>
               ) : null}
             </div>
