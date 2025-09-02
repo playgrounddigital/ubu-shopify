@@ -4,6 +4,7 @@ import { FC, useMemo } from 'react'
 import Button from '~/components/Layout/Button'
 import CartItem from '~/components/Layout/Nav/Cart/CartItem'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
+import ProductCard from '~/components/Pages/Shared/ProductCard'
 import { useCart } from '~/context/CartContext'
 import { formatCurrency } from '~/helpers/formatters'
 import EmptyCartTextJSON from '~/public/empty-cart-text.json'
@@ -11,6 +12,8 @@ import FooterJSON from '~/public/footer.json'
 import FreeShippingBannerJSON from '~/public/free-shipping-banner.json'
 import ChevronLeftIcon from '~/public/img/icons/chevron-left.svg'
 import TruckIcon from '~/public/img/icons/truck.svg'
+import ProductsJSON from '~/public/products.json'
+import RecommendedCartItemListJSON from '~/public/recommended-cart-item-list.json'
 
 const FREE_SHIPPING_LIMIT = FreeShippingBannerJSON.freeShippingThreshold
 
@@ -146,38 +149,66 @@ const Cart: FC = () => {
             </button>
           </div> */}
 
-          {/* Footer / Total */}
-          <div className="px-10 pt-4 pb-[38px]">
-            <div className="mb-7 inline-flex items-center justify-between gap-x-6">
-              <div className="body-large">
-                <span>Total: {formatCurrency(subtotal)}</span>
-              </div>
-
-              <Button
-                variant={!hasCartItems ? 'black-green' : 'white-black'}
-                onClick={() => {
-                  if (!hasCartItems) {
-                    closeCart()
-                    return
+          {/* Footer - Recommended Items & Total */}
+          <div>
+            {/* RECOMMENDED ITEMS */}
+            <div className="px-10">
+              <hr className="mb-5 border-divider-grey" />
+              <h3 className="mb-4 text-sm leading-5 -tracking-[0.28px]">{RecommendedCartItemListJSON.text}</h3>
+              <div className="flex gap-5">
+                {RecommendedCartItemListJSON.products.slice(0, 4).map((cmsProduct) => {
+                  const shopifyProduct = ProductsJSON.find(
+                    (p) => p.id === cmsProduct.product.id || p.variants.find((v) => v.id === cmsProduct.product.id)
+                  )
+                  if (!shopifyProduct) {
+                    console.error(`Product ${cmsProduct.product.id} not found in Shopify products`)
+                    return null
                   }
-                  goToCheckout()
-                }}
-                disabled={(hasCartItems && !checkoutUrl) || isLoading}
-              >
-                {hasCartItems ? 'CHECKOUT' : 'SHOP NOW'}
-              </Button>
+                  return (
+                    <ProductCard
+                      key={cmsProduct.id}
+                      isSmall
+                      product={shopifyProduct}
+                      onClick={closeCart}
+                    />
+                  )
+                })}
+              </div>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-5">
-              {FooterJSON.acceptedPaymentMethods.map((item) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <OptimisedImage
-                  key={item.id}
-                  src={item.image.url}
-                  alt={item.name}
-                  className="h-6 w-[34px]"
-                />
-              ))}
+            {/* TOTAL */}
+            <div className="px-10 pt-4 pb-[38px]">
+              <div className="mb-7 inline-flex items-center justify-between gap-x-6">
+                <div className="body-large">
+                  <span>Total: {formatCurrency(subtotal)}</span>
+                </div>
+
+                <Button
+                  variant={!hasCartItems ? 'black-green' : 'white-black'}
+                  onClick={() => {
+                    if (!hasCartItems) {
+                      closeCart()
+                      return
+                    }
+                    goToCheckout()
+                  }}
+                  disabled={(hasCartItems && !checkoutUrl) || isLoading}
+                >
+                  {hasCartItems ? 'CHECKOUT' : 'SHOP NOW'}
+                </Button>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-center gap-5">
+                {FooterJSON.acceptedPaymentMethods.map((item) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <OptimisedImage
+                    key={item.id}
+                    src={item.image.url}
+                    alt={item.name}
+                    className="h-6 w-[34px]"
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>

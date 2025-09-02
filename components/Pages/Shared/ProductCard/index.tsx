@@ -7,11 +7,13 @@ import { SitePages } from '~/types/pages'
 import { Product } from '~/types/shopify'
 
 interface ProductCardProps {
+  isSmall?: boolean
   product: Product
+  onClick?: () => void
   className?: string
 }
 
-const ProductCard: FC<ProductCardProps> = ({ product, className }) => {
+const ProductCard: FC<ProductCardProps> = ({ isSmall, product, onClick, className }) => {
   const { addToCart } = useCart()
   const productTitle = product.title
   const variant = product.variants[0]
@@ -27,14 +29,24 @@ const ProductCard: FC<ProductCardProps> = ({ product, className }) => {
   })()
 
   return (
-    <div className={cx('group/card relative md:min-w-[305px]', className)}>
+    <div
+      className={cx('group/card relative', className, {
+        'md:min-w-[305px]': !isSmall,
+      })}
+    >
       {/* IMAGE AND CART BUTTON */}
       <div className="relative mb-4">
-        <PageLink href={`${SitePages.Products}/${product.handle}`}>
+        <PageLink
+          href={`${SitePages.Products}/${product.handle}`}
+          onClick={onClick}
+        >
           <div
-            className="aspect-[305/406] overflow-hidden rounded-[10px]"
+            className={cx('overflow-hidden', {
+              'aspect-[305/406] rounded-[10px]': !isSmall,
+              'h-[63px] w-[57px] rounded-xs border': isSmall,
+            })}
             style={{
-              maskImage: 'url(/img/shared/product-card-mask.svg)',
+              maskImage: !isSmall ? 'url(/img/shared/product-card-mask.svg)' : 'none',
               maskSize: 'cover',
               maskPosition: 'center',
               maskRepeat: 'no-repeat',
@@ -50,33 +62,54 @@ const ProductCard: FC<ProductCardProps> = ({ product, className }) => {
           </div>
         </PageLink>
         {/* Absolute Add button */}
-        <div className="absolute right-0 bottom-0 flex w-full justify-end p-[6.4px] md:p-[11px]">
-          <button
-            onClick={() =>
-              addToCart({
-                variantId: variant?.id,
-                quantity: 1,
-                productTitle: productTitle,
-                variantTitle: variantTitle,
-                priceAmount: productPrice ?? '0',
-                currencyCode: 'AUD',
-                imageUrl: product.images[0]?.url,
-              })
-            }
-            className="group/button relative inline-flex h-[27px] w-fit max-w-[61px] items-center justify-center rounded-full px-3 text-center uppercase md:h-[34px] md:max-w-[unset] md:px-4"
-          >
-            <span className="absolute inset-0 rounded-full bg-black transition-[filter] group-hover/button:blur-sm" />
-            <span className="relative z-10 text-xs whitespace-nowrap text-white md:text-base">+ ADD</span>
-          </button>
-        </div>
+        {!isSmall && (
+          <div className="absolute right-0 bottom-0 flex w-full justify-end p-[6.4px] md:p-[11px]">
+            <button
+              onClick={() =>
+                addToCart({
+                  variantId: variant?.id,
+                  quantity: 1,
+                  productTitle: productTitle,
+                  variantTitle: variantTitle,
+                  priceAmount: productPrice ?? '0',
+                  currencyCode: 'AUD',
+                  imageUrl: product.images[0]?.url,
+                })
+              }
+              className="group/button relative inline-flex h-[27px] w-fit max-w-[61px] items-center justify-center rounded-full px-3 text-center uppercase md:h-[34px] md:max-w-[unset] md:px-4"
+            >
+              <span className="absolute inset-0 rounded-full bg-black transition-[filter] group-hover/button:blur-sm" />
+              <span className="relative z-10 text-xs whitespace-nowrap text-white md:text-base">+ ADD</span>
+            </button>
+          </div>
+        )}
       </div>
       {/* TITLE + VARIANT */}
-      <div className="mb-[3px] flex justify-between gap-x-2">
-        <h3 className="text-product-title">{productTitle}</h3>
-        <span className="translate-y-0.5 text-lg leading-[21.6px] -tracking-[0.54px]">${productPrice}</span>
+      <div
+        className={cx('mb-[3px] flex', {
+          'justify-between gap-x-2': !isSmall,
+          'flex-col gap-y-1.5': isSmall,
+        })}
+      >
+        <h3
+          className={cx({
+            'text-product-title': !isSmall,
+            'text-sm font-bold -tracking-[0.42px]': isSmall,
+          })}
+        >
+          {productTitle}
+        </h3>
+        <span
+          className={cx({
+            'translate-y-0.5 text-lg leading-[21.6px] -tracking-[0.54px]': !isSmall,
+            'text-[11px] leading-[13px] -tracking-[0.33px]': isSmall,
+          })}
+        >
+          ${productPrice}
+        </span>
       </div>
       {/* PRICE */}
-      <span className="text-[17px] leading-5 -tracking-[0.51px] text-grey">{secondaryTitleToUse}</span>
+      {!isSmall && <span className="text-[17px] leading-5 -tracking-[0.51px] text-grey">{secondaryTitleToUse}</span>}
     </div>
   )
 }

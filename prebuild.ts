@@ -2,13 +2,16 @@ import dotenv from 'dotenv'
 import fs from 'fs'
 import path from 'path'
 import { fetchFromDatoAPI, getGraphQLQuery } from '~/helpers/cms'
+import { getAllProducts } from '~/lib/shopify'
 import { EmptyCartTextContent } from '~/types/cms/models/empty-cart-text'
 import { Footer } from '~/types/cms/models/footer'
 import { FreeShippingBanner } from '~/types/cms/models/free-shipping-banner'
+import { RecommendedCartItemListContent } from '~/types/cms/models/recommended-cart-item-list'
 import { ShippingReturnsInformationContent } from '~/types/cms/models/shipping-returns-information'
 import { ShopNavigationMenu } from '~/types/cms/models/shop-navigation-menu'
 import { SiteBanner } from '~/types/cms/models/site-banner'
 import { GraphQlQueryEnum } from '~/types/graphql'
+import { Product } from '~/types/shopify'
 dotenv.config()
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
@@ -22,6 +25,7 @@ const fetchContent = async () => {
   const freeShippingBannerQuery = getGraphQLQuery(GraphQlQueryEnum.FreeShippingBanner)
   const allShopNavigationMenusQuery = getGraphQLQuery(GraphQlQueryEnum.AllShopNavigationMenus)
   const emptyCartTextQuery = getGraphQLQuery(GraphQlQueryEnum.EmptyCartText)
+  const recommendedCartItemListQuery = getGraphQLQuery(GraphQlQueryEnum.RecommendedCartItemList)
 
   const [
     { siteBanner },
@@ -30,6 +34,8 @@ const fetchContent = async () => {
     { freeShippingBanner },
     { allShopNavigationMenus },
     { emptyCartText },
+    { recommendedCartItemList },
+    products,
   ]: [
     { siteBanner: SiteBanner },
     { footer: Footer },
@@ -37,6 +43,8 @@ const fetchContent = async () => {
     { freeShippingBanner: FreeShippingBanner },
     { allShopNavigationMenus: ShopNavigationMenu[] },
     { emptyCartText: EmptyCartTextContent },
+    { recommendedCartItemList: RecommendedCartItemListContent },
+    products: Product[],
   ] = await Promise.all([
     fetchFromDatoAPI(siteBannerQuery),
     fetchFromDatoAPI(footerQuery),
@@ -44,6 +52,8 @@ const fetchContent = async () => {
     fetchFromDatoAPI(freeShippingBannerQuery),
     fetchFromDatoAPI(allShopNavigationMenusQuery),
     fetchFromDatoAPI(emptyCartTextQuery),
+    fetchFromDatoAPI(recommendedCartItemListQuery),
+    getAllProducts(),
   ])
 
   const siteBannerJson = JSON.stringify(siteBanner)
@@ -63,6 +73,12 @@ const fetchContent = async () => {
 
   const emptyCartTextJson = JSON.stringify(emptyCartText)
   fs.writeFileSync(path.join(publicDir, 'empty-cart-text.json'), emptyCartTextJson)
+
+  const recommendedCartItemListJson = JSON.stringify(recommendedCartItemList)
+  fs.writeFileSync(path.join(publicDir, 'recommended-cart-item-list.json'), recommendedCartItemListJson)
+
+  const productsJson = JSON.stringify(products)
+  fs.writeFileSync(path.join(publicDir, 'products.json'), productsJson)
 }
 
 fetchContent().then(() => process.exit(0))

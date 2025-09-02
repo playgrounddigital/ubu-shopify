@@ -336,6 +336,16 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
       freeShippingThreshold
     }
   }`,
+  [GraphQlQueryEnum.RecommendedCartItemList]: () => `{
+    recommendedCartItemList {
+      text
+      products {
+        id
+        product
+      }
+    }
+  }`,
+
   [GraphQlQueryEnum.Footer]: () => `{
     footer {
       signUpText
