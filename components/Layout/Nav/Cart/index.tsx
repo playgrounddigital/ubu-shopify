@@ -2,14 +2,15 @@
 import cx from 'classnames'
 import { FC, useMemo } from 'react'
 import Button from '~/components/Layout/Button'
+import CartItem from '~/components/Layout/Nav/Cart/CartItem'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
 import { useCart } from '~/context/CartContext'
 import { formatCurrency } from '~/helpers/formatters'
+import EmptyCartTextJSON from '~/public/empty-cart-text.json'
 import FooterJSON from '~/public/footer.json'
 import FreeShippingBannerJSON from '~/public/free-shipping-banner.json'
 import ChevronLeftIcon from '~/public/img/icons/chevron-left.svg'
 import TruckIcon from '~/public/img/icons/truck.svg'
-import CartItem from './CartItem'
 
 const FREE_SHIPPING_LIMIT = FreeShippingBannerJSON.freeShippingThreshold
 
@@ -35,6 +36,8 @@ const Cart: FC = () => {
     }
     return 'You have free shipping!'
   })()
+
+  const hasCartItems = Boolean(cart?.lineItems?.length)
 
   const handleDelete = (id: string) => {
     updateCartItemQuantity({ id, quantity: 0 })
@@ -98,23 +101,25 @@ const Cart: FC = () => {
           </div>
 
           {/* Free shipping notice */}
-          <div className="mb-12 px-10">
-            <div className="mb-3 flex items-center gap-x-3 text-sm">
-              <TruckIcon className="h-[15px] w-[17px]" />
-              <p>{freeShippingText}</p>
+          {hasCartItems && (
+            <div className="mb-12 px-10">
+              <div className="mb-3 flex items-center gap-x-3 text-sm">
+                <TruckIcon className="h-[15px] w-[17px]" />
+                <p>{freeShippingText}</p>
+              </div>
+              <div className="h-2 w-full rounded-full bg-black/10">
+                <div
+                  className="h-2 rounded-full bg-lime-400"
+                  style={{ width: `${percent}%` }}
+                />
+              </div>
             </div>
-            <div className="h-2 w-full rounded-full bg-black/10">
-              <div
-                className="h-2 rounded-full bg-lime-400"
-                style={{ width: `${percent}%` }}
-              />
-            </div>
-          </div>
+          )}
 
           {/* Line items */}
           <div className="flex-1 overflow-y-auto px-10">
-            {!cart || cart.lineItems.length === 0 ? (
-              <div className="py-20 text-center text-lg">Your cart is empty.</div>
+            {!hasCartItems ? (
+              <div className="pt-5">{EmptyCartTextJSON.text}</div>
             ) : (
               <ul className="space-y-6">
                 {cart.lineItems.map((li) => (

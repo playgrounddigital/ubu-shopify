@@ -227,7 +227,21 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
       }
     }
   }`,
-
+  [GraphQlQueryEnum.ShopPage]: () => `{
+    shopPage {
+      title
+      backgroundColour
+      image ${imageQuery}
+      description
+      
+      content {
+        __typename
+        ${reasonsSectionQuery}
+        ${featuredProductsSectionQuery}
+        ${fullWidthBannerSectionQuery}
+      }
+    }
+  }`,
   [GraphQlQueryEnum.PrivacyPolicyPage]: () => `{
     privacyPolicyPage {
       title
@@ -237,7 +251,6 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
       }
     }
   }`,
-
   [GraphQlQueryEnum.ProductPageTemplate]: () => `{
     productPageTemplate {
       content {
@@ -266,6 +279,11 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
       }
     }
   }`,
+  [GraphQlQueryEnum.EmptyCartText]: () => `{
+    emptyCartText {
+      text
+    }
+  }`,
 
   [GraphQlQueryEnum.AllShopNavigationMenus]: () => `{
     allShopNavigationMenus {
@@ -287,22 +305,6 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
       }
       collectionLink
       isLarge
-    }
-  }`,
-
-  [GraphQlQueryEnum.ShopPage]: () => `{
-    shopPage {
-      title
-      backgroundColour
-      image ${imageQuery}
-      description
-      
-      content {
-        __typename
-        ${reasonsSectionQuery}
-        ${featuredProductsSectionQuery}
-        ${fullWidthBannerSectionQuery}
-      }
     }
   }`,
 

@@ -23,14 +23,14 @@ const CartItem: FC<CartItemProps> = ({ item, isLoading, onIncrease, onDecrease, 
         className="h-[100px] w-[100px] rounded-md"
       />
 
-      <div className="flex w-full flex-col">
-        <div className="flex items-start justify-between gap-x-4">
-          <p className="max-w-[100px] text-[19px] leading-[23px] font-bold -tracking-[0.57px]">{item.title}</p>
+      <div className="w-full">
+        <div className="mb-2 flex items-start justify-between gap-x-4">
+          <p className="text-[19px] leading-[23px] font-bold -tracking-[0.57px]">{item.title}</p>
 
           {/* Delete button */}
           <button
             onClick={() => onDelete(item.id)}
-            className="text-grey"
+            className="translate-y-0.5 text-grey"
           >
             <TrashIcon className="size-[15px]" />
           </button>

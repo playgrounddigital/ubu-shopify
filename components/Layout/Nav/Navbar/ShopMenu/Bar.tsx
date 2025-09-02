@@ -34,7 +34,6 @@ const ShopMenuBar: FC<ShopMenuBarProps> = ({ isBannerActive, isOpen, onClose }) 
       <div
         aria-label="Close shop menu"
         aria-hidden={!isOpen}
-        onMouseEnter={() => setCurrentHoveredMenu(null)}
         onClick={_onClose}
         className={cx('fixed inset-0 z-30 bg-black/60 backdrop-blur-[12px] transition-opacity', {
           'pointer-events-none opacity-0': !isOpen,
@@ -87,8 +86,8 @@ const ShopMenuBar: FC<ShopMenuBarProps> = ({ isBannerActive, isOpen, onClose }) 
       </menu>
 
       <div
-        className={cx('fixed left-1/2 z-40 w-full max-w-[1340px] -translate-x-1/2 pt-5 transition-opacity', {
-          'pointer-events-none opacity-0': !currentHoveredMenu,
+        className={cx('fixed left-1/2 z-40 w-full max-w-[1340px] -translate-x-1/2 pt-5 transition-all', {
+          'pointer-events-none -translate-y-4 opacity-0': !currentHoveredMenu || !isOpen,
           'top-[190px]': isBannerActive,
           'top-[152px]': !isBannerActive,
         })}
@@ -125,7 +124,7 @@ const ShopMenuBar: FC<ShopMenuBarProps> = ({ isBannerActive, isOpen, onClose }) 
 
             {/* RIGHT SIDE - FEATURED COLLECTION */}
 
-            <div className="relative mb-4">
+            <div className="group/card relative">
               <PageLink
                 aria-label="View featured collection"
                 href={`${SitePages.Collections}/${currentMenu?.collectionLink.handle}`}
@@ -159,7 +158,10 @@ const ShopMenuBar: FC<ShopMenuBarProps> = ({ isBannerActive, isOpen, onClose }) 
                     src={currentMenu?.image?.url}
                     alt={currentMenu?.collectionLink.title}
                     layout={currentMenu?.isLarge ? 'contain' : 'cover'}
-                    imgClassName="object-top"
+                    imgClassName={cx('object-top transition-transform transform-gpu', {
+                      'group-hover/card:scale-105': !currentMenu?.isLarge,
+                      'mix-blend-darken group-hover/card:scale-[1.02]': currentMenu?.isLarge,
+                    })}
                     className={cx('h-full w-full', {
                       'mix-blend-darken': currentMenu?.isLarge,
                     })}

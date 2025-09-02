@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 import fs from 'fs'
 import path from 'path'
 import { fetchFromDatoAPI, getGraphQLQuery } from '~/helpers/cms'
+import { EmptyCartTextContent } from '~/types/cms/models/empty-cart-text'
 import { Footer } from '~/types/cms/models/footer'
 import { FreeShippingBanner } from '~/types/cms/models/free-shipping-banner'
 import { ShippingReturnsInformationContent } from '~/types/cms/models/shipping-returns-information'
@@ -20,6 +21,7 @@ const fetchContent = async () => {
   const shippingReturnsInformationQuery = getGraphQLQuery(GraphQlQueryEnum.ShippingReturnsInformation)
   const freeShippingBannerQuery = getGraphQLQuery(GraphQlQueryEnum.FreeShippingBanner)
   const allShopNavigationMenusQuery = getGraphQLQuery(GraphQlQueryEnum.AllShopNavigationMenus)
+  const emptyCartTextQuery = getGraphQLQuery(GraphQlQueryEnum.EmptyCartText)
 
   const [
     { siteBanner },
@@ -27,18 +29,21 @@ const fetchContent = async () => {
     { shippingReturnsInformation },
     { freeShippingBanner },
     { allShopNavigationMenus },
+    { emptyCartText },
   ]: [
     { siteBanner: SiteBanner },
     { footer: Footer },
     { shippingReturnsInformation: ShippingReturnsInformationContent },
     { freeShippingBanner: FreeShippingBanner },
     { allShopNavigationMenus: ShopNavigationMenu[] },
+    { emptyCartText: EmptyCartTextContent },
   ] = await Promise.all([
     fetchFromDatoAPI(siteBannerQuery),
     fetchFromDatoAPI(footerQuery),
     fetchFromDatoAPI(shippingReturnsInformationQuery),
     fetchFromDatoAPI(freeShippingBannerQuery),
     fetchFromDatoAPI(allShopNavigationMenusQuery),
+    fetchFromDatoAPI(emptyCartTextQuery),
   ])
 
   const siteBannerJson = JSON.stringify(siteBanner)
@@ -55,6 +60,9 @@ const fetchContent = async () => {
 
   const allShopNavigationMenusJson = JSON.stringify(allShopNavigationMenus)
   fs.writeFileSync(path.join(publicDir, 'all-shop-navigation-menus.json'), allShopNavigationMenusJson)
+
+  const emptyCartTextJson = JSON.stringify(emptyCartText)
+  fs.writeFileSync(path.join(publicDir, 'empty-cart-text.json'), emptyCartTextJson)
 }
 
 fetchContent().then(() => process.exit(0))
