@@ -161,11 +161,7 @@ const Navbar: FC = () => {
           </Container>
         </div>
       </header>
-      <div
-        className={cx('fixed inset-0 z-30 bg-black/60 transition-opacity', {
-          'pointer-events-none opacity-0': !isShopMenuOpen,
-        })}
-      />
+
       <ShopMenuBar
         isBannerActive={siteBanner.isBannerActive}
         isOpen={isShopMenuOpen}

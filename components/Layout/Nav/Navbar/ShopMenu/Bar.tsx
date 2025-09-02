@@ -18,6 +18,11 @@ const ShopMenuBar: FC<ShopMenuBarProps> = ({ isBannerActive, isOpen, onClose }) 
 
   const handleMouseEnter = (menu: ShopNavigationMenu) => setCurrentHoveredMenu(menu.id)
 
+  const _onClose = () => {
+    setCurrentHoveredMenu(null)
+    onClose()
+  }
+
   const currentMenu = useMemo(
     () => allShopNavigationMenusJSON.find((menu) => menu.id === currentHoveredMenu),
     [currentHoveredMenu]
@@ -30,7 +35,7 @@ const ShopMenuBar: FC<ShopMenuBarProps> = ({ isBannerActive, isOpen, onClose }) 
         aria-label="Close shop menu"
         aria-hidden={!isOpen}
         onMouseEnter={() => setCurrentHoveredMenu(null)}
-        onClick={onClose}
+        onClick={_onClose}
         className={cx('fixed inset-0 z-30 bg-black/60 backdrop-blur-[12px] transition-opacity', {
           'pointer-events-none opacity-0': !isOpen,
         })}
@@ -39,9 +44,9 @@ const ShopMenuBar: FC<ShopMenuBarProps> = ({ isBannerActive, isOpen, onClose }) 
         aria-label="Shop menu"
         aria-hidden={!isOpen}
         className={cx(
-          'fixed left-0 z-40 hidden h-16 w-full border-y-[1.5] border-black bg-white transition-transform lg:block',
+          'fixed left-0 z-40 hidden h-16 w-full border-y-[1.5] border-black bg-white transition-all lg:block',
           {
-            'pointer-events-none opacity-0': !isOpen,
+            'pointer-events-none': !isOpen,
             'top-[126px]': isBannerActive,
             'top-[88px]': !isBannerActive,
             '-translate-y-[calc(100%+190px)]': !isOpen && isBannerActive,
@@ -50,13 +55,22 @@ const ShopMenuBar: FC<ShopMenuBarProps> = ({ isBannerActive, isOpen, onClose }) 
         )}
       >
         <ul className="mx-auto flex h-full max-w-[1440px] items-center gap-x-4 px-10">
+          <li>
+            <PageLink
+              href={SitePages.Shop}
+              onClick={_onClose}
+              className="font-bold uppercase hover:underline"
+            >
+              All
+            </PageLink>
+          </li>
           {allShopNavigationMenusJSON.map((menu) => (
             <li key={menu.id}>
               <PageLink
                 tabIndex={isOpen ? -1 : 0}
                 href={`${SitePages.Collections}/${menu.collectionLink.handle}`}
                 onMouseEnter={() => handleMouseEnter(menu as unknown as ShopNavigationMenu)}
-                onClick={onClose}
+                onClick={_onClose}
               >
                 <button
                   tabIndex={-1}
@@ -83,7 +97,7 @@ const ShopMenuBar: FC<ShopMenuBarProps> = ({ isBannerActive, isOpen, onClose }) 
           <AnimateOnUpdate
             disableTransition={currentHoveredMenu === null}
             updateKey={currentHoveredMenu}
-            className="flex justify-between gap-x-10"
+            className="flex justify-between gap-x-4"
           >
             <div
               className="grid w-fit"
@@ -92,13 +106,16 @@ const ShopMenuBar: FC<ShopMenuBarProps> = ({ isBannerActive, isOpen, onClose }) 
               {currentMenu?.menuLists.map((menu) => (
                 <div key={menu.id}>
                   <h3 className="mb-5 font-bold uppercase">{menu.title}</h3>
-                  <ul className="flex flex-col gap-y-5">
+                  <ul className="flex min-w-[259px] flex-col gap-y-5">
                     {menu.collections.map((collection) => (
-                      <li
-                        key={collection.id}
-                        className="text-general-title"
-                      >
-                        {collection.title}
+                      <li key={collection.id}>
+                        <PageLink
+                          href={`${SitePages.Collections}/${collection.collection.handle}`}
+                          onClick={_onClose}
+                          className="text-general-title hover:underline"
+                        >
+                          {collection.title}
+                        </PageLink>
                       </li>
                     ))}
                   </ul>
@@ -112,29 +129,49 @@ const ShopMenuBar: FC<ShopMenuBarProps> = ({ isBannerActive, isOpen, onClose }) 
               <PageLink
                 aria-label="View featured collection"
                 href={`${SitePages.Collections}/${currentMenu?.collectionLink.handle}`}
+                onClick={_onClose}
               >
                 <div
-                  className={cx('h-[363px] overflow-hidden rounded-[10px]', {
+                  className={cx('relative h-[363px] overflow-hidden rounded-[10px]', {
                     'w-[312px]': !currentMenu?.isLarge,
                     'min-w-[739px]': currentMenu?.isLarge,
                   })}
                   style={{
                     maskImage: currentMenu?.isLarge ? undefined : 'url(/img/shared/nav-featured-card-mask-small.svg)',
+                    // backgroundImage: currentMenu?.isLarge
+                    //   ? 'url(/img/shared/nav-featured-card-mask-large.svg)'
+                    //   : undefined,
                     maskSize: 'cover',
                     maskPosition: 'center',
                     maskRepeat: 'no-repeat',
                   }}
                 >
+                  {/* Show background image */}
+                  {currentMenu?.isLarge && (
+                    <OptimisedImage
+                      src="/img/shared/nav-featured-card-mask-large.svg"
+                      alt=""
+                      layout="contain"
+                      className="absolute inset-0"
+                    />
+                  )}
                   <OptimisedImage
                     src={currentMenu?.image?.url}
                     alt={currentMenu?.collectionLink.title}
-                    layout="cover"
+                    layout={currentMenu?.isLarge ? 'contain' : 'cover'}
                     imgClassName="object-top"
-                    className="h-full w-full"
+                    className={cx('h-full w-full', {
+                      'mix-blend-darken': currentMenu?.isLarge,
+                    })}
                   />
                 </div>
               </PageLink>
-              <span className="absolute right-3 bottom-4.5 text-right text-[26px] font-bold whitespace-nowrap">
+              <span
+                className={cx('absolute text-right text-[26px] font-bold whitespace-nowrap', {
+                  'right-3 bottom-4.5': !currentMenu?.isLarge,
+                  'right-1 bottom-5': currentMenu?.isLarge,
+                })}
+              >
                 {currentMenu?.featuredTitle}
               </span>
             </div>
