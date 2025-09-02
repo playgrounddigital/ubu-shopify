@@ -1,4 +1,3 @@
-import { Image } from '~/types/cms/common'
 import { DatoCMSShopifyCollection } from '~/types/cms/models/collection'
 
 export interface ShopNavigationMenu {
@@ -6,7 +5,9 @@ export interface ShopNavigationMenu {
   title: string
   menuLists: MenuList[]
   featuredTitle: string
-  image: Image
+  image: {
+    url: string
+  }
   collectionLink: DatoCMSShopifyCollection
   isLarge: boolean
 }
@@ -14,5 +15,9 @@ export interface ShopNavigationMenu {
 export interface MenuList {
   id: string
   title: string
-  collections: DatoCMSShopifyCollection[]
+  collections: {
+    id: string
+    title: string
+    collection: DatoCMSShopifyCollection
+  }[]
 }

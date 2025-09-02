@@ -17,7 +17,7 @@ export interface DatoCMSCollectionModel {
 type CollectionContent = ReasonsSectionRecord | FeaturedProductsSectionRecord | FullWidthBannerSectionRecord
 
 export interface DatoCMSShopifyCollection {
-  __typename: 'collection'
+  __typename: 'collection' | string
   id: string
   title: string
   handle: string

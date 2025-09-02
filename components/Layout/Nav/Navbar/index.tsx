@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 import Container from '~/components/Layout/Container'
 import HamburgerButton from '~/components/Layout/Nav/Navbar/HamburgerButton'
+import MobileNavMenu from '~/components/Layout/Nav/Navbar/MobileNavMenu'
 import { navLinks } from '~/components/Layout/Nav/Navbar/presets'
 import ShopMenuBar from '~/components/Layout/Nav/Navbar/ShopMenu/Bar'
 import PageLink from '~/components/Layout/PageLink'
@@ -22,7 +23,7 @@ import { SitePages } from '~/types/pages'
 const siteBanner = SiteBannerJSON as SiteBanner
 
 const Navbar: FC = () => {
-  const { isOpen: isShopMenuOpen, toggle: toggleShopMenu, close: closeShopMenu } = useOpenState()
+  const { isOpen: isShopMenuOpen, open: openShopMenu, close: closeShopMenu } = useOpenState()
   const { isOpen: isHamburgerMenuOpen, toggle: toggleHamburgerMenu, close: closeHamburgerMenu } = useOpenState()
   const [hasScrolled, setHasScrolled] = useState(false)
   const { cart, openCart } = useCart()
@@ -81,7 +82,7 @@ const Navbar: FC = () => {
         <div
           className={cx('w-full transition-colors', {
             'bg-white': hasScrolled || !isOnHomePage || isShopMenuOpen,
-            'bg-white xl:bg-transparent': !hasScrolled && isOnHomePage,
+            'bg-white xl:bg-transparent': !hasScrolled && isOnHomePage && !isShopMenuOpen,
           })}
         >
           <Container className="grid h-[51px] grid-cols-3 md:h-[88px]">
@@ -93,7 +94,7 @@ const Navbar: FC = () => {
                   href={link.href}
                   onMouseEnter={() => {
                     if (link.href === SitePages.Shop) {
-                      toggleShopMenu()
+                      openShopMenu()
                     }
                   }}
                   className={cx(
@@ -166,6 +167,13 @@ const Navbar: FC = () => {
         isBannerActive={siteBanner.isBannerActive}
         isOpen={isShopMenuOpen}
         onClose={closeShopMenu}
+      />
+
+      {/* Mobile nav menu */}
+      <MobileNavMenu
+        isOpen={isHamburgerMenuOpen}
+        isAuthenticated={isAuthenticated}
+        onClose={closeHamburgerMenu}
       />
     </>
   )

@@ -84,7 +84,7 @@ body {
 
 /*CUSTOM SCROLLBAR*/
 ::-webkit-scrollbar {
-  @apply size-1.5 md:h-2 md:w-4;
+  @apply size-1.5 lg:h-2 lg:w-4;
 }
 
 /* Track */

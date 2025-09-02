@@ -33,11 +33,11 @@ const Header: FC<HeaderProps> = ({ title, image, content, backgroundClassName })
 
   return (
     <section className="pt-[126px]">
-      <Container className="mb-5 grid h-[600px] gap-x-5 gap-y-2 lg:grid-cols-2">
+      <Container className="mb-5 flex flex-col-reverse gap-x-5 gap-y-2 lg:grid lg:h-[600px] lg:grid-cols-2">
         {/* LINK BLOCk */}
         <div
           className={cx(
-            'relative inline-flex h-full items-end overflow-hidden p-[30px] pl-10',
+            'relative inline-flex h-[221px] items-end overflow-hidden p-[30px] pl-10 md:h-[270px] lg:h-full',
             {
               'bg-yellow': !content?.backgroundColour && !backgroundClassName,
             },
@@ -69,6 +69,7 @@ const Header: FC<HeaderProps> = ({ title, image, content, backgroundClassName })
               : 'Image of children wearing hats looking down to the ground'
           }
           layout="cover"
+          className="h-[333px] md:aspect-square md:h-full lg:aspect-auto"
         />
       </Container>
       {content && (

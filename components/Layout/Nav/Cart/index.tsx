@@ -92,11 +92,9 @@ const Cart: FC = () => {
             <div className="inline-flex gap-x-2">
               <h2 className="text-[44px] leading-10 font-semibold -tracking-[2.64px]">Cart</h2>
               {/* Number of items */}
-              {cart?.lineItems.length > 0 && (
-                <div className="inline-flex size-[23px] items-center justify-center rounded-full bg-black text-center">
-                  <span className="text-[13px] leading-[23px] font-medium text-white">{cart?.lineItems.length}</span>
-                </div>
-              )}
+              <div className="inline-flex size-[23px] items-center justify-center rounded-full bg-black text-center">
+                <span className="text-[13px] leading-[23px] font-medium text-white">{cart?.lineItems.length}</span>
+              </div>
             </div>
           </div>
 
@@ -156,10 +154,17 @@ const Cart: FC = () => {
               </div>
 
               <Button
-                onClick={goToCheckout}
-                disabled={!checkoutUrl || isLoading || !cart || cart.lineItems.length === 0}
+                variant={!hasCartItems ? 'black-green' : 'white-black'}
+                onClick={() => {
+                  if (!hasCartItems) {
+                    closeCart()
+                    return
+                  }
+                  goToCheckout()
+                }}
+                disabled={(hasCartItems && !checkoutUrl) || isLoading}
               >
-                CHECKOUT
+                {hasCartItems ? 'CHECKOUT' : 'SHOP NOW'}
               </Button>
             </div>
 

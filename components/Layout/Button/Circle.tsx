@@ -10,14 +10,14 @@ interface CircleButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   onClick?: () => void
 }
 
-const CircleButton: FC<CircleButtonProps> = ({ variant, ariaLabel, onClick, isFlipped, ...props }) => {
+const CircleButton: FC<CircleButtonProps> = ({ variant = 'white-black', ariaLabel, onClick, isFlipped, ...props }) => {
   return (
     <button
       aria-label={ariaLabel}
       onClick={onClick}
       className={cx(
         BUTTON_COLOURS[variant].button,
-        'group/button relative inline-flex size-[60px] items-center justify-center md:size-[85px]',
+        'group/button relative inline-flex size-[60px] items-center justify-center lg:size-[85px]',
         {
           'pointer-events-none': props.disabled,
         }
@@ -34,7 +34,7 @@ const CircleButton: FC<CircleButtonProps> = ({ variant, ariaLabel, onClick, isFl
         )}
       />
       <ArrowRightIcon
-        className={cx('relative z-10 size-[35px] transition-transform md:size-[50px]', {
+        className={cx('relative z-10 size-[35px] transition-transform lg:size-[50px]', {
           'group-hover/button:translate-x-0.5': !isFlipped,
           'rotate-180 group-hover/button:-translate-x-0.5': isFlipped,
         })}

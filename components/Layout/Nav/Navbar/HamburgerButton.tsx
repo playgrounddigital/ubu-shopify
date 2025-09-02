@@ -1,7 +1,7 @@
 import cx from 'classnames'
 import { FC } from 'react'
 
-const lineStyles = 'min-h-0.5 h-0.5 w-full bg-black rounded-full transition-all duration-500 transform-gpu'
+const lineStyles = 'min-h-0.5 h-0.5 w-full bg-black rounded-full transition-all transform-gpu'
 
 interface HamburgerButtonProps {
   isOpen: boolean
@@ -17,7 +17,7 @@ const HamburgerButton: FC<HamburgerButtonProps> = ({ isOpen, onClick }) => (
   >
     <span
       className={cx(lineStyles, {
-        'translate-y-[9px]': isOpen,
+        'translate-y-[9px] rotate-45': isOpen,
       })}
     />
     <span
@@ -27,7 +27,7 @@ const HamburgerButton: FC<HamburgerButtonProps> = ({ isOpen, onClick }) => (
     />
     <span
       className={cx(lineStyles, {
-        '-translate-y-[9px]': isOpen,
+        '-translate-y-[9px] -rotate-45': isOpen,
       })}
     />
   </button>
