@@ -1,4 +1,5 @@
 'use client'
+import cx from 'classnames'
 import { FC } from 'react'
 import QuantitySelector from '~/components/Layout/QuantitySelector'
 import TrashIcon from '~/public/img/icons/trash.svg'
@@ -39,7 +40,12 @@ const CartItem: FC<CartItemProps> = ({ item, isLoading, onIncrease, onDecrease, 
         </div>
 
         {/* Quantity controls */}
-        <div className="flex items-center justify-between">
+        <div
+          className={cx('flex items-center', {
+            'justify-end': !variantTitle,
+            'justify-between': variantTitle,
+          })}
+        >
           {variantTitle ? <p className="text-grey">{variantTitle}</p> : null}
 
           <div className="flex items-center gap-x-3">
@@ -53,7 +59,7 @@ const CartItem: FC<CartItemProps> = ({ item, isLoading, onIncrease, onDecrease, 
             />
 
             {/* Price */}
-            <div className="text-right whitespace-nowrap">
+            <div className="min-w-[42px] text-right whitespace-nowrap">
               {formatCurrency(parseFloat(item.variant?.priceV2.amount ?? '0') * item.quantity)}
             </div>
           </div>
