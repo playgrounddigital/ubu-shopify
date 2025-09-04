@@ -42,7 +42,7 @@ const FeaturedProductsSection: FC<FeaturedProductsSectionProps> = ({ products, c
   }, [currentSlide, cmsProducts.length, isDesktop])
 
   return (
-    <section>
+    <section className="max-w-[100vw] overflow-x-hidden">
       <Container className="pt-[88px] pb-20">
         <div className="mb-[52px] flex flex-col gap-y-4 md:flex-row md:items-end md:justify-between md:gap-x-9">
           <h2 className="heading-2">{content.title}</h2>

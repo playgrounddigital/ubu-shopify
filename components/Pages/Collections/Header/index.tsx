@@ -37,7 +37,10 @@ const Header: FC<HeaderProps> = ({ title, image, content, backgroundClassName })
 
   return (
     <section className="pt-[126px]">
-      <Container className="mb-5 flex flex-col-reverse gap-x-5 gap-y-2 lg:grid lg:h-[600px] lg:grid-cols-2">
+      <Container
+        noPadding
+        className="mb-5 flex flex-col-reverse gap-x-5 gap-y-2 lg:grid lg:h-[600px] lg:grid-cols-2"
+      >
         {/* LINK BLOCk */}
         <div
           className={cx(
