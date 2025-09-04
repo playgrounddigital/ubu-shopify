@@ -21,7 +21,7 @@ export default function AuthLayout({ image, title, description, content, childre
       <section>
         <Container
           noPadding
-          className="pt-[126px]"
+          className="pt-20 md:pt-[126px]"
         >
           <div className="flex flex-col-reverse gap-x-5 gap-y-2 lg:grid lg:grid-cols-2">
             <OptimisedImage

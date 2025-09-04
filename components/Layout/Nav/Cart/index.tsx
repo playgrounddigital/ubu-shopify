@@ -7,6 +7,7 @@ import OptimisedImage from '~/components/Layout/OptimisedImage'
 import ProductCard from '~/components/Pages/Shared/ProductCard'
 import { useCart } from '~/context/CartContext'
 import { formatCurrency } from '~/helpers/formatters'
+import useBreakpoints from '~/hooks/useBreakpoints'
 import EmptyCartTextJSON from '~/public/empty-cart-text.json'
 import FooterJSON from '~/public/footer.json'
 import FreeShippingBannerJSON from '~/public/free-shipping-banner.json'
@@ -19,6 +20,7 @@ const FREE_SHIPPING_LIMIT = FreeShippingBannerJSON.freeShippingThreshold
 
 const Cart: FC = () => {
   const { cart, isCartOpen, closeCart, updateCartItemQuantity, isLoading, checkoutUrl } = useCart()
+  const { isMobile } = useBreakpoints()
 
   const { subtotal, remaining, percent } = useMemo(() => {
     const subtotalValue = (cart?.lineItems ?? []).reduce((sum, li) => {
@@ -85,7 +87,7 @@ const Cart: FC = () => {
       >
         <div className="flex h-full flex-col">
           {/* Header */}
-          <div className="flex items-center gap-x-5 px-10 py-7">
+          <div className="flex items-center gap-x-5 px-4 py-7 md:px-10">
             <button
               onClick={closeCart}
               aria-label="Close cart"
@@ -103,7 +105,7 @@ const Cart: FC = () => {
 
           {/* Free shipping notice */}
           {hasCartItems && (
-            <div className="mb-12 px-10">
+            <div className="mb-12 px-4 md:px-10">
               <div className="mb-3 flex items-center gap-x-3 text-sm">
                 <TruckIcon className="h-[15px] w-[17px]" />
                 <p>{freeShippingText}</p>
@@ -118,7 +120,7 @@ const Cart: FC = () => {
           )}
 
           {/* Line items */}
-          <div className="flex-1 overflow-y-auto px-10">
+          <div className="flex-1 overflow-y-auto px-4 md:px-10">
             {!hasCartItems ? (
               <div className="pt-5">{EmptyCartTextJSON.text}</div>
             ) : (
@@ -139,7 +141,7 @@ const Cart: FC = () => {
           </div>
 
           {/* Gift wrapping bar */}
-          {/* <div className="mt-10 flex h-10 items-center justify-between bg-pink px-10 text-sm text-black">
+          {/* <div className="mt-10 flex h-10 items-center justify-between bg-pink px-4 md: text-sm text-black">
             <div className="flex items-center gap-x-3">
               <PresentIcon className="size-[15px]" />
               <span>Add gift wrapping</span>
@@ -152,10 +154,15 @@ const Cart: FC = () => {
           {/* Footer - Recommended Items & Total */}
           <div>
             {/* RECOMMENDED ITEMS */}
-            <div className="px-10">
+            <div className="px-4 md:px-10">
               <hr className="mb-5 border-divider-grey" />
               <h3 className="mb-4 text-sm leading-5 -tracking-[0.28px]">{RecommendedCartItemListJSON.text}</h3>
-              <div className="flex gap-5">
+              <div
+                className="grid gap-3"
+                style={{
+                  gridTemplateColumns: `repeat(${4}, 1fr)`,
+                }}
+              >
                 {RecommendedCartItemListJSON.products.slice(0, 4).map((cmsProduct) => {
                   const shopifyProduct = ProductsJSON.find(
                     (p) => p.id === cmsProduct.product.id || p.variants.find((v) => v.id === cmsProduct.product.id)
@@ -177,13 +184,14 @@ const Cart: FC = () => {
             </div>
 
             {/* TOTAL */}
-            <div className="px-10 pt-4 pb-[38px]">
-              <div className="mb-7 inline-flex items-center justify-between gap-x-6">
+            <div className="w-full px-4 pt-4 pb-[38px] md:px-10">
+              <div className="mb-7 inline-flex w-full flex-col gap-x-6 gap-y-2 md:flex-row md:items-center md:justify-between">
                 <div className="text-body-large">
                   <span>Total: {formatCurrency(subtotal)}</span>
                 </div>
 
                 <Button
+                  isFullWidth={isMobile}
                   variant={!hasCartItems ? 'black-green' : 'white-black'}
                   onClick={() => {
                     if (!hasCartItems) {

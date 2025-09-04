@@ -7,12 +7,12 @@ export const defaultButtonClasses =
 
 export const BUTTON_SIZE: Record<ButtonSize, string> = {
   sm: 'h-[34px] px-4 text-base tracking-[0.1px]',
-  md: 'h-[58px] px-[27px] text-[23px] leading-[45.5px]',
+  md: 'h-11 md:h-[58px] px-5 md:px-[27px] text-[23px] leading-[45.5px]',
 }
 
 export const BUTTON_CIRCLE_SIZE: Record<ButtonSize, string> = {
   sm: 'size-[34px] min-w-[34px]',
-  md: 'size-[58px] min-w-[58px]',
+  md: 'size-11 md:size-[58px] min-w-11 md:min-w-[58px]',
 }
 
 export const BUTTON_ARROW_SIZE: Record<ButtonSize, string> = {
