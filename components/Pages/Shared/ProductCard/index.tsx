@@ -65,9 +65,9 @@ const ProductCard: FC<ProductCardProps> = ({ isSmall, product, onClick, classNam
         </PageLink>
         {/* Absolute Add button */}
         <div
-          className={cx('absolute right-0 bottom-0 flex w-full justify-end md:p-[11px]', {
+          className={cx('absolute right-0 bottom-0 flex w-full justify-end', {
             'p-0.5': isSmall,
-            'p-1': !isSmall,
+            'p-1 md:p-[11px]': !isSmall,
           })}
         >
           <button
@@ -83,17 +83,17 @@ const ProductCard: FC<ProductCardProps> = ({ isSmall, product, onClick, classNam
               })
             }
             className={cx(
-              'group/button relative inline-flex w-fit items-center justify-center rounded-full px-3 text-center uppercase md:h-[27px] md:max-w-[unset] md:px-4',
+              'group/button relative inline-flex w-fit items-center justify-center rounded-full px-3 text-center uppercase',
               {
                 'h-3 max-w-6': isSmall,
-                'h-[22px] max-w-[50px]': !isSmall,
+                'h-[22px] max-w-[50px] md:h-[27px] md:max-w-[unset] md:px-4': !isSmall,
               }
             )}
           >
             <span className="absolute inset-0 rounded-full bg-black transition-[filter] group-hover/button:blur-sm" />
             <span
-              className={cx('relative z-10 whitespace-nowrap text-white md:text-base', {
-                'text-xs': !isSmall,
+              className={cx('relative z-10 whitespace-nowrap text-white', {
+                'text-xs md:text-base': !isSmall,
                 'text-[6px]': isSmall,
               })}
             >
