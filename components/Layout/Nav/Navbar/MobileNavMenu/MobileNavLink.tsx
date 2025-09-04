@@ -2,6 +2,7 @@
 import { FC } from 'react'
 import CircleButton from '~/components/Layout/Button/Circle'
 import PageLink from '~/components/Layout/PageLink'
+import useBreakpoints from '~/hooks/useBreakpoints'
 
 interface MobileNavLinkProps {
   isButton?: boolean
@@ -13,6 +14,8 @@ interface MobileNavLinkProps {
 }
 
 const MobileNavLink: FC<MobileNavLinkProps> = ({ title, href, isButton, hasCircleButton = true, onClick, onClose }) => {
+  const { isMobile } = useBreakpoints()
+
   return (
     <li className="border-b border-green pb-[13px]">
       <div className="flex items-center justify-between">
@@ -29,6 +32,7 @@ const MobileNavLink: FC<MobileNavLinkProps> = ({ title, href, isButton, hasCircl
             onClick={!isButton ? onClick : undefined}
           >
             <CircleButton
+              size={isMobile ? 'sm' : 'md'}
               tabIndex={isButton ? undefined : -1}
               ariaLabel={isButton ? `Open ${title.toLowerCase()}` : ''}
               variant="white-black"

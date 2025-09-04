@@ -29,12 +29,20 @@ const FeaturedCard: FC<FeaturedCardProps> = ({ menu, onClose }) => {
         }}
       >
         {menu.isLarge && (
-          <OptimisedImage
-            src="/img/shared/nav-featured-card-mask-large.svg"
-            alt=""
-            layout="contain"
-            className="absolute inset-0"
-          />
+          <>
+            <OptimisedImage
+              src="/img/shared/nav-featured-card-mask-large.svg"
+              alt=""
+              layout="contain"
+              className="absolute inset-0 hidden md:block"
+            />
+            <OptimisedImage
+              src="/img/shared/nav-featured-card-mask-mobile.svg"
+              alt=""
+              layout="contain"
+              className="opacity-30 md:hidden"
+            />
+          </>
         )}
         <OptimisedImage
           src={menu.image?.url}
@@ -42,14 +50,15 @@ const FeaturedCard: FC<FeaturedCardProps> = ({ menu, onClose }) => {
           layout={menu.isLarge ? 'contain' : 'cover'}
           imgClassName={cx('object-top')}
           className={cx('z-10 h-full w-full', {
-            'mix-blend-darken': menu.isLarge,
+            'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[calc(50%-24px)] mix-blend-darken md:static md:translate-x-0 md:translate-y-0':
+              menu.isLarge,
           })}
         />
       </div>
       <span
-        className={cx('absolute z-20 text-right text-[26px] font-bold whitespace-nowrap', {
-          'right-3 bottom-4.5': !menu.isLarge,
-          'right-1 bottom-5': menu.isLarge,
+        className={cx('xs:text-[26px] absolute bottom-3 z-20 text-right text-2xl font-bold whitespace-nowrap', {
+          'xs:bottom-4.5 right-3': !menu.isLarge,
+          'xs:bottom-5 right-1': menu.isLarge,
         })}
       >
         {menu.featuredTitle}

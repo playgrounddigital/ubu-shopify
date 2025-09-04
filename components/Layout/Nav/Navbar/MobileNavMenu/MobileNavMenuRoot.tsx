@@ -9,6 +9,7 @@ import {
   mobileNavMenuSlideInternalClasses,
 } from '~/components/Layout/Nav/Navbar/MobileNavMenu/presets'
 import PageLink from '~/components/Layout/PageLink'
+import useBreakpoints from '~/hooks/useBreakpoints'
 import allShopNavigationMenusJSON from '~/public/all-shop-navigation-menus.json'
 import UserIcon from '~/public/img/icons/user.svg'
 import { SitePages } from '~/types/pages'
@@ -21,6 +22,7 @@ interface MobileNavMenuRootProps {
 }
 
 const MobileNavMenuRoot: FC<MobileNavMenuRootProps> = ({ isOpen, isAuthenticated, onClose, onOpenShop }) => {
+  const { isMobile } = useBreakpoints()
   return (
     <div
       className={cx(mobileNavMenuSlideClasses, {
@@ -72,7 +74,8 @@ const MobileNavMenuRoot: FC<MobileNavMenuRootProps> = ({ isOpen, isAuthenticated
             <Button
               variant="black-green"
               icon={UserIcon}
-              buttonClassName="w-full"
+              buttonClassName="max-h-[44px] w-full md:max-h-[unset]"
+              size={isMobile ? 'sm' : 'md'}
               className="w-full"
             >
               {isAuthenticated ? 'My Account' : 'Sign In'}

@@ -69,7 +69,7 @@ button:not(:disabled),
     @apply font-semibold -tracking-[0.48px] md:text-[35px] md:leading-[42px] md:-tracking-[1.05px];
   }
   .text-general-title {
-    @apply text-[39px] leading-[46.8px] font-bold -tracking-[1.17px];
+    @apply text-[28px] leading-[34px] font-bold -tracking-[0.84px] md:text-[39px] md:leading-[46.8px] md:-tracking-[1.17px];
   }
   .body-large {
     @apply text-xl leading-7 font-normal -tracking-[0.6px];
