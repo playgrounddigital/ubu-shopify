@@ -46,9 +46,11 @@ const ProductCard: FC<ProductCardProps> = ({ isSmall, product, onClick, classNam
           onClick={onClick}
         >
           <div
-            className={cx('aspect-[305/406] overflow-hidden rounded md:rounded-[10px]', {})}
+            className={cx('aspect-[305/406] overflow-hidden rounded', {
+              'md:rounded-[10px]': !isSmall,
+            })}
             style={{
-              maskImage: 'url(/img/shared/product-card-mask.svg)',
+              maskImage: !isSmall ? 'url(/img/shared/product-card-mask.svg)' : undefined,
               maskSize: 'cover',
               maskPosition: 'center',
               maskRepeat: 'no-repeat',
@@ -65,9 +67,9 @@ const ProductCard: FC<ProductCardProps> = ({ isSmall, product, onClick, classNam
         </PageLink>
         {/* Absolute Add button */}
         <div
-          className={cx('absolute right-0 bottom-0 flex w-full justify-end', {
-            'p-0.5': isSmall,
-            'p-1 md:p-[11px]': !isSmall,
+          className={cx('w-full', {
+            'mt-1': isSmall,
+            'absolute right-0 bottom-0 flex justify-end p-1 md:p-[11px]': !isSmall,
           })}
         >
           <button
@@ -83,10 +85,10 @@ const ProductCard: FC<ProductCardProps> = ({ isSmall, product, onClick, classNam
               })
             }
             className={cx(
-              'group/button relative inline-flex w-fit items-center justify-center rounded-full px-3 text-center uppercase',
+              'group/button relative inline-flex items-center justify-center rounded-full px-3 text-center uppercase',
               {
-                'h-3 max-w-6': isSmall,
-                'h-[22px] max-w-[50px] md:h-[27px] md:max-w-[unset] md:px-4': !isSmall,
+                'h-4.5 w-full': isSmall,
+                'h-[22px] w-fit max-w-[50px] md:h-[27px] md:max-w-[unset] md:px-4': !isSmall,
               }
             )}
           >
@@ -94,7 +96,7 @@ const ProductCard: FC<ProductCardProps> = ({ isSmall, product, onClick, classNam
             <span
               className={cx('relative z-10 whitespace-nowrap text-white', {
                 'text-xs md:text-base': !isSmall,
-                'text-[6px]': isSmall,
+                'text-[8px]': isSmall,
               })}
             >
               + ADD
