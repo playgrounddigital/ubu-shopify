@@ -14,7 +14,7 @@ const SearchBar: FC<SearchBarProps> = ({ hasResults, searchQuery, setSearchQuery
 
   return (
     <section className="bg-black">
-      <Container className="flex flex-col justify-center pt-12 pb-10 md:items-center md:pt-20">
+      <Container className="flex flex-col items-center justify-center pt-12 pb-10 md:pt-20">
         {/* Products */}
         <input
           id="search"
@@ -22,7 +22,7 @@ const SearchBar: FC<SearchBarProps> = ({ hasResults, searchQuery, setSearchQuery
           type="search"
           placeholder={isMobile ? 'Search products...' : 'What are you looking for?'}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="mx-auto w-full max-w-[1200px] border-b-4 border-white pb-3.5 font-semibold text-white placeholder:text-white/50 md:pb-10 md:text-center md:text-[48px] md:leading-[58px] md:-tracking-[1.44px]"
+          className="mx-auto w-full max-w-[1200px] border-b-4 border-white pb-3.5 text-center font-semibold text-white placeholder:text-white/50 md:pb-10 md:text-[48px] md:leading-[58px] md:-tracking-[1.44px]"
         />
 
         {!hasResults && (

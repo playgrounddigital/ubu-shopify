@@ -4,8 +4,10 @@ import { fetchFromDatoAPI, getGraphQLQuery } from '~/helpers/cms'
 import { PageProps, _generateMetadata } from '~/helpers/next'
 import { getAllProducts, getProductByHandle } from '~/lib/shopify'
 import { FreeShippingBanner } from '~/types/cms/models/free-shipping-banner'
+import { DatoCMSProductModel } from '~/types/cms/models/product-content'
 import { ProductPageTemplate } from '~/types/cms/models/product-page-template'
 import { GraphQlQueryEnum } from '~/types/graphql'
+import { Product } from '~/types/shopify'
 
 export const dynamicParams = true
 export const revalidate = 0
@@ -28,17 +30,26 @@ export default async ({ params }: PageProps) => {
   if (!product) return notFound()
 
   const productPageTemplateQuery = getGraphQLQuery(GraphQlQueryEnum.ProductPageTemplate)
-  const { productPageTemplate }: { productPageTemplate: ProductPageTemplate } =
-    await fetchFromDatoAPI(productPageTemplateQuery)
-
   const freeShippingBannerQuery = getGraphQLQuery(GraphQlQueryEnum.FreeShippingBanner)
-  const { freeShippingBanner }: { freeShippingBanner: FreeShippingBanner } =
-    await fetchFromDatoAPI(freeShippingBannerQuery)
+  const allProductsQuery = getGraphQLQuery(GraphQlQueryEnum.AllProducts)
 
-  const products = await getAllProducts()
+  const [{ productPageTemplate }, { freeShippingBanner }, products, { allProducts }]: [
+    { productPageTemplate: ProductPageTemplate },
+    { freeShippingBanner: FreeShippingBanner },
+    products: Product[],
+    { allProducts: DatoCMSProductModel[] },
+  ] = await Promise.all([
+    fetchFromDatoAPI(productPageTemplateQuery),
+    fetchFromDatoAPI(freeShippingBannerQuery),
+    getAllProducts(),
+    fetchFromDatoAPI(allProductsQuery),
+  ])
+
+  const productContent = allProducts.find((product) => product.shopifyProduct.handle === handle)
 
   return (
     <ProductPageContent
+      productContent={productContent}
       product={product}
       products={products}
       freeShippingBanner={freeShippingBanner}

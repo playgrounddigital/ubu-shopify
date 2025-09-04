@@ -57,7 +57,7 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
     return match || product.variants[0]
   }, [hasOptions, product.variants, selectedOptions])
 
-  console.log(selectedVariant)
+  const hasQuantityAvailable = selectedVariant?.quantityAvailable
 
   const variant = selectedVariant
   const productPrice = variant?.priceV2.amount
@@ -162,19 +162,19 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
                 quantity={quantity}
                 onIncrease={increaseQty}
                 onDecrease={decreaseQty}
-                disabled={isLoading}
-                maxQuantity={variant?.quantityAvailable ?? null}
+                disabled={isLoading || !hasQuantityAvailable}
+                maxQuantity={hasQuantityAvailable ? variant?.quantityAvailable : null}
               />
 
               <Button
                 onClick={handleAddToCart}
-                disabled={isLoading || !variant}
+                disabled={isLoading || !variant || !hasQuantityAvailable}
                 buttonClassName="w-full"
                 className="w-full"
                 icon={CartIcon}
                 iconClassName="!w-6 min-w-6 !h-[26px] !translate-x-0"
               >
-                ADD TO CART
+                {hasQuantityAvailable ? 'ADD TO CART' : 'SOLD OUT'}
               </Button>
             </div>
 

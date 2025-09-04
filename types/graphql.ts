@@ -10,6 +10,7 @@ export enum GraphQlQueryEnum {
   ProductPageTemplate = 'ProductPageTemplate',
 
   AllCollections = 'AllCollections',
+  AllProducts = 'AllProducts',
 
   EmptyCartText = 'EmptyCartText',
   AllShopNavigationMenus = 'AllShopNavigationMenus',

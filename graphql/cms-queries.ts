@@ -293,6 +293,18 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
       }
     }
   }`,
+  [GraphQlQueryEnum.AllProducts]: () => `{
+    allProducts {
+      shopifyProduct
+      content {
+        __typename
+        ... on ImageSliderSectionRecord {
+          id
+          images ${imageQuery}
+        }
+      }
+    }
+  }`,
   [GraphQlQueryEnum.EmptyCartText]: () => `{
     emptyCartText {
       text

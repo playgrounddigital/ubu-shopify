@@ -1,4 +1,5 @@
 export interface Image {
+  id: string
   url: string
   smartTags: string[]
 }
@@ -33,4 +34,3 @@ export interface LinkedButton {
     path: string
   }
 }
-
