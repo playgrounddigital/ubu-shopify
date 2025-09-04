@@ -71,7 +71,7 @@ button:not(:disabled),
   .text-general-title {
     @apply text-[28px] leading-[34px] font-bold -tracking-[0.84px] md:text-[39px] md:leading-[46.8px] md:-tracking-[1.17px];
   }
-  .body-large {
+  .text-body-large {
     @apply text-xl leading-7 font-normal -tracking-[0.6px];
   }
   .text-input {

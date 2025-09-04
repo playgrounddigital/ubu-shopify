@@ -179,7 +179,7 @@ const Cart: FC = () => {
             {/* TOTAL */}
             <div className="px-10 pt-4 pb-[38px]">
               <div className="mb-7 inline-flex items-center justify-between gap-x-6">
-                <div className="body-large">
+                <div className="text-body-large">
                   <span>Total: {formatCurrency(subtotal)}</span>
                 </div>
 

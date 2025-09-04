@@ -4,6 +4,7 @@ import AuthInput from '~/components/Layout/AuthInput'
 import AuthLayout from '~/components/Layout/AuthLayout'
 import Button from '~/components/Layout/Button'
 import PageLink from '~/components/Layout/PageLink'
+import useBreakpoints from '~/hooks/useBreakpoints'
 import { SignInContent } from '~/types/cms/pages/sign-in'
 import { SitePages } from '~/types/pages'
 
@@ -12,6 +13,7 @@ export default function SignInPage({ content }: { content: SignInContent }) {
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const { isMobile, isTablet } = useBreakpoints()
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -82,18 +84,16 @@ export default function SignInPage({ content }: { content: SignInContent }) {
 
         <Button
           type="submit"
-          size="md"
+          isFullWidth={isTablet}
+          size={isMobile ? 'sm' : 'md'}
           variant="white-black"
           disabled={loading}
           className="mb-4.5 !flex"
         >
           {loading ? 'Signing In…' : 'Sign In'}
         </Button>
-        <PageLink
-          href={SitePages.SignUp}
-          className="underline"
-        >
-          Don't have an account? Sign up
+        <PageLink href={SitePages.SignUp}>
+          Don't have an account? <span className="underline">Sign up</span>
         </PageLink>
       </form>
     </AuthLayout>

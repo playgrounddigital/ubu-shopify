@@ -20,19 +20,23 @@ export default function AuthLayout({ image, title, description, content, childre
     <>
       <section>
         <Container
-          noPaddingDesktop
+          noPadding
           className="pt-[126px]"
         >
-          <div className="grid gap-x-5 lg:grid-cols-2">
+          <div className="flex flex-col-reverse gap-x-5 gap-y-2 lg:grid lg:grid-cols-2">
             <OptimisedImage
               src={image.url}
               alt={joinSmartTagsIntoString(image.smartTags)}
               layout="cover"
-              className="w-full"
+              className="h-[333px] w-full lg:h-full"
             />
-            <div className="bg-off-white p-[50px]">
-              <h1 className="mb-4.5 text-right text-[76px] leading-none font-semibold -tracking-[4.56px]">{title}</h1>
-              <p className="mb-12 ml-auto max-w-[243px] text-right">{description}</p>
+            <div className="bg-off-white px-4 pt-24 pb-6 md:px-6 lg:p-[50px]">
+              <div className="mb-8 flex flex-col gap-x-4 gap-y-2 md:flex-row md:justify-between lg:mb-12 lg:block">
+                <h1 className="heading-3 leading-none font-semibold whitespace-nowrap md:text-[76px] md:-tracking-[4.56px] lg:mb-4.5 lg:text-right">
+                  {title}
+                </h1>
+                <p className="max-w-[243px] translate-y-2 md:ml-auto lg:translate-y-0 lg:text-right">{description}</p>
+              </div>
               {children}
             </div>
           </div>

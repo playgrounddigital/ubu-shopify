@@ -58,6 +58,11 @@ const Navbar: FC = () => {
     },
   ]
 
+  const closeAllMenus = () => {
+    closeShopMenu()
+    closeHamburgerMenu()
+  }
+
   // Disable scroll on mobile menu open
   useEffect(() => {
     if (isHamburgerMenuOpen) {
@@ -109,7 +114,7 @@ const Navbar: FC = () => {
                       closeShopMenu()
                     }
                   }}
-                  onClick={closeShopMenu}
+                  onClick={closeAllMenus}
                   className={cx(
                     'group relative inline-flex h-[34px] items-center justify-center px-4 text-center uppercase',
                     link.className
@@ -136,7 +141,7 @@ const Navbar: FC = () => {
             <div className="flex items-center justify-center">
               <PageLink
                 href={SitePages.Home}
-                onClick={closeShopMenu}
+                onClick={closeAllMenus}
               >
                 <UBULogo className="h-[31px] w-[101px] md:h-[61px] md:w-[202px]" />
               </PageLink>
@@ -155,7 +160,7 @@ const Navbar: FC = () => {
                     aria-label={label}
                     onClick={() => {
                       onClick?.()
-                      closeShopMenu()
+                      closeAllMenus()
                     }}
                     className="group relative inline-flex h-[34px] max-w-[44px] items-center justify-center rounded-full px-4 md:max-w-[50px]"
                   >
@@ -192,7 +197,7 @@ const Navbar: FC = () => {
       <MobileNavMenu
         isOpen={isHamburgerMenuOpen}
         isAuthenticated={isAuthenticated}
-        onClose={closeHamburgerMenu}
+        onClose={closeAllMenus}
       />
     </>
   )

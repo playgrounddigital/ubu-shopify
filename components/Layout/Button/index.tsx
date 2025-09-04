@@ -11,6 +11,7 @@ import {
 import ArrowRightIcon from '~/public/img/icons/arrow-right.svg'
 
 interface ButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
+  isFullWidth?: boolean
   size?: ButtonSize
   icon?: any
   iconClassName?: string
@@ -22,6 +23,7 @@ interface ButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonE
 }
 
 const Button: FC<ButtonProps> = ({
+  isFullWidth = false,
   size = 'md',
   variant = 'white-black',
   type = 'button',
@@ -39,6 +41,7 @@ const Button: FC<ButtonProps> = ({
       tabIndex={tabIndex}
       type={type}
       className={cx('group/button relative inline-flex uppercase', className, {
+        'w-full': isFullWidth,
         'pointer-events-none opacity-50': props.disabled,
       })}
       {...props}
@@ -48,7 +51,10 @@ const Button: FC<ButtonProps> = ({
           'relative z-10 inline-flex items-center justify-center rounded-full text-center',
           BUTTON_SIZE[size],
           BUTTON_COLOURS[variant].button,
-          buttonClassName
+          buttonClassName,
+          {
+            'w-full': isFullWidth,
+          }
         )}
       >
         <span
