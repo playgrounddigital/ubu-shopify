@@ -70,9 +70,9 @@ const Header: FC<HeaderProps> = ({ title, image, content, backgroundClassName })
 
         {/* IMAGE BLOCK */}
         <OptimisedImage
-          src={_image.url}
+          src={_image?.url || '/img/collections/hats-collection.jpg'}
           alt={
-            (_image as Image).smartTags
+            (_image as Image)?.smartTags
               ? joinSmartTagsIntoString((_image as Image).smartTags || [])
               : 'Image of children wearing hats looking down to the ground'
           }
