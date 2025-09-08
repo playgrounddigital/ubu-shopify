@@ -2,7 +2,7 @@ import { Settings } from 'react-slick'
 
 export const heroSliderSettings: Settings = {
   dots: false,
-  autoplay: true,
+  // autoplay: true,
   pauseOnFocus: false,
   pauseOnHover: false,
   fade: true,

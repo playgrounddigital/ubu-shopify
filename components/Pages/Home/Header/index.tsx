@@ -1,6 +1,8 @@
+import cx from 'classnames'
 import { FC } from 'react'
 import Slider from 'react-slick'
 import { HomePageSectionProps } from '~/app/content'
+import AutoplayVimeoVideo from '~/components/Layout/AutoplayVimeoVideo'
 import Container from '~/components/Layout/Container'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
 import { heroSliderSettings } from '~/components/Pages/Home/Header/presets'
@@ -16,13 +18,39 @@ const Header: FC<HomePageSectionProps> = ({ content }) => {
             key={slide.id}
             className="relative"
           >
-            <OptimisedImage
-              src={slide.image.url}
-              alt={joinSmartTagsIntoString(slide.image.smartTags)}
-              layout="cover"
-              imgClassName="object-bottom"
-              className="h-svh w-full xl:aspect-video xl:h-auto"
-            />
+            {slide.useVideo && !!slide.vimeoVideo ? (
+              <>
+                <AutoplayVimeoVideo
+                  isFullScreen
+                  src={slide.vimeoVideo.url}
+                  autoplay
+                  loop
+                  hasControls
+                  wrapperClassName="lg:scale-[1.1] 2xl:scale-[1.21]"
+                  className={cx('h-svh w-screen', {
+                    'xxs:hidden lg:flex': !!slide.vimeoVideoMobile?.url,
+                  })}
+                />
+                {!!slide.vimeoVideoMobile?.url && (
+                  <AutoplayVimeoVideo
+                    isFullWidthAndHeight
+                    src={slide.vimeoVideoMobile.url}
+                    autoplay
+                    loop
+                    hasControls
+                    className="lg:hidden"
+                  />
+                )}
+              </>
+            ) : (
+              <OptimisedImage
+                src={slide.image.url}
+                alt={joinSmartTagsIntoString(slide.image.smartTags)}
+                layout="cover"
+                imgClassName="object-bottom"
+                className="h-svh w-full xl:aspect-video xl:h-auto"
+              />
+            )}
             {/* Text overlay on top */}
             <Container className="!absolute bottom-0 left-1/2 flex -translate-x-1/2 justify-end pb-22 md:pb-6">
               <div className="relative pt-2 pr-3.5 pb-3.5 pl-[31px]">

@@ -11,8 +11,12 @@ export interface HeroSlide {
   id: string
   image: Image
   imageMobile: Image
-  vimeoVideo: string
-  vimeoVideoMobile: string
+  vimeoVideo: {
+    url: string
+  }
+  vimeoVideoMobile: {
+    url: string
+  }
   useVideo: boolean
   description: string
 }

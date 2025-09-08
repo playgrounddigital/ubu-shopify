@@ -1,6 +1,6 @@
 import cx from 'classnames'
 import { FC, useEffect, useState } from 'react'
-import { getVimeoPlayerURL } from '~/components/Shared/AutoplayVimeoVideo/utils'
+import { getVimeoPlayerURL } from '~/components/Layout/AutoplayVimeoVideo/utils'
 import useBreakpoints from '~/hooks/useBreakpoints'
 
 const VIMEO_PLAYER_READY_TIMEOUT = 1800
