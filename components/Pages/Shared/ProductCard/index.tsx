@@ -88,7 +88,7 @@ const ProductCard: FC<ProductCardProps> = ({ isSmall, product, onClick, classNam
               'group/button relative inline-flex items-center justify-center rounded-full px-3 text-center uppercase',
               {
                 'h-4.5 w-full': isSmall,
-                'h-[22px] w-fit max-w-[50px] md:h-[27px] md:max-w-[unset] md:px-4': !isSmall,
+                'h-[22px] w-fit max-w-[50px] md:h-[27px] md:h-[34px] md:max-w-[unset] md:px-4': !isSmall,
               }
             )}
           >

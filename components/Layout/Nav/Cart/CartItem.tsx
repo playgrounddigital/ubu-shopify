@@ -59,7 +59,7 @@ const CartItem: FC<CartItemProps> = ({ item, isLoading, onIncrease, onDecrease, 
             />
 
             {/* Price */}
-            <div className="min-w-[42px] text-right whitespace-nowrap">
+            <div className="min-w-[47px] text-right whitespace-nowrap">
               {formatCurrency(parseFloat(item.variant?.priceV2.amount ?? '0') * item.quantity)}
             </div>
           </div>
