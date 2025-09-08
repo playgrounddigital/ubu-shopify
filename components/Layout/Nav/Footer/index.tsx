@@ -1,7 +1,7 @@
 'use client'
 import { useForm } from '@formspree/react'
 import cx from 'classnames'
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useMemo, useRef, useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import Button from '~/components/Layout/Button'
 import Container from '~/components/Layout/Container'
@@ -10,6 +10,7 @@ import OutgoingLink from '~/components/Layout/OutgoingLink'
 import { isProduction } from '~/constants/environment'
 import useBreakpoints from '~/hooks/useBreakpoints'
 import FooterJSON from '~/public/footer.json'
+import { SitePages } from '~/types/pages'
 
 const FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID
 if (!FORM_ID) {
@@ -24,11 +25,49 @@ const Footer: FC = () => {
   const [state, handleSubmit] = useForm(FORM_ID)
   const [email, setEmail] = useState('')
   const recaptchaRef = useRef<ReCAPTCHA>(null)
-
-  const { isMobile } = useBreakpoints()
+  const { isMobile, isDesktop } = useBreakpoints()
 
   const hasSubmittedSuccessfully = state.succeeded
   const isSubmitting = state.submitting
+
+  const links = useMemo(
+    () => [
+      {
+        title: 'Shop',
+        links: FooterJSON.shopLinks.map((item) => ({
+          title: item.collection.title,
+          href: item.collection.handle,
+        })),
+      },
+      {
+        title: 'About',
+        links: [
+          {
+            title: 'About Us',
+            href: SitePages.About,
+          },
+          // {
+          //   title: 'Contact',
+          //   href: SitePages.Contact,
+          // }
+        ],
+      },
+      {
+        title: 'Info',
+        links: [
+          // {
+          //   title: 'Shipping',
+          //   href: SitePages.ShippingReturns,
+          // },
+          {
+            title: 'Privacy Policy',
+            href: SitePages.PrivacyPolicy,
+          },
+        ],
+      },
+    ],
+    [FooterJSON.shopLinks]
+  )
 
   const validateForm = async () => {
     if (isProduction) {
@@ -73,12 +112,11 @@ const Footer: FC = () => {
                 if (hasSubmittedSuccessfully || isSubmitting) return
                 setEmail(e.target.value)
               }}
-              className={cx(
-                'md:text-input w-full bg-transparent text-[26px] leading-6 -tracking-[1px] placeholder:text-white',
-                {
-                  'text-green': hasSubmittedSuccessfully,
-                }
-              )}
+              className={cx('w-full bg-transparent placeholder:text-white', {
+                'text-input': isDesktop,
+                'text-[26px] leading-6 -tracking-[1px]': !isDesktop,
+                'text-green': hasSubmittedSuccessfully,
+              })}
             />
             <Button
               type="submit"
@@ -94,26 +132,53 @@ const Footer: FC = () => {
           </form>
         </div>
 
-        <hr className="mb-16 hidden xl:block" />
+        <hr className="mb-12 hidden md:mb-16 xl:block" />
 
-        <div className="mb-[168px] flex lg:justify-end">
-          <div className="flex gap-x-5">
-            {FooterJSON.socialLinks.map((item) => (
-              <OutgoingLink
-                href={item.link}
-                key={item.id}
+        <div className="mb-12 flex flex-col-reverse gap-x-10 gap-y-12 md:mb-[168px] md:flex-row md:justify-between">
+          {/* LINKS */}
+          <div className="flex flex-col gap-10 md:grid md:grid-cols-3">
+            {links.map((item) => (
+              <div
+                key={item.title}
+                className="grid grid-cols-2 gap-x-4 text-xs uppercase md:block md:w-[190px] md:text-base"
               >
-                <OptimisedImage
-                  src={item.image.url}
-                  alt={item.name}
-                  className="size-[42px] transition-opacity hover:opacity-70"
-                />
-              </OutgoingLink>
+                <h3 className="font-bold md:mb-10">{item.title}</h3>
+                <ul className="inline-flex flex-col gap-y-5">
+                  {item.links.map((link) => (
+                    <li key={link.title}>
+                      <OutgoingLink
+                        href={link.href}
+                        className="hover:underline"
+                      >
+                        {link.title}
+                      </OutgoingLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
+          </div>
+
+          {/* SOCIAL LINKS */}
+          <div className="flex lg:justify-end">
+            <div className="flex gap-x-5">
+              {FooterJSON.socialLinks.map((item) => (
+                <OutgoingLink
+                  href={item.link}
+                  key={item.id}
+                >
+                  <OptimisedImage
+                    src={item.image.url}
+                    alt={item.name}
+                    className="size-[42px] transition-opacity hover:opacity-70"
+                  />
+                </OutgoingLink>
+              ))}
+            </div>
           </div>
         </div>
 
-        <hr className="mb-16 xl:hidden" />
+        <hr className="mb-12 md:mb-16 xl:hidden" />
 
         {/* Accepted Payment Methods */}
         <div className="flex justify-center lg:justify-end">

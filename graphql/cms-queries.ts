@@ -361,6 +361,11 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
   [GraphQlQueryEnum.Footer]: () => `{
     footer {
       signUpText
+
+      shopLinks {
+        id
+        collection
+      }
       
       socialLinks {
         id

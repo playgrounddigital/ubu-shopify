@@ -1,10 +1,15 @@
 import { Image } from '~/types/cms/common'
+import { DatoCMSShopifyCollection } from '~/types/cms/models/collection'
 
 export interface Footer {
   id: string
   signUpText: string
   socialLinks: SocialLink[]
   acceptedPaymentMethods: AcceptedPaymentMethod[]
+  links: {
+    id: string
+    collection: DatoCMSShopifyCollection
+  }[]
 }
 
 interface SocialLink {
