@@ -28,11 +28,11 @@ const Header: FC<HeaderProps> = ({ title, image, content, backgroundClassName })
   })()
 
   const _image = (() => {
-    if (!content) return image || { url: '/img/collections/hats-collection.jpg' }
-    if ('shopifyCollection' in content) {
-      return content.shopifyCollection.image
+    if ('image' in content) {
+      return content.image || (content as DatoCMSCollectionModel).shopifyCollection.image
     }
-    return content.image
+    if (image) return image
+    return { url: '/img/collections/hats-collection.jpg' }
   })()
 
   return (
