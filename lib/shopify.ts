@@ -12,6 +12,7 @@ import {
   Metafield,
   Order,
   Product,
+  ProductOption,
   ProductVariant,
 } from '~/types/shopify'
 
@@ -44,6 +45,10 @@ const PRODUCT_SELECTION = `
 	}
 	images(first: 10) {
 		edges { node { id url altText } }
+	}
+	options(first: 10) {
+		name
+		values
 	}
 	variants(first: 250) {
 		edges {
@@ -337,6 +342,11 @@ function mapProduct(node: any): Product {
     image: e.node.image ?? null,
   }))
 
+  const options: ProductOption[] | undefined = (node.options ?? []).map((o: any) => ({
+    name: o.name,
+    values: o.values ?? [],
+  }))
+
   const collections: Collection[] = (node.collections?.edges ?? []).map((e: any) => ({
     id: e.node.id,
     title: e.node.title,
@@ -390,6 +400,7 @@ function mapProduct(node: any): Product {
     variants,
     metafields,
     collections,
+    options,
   }
 }
 

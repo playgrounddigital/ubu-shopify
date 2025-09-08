@@ -40,6 +40,11 @@ export type Metafield = {
   references?: Metaobject[]
 }
 
+export type ProductOption = {
+  name: string
+  values: string[]
+}
+
 export type Product = {
   id: string
   title: string
@@ -53,6 +58,7 @@ export type Product = {
   variants: ProductVariant[]
   metafields: Metafield[]
   collections: Collection[]
+  options?: ProductOption[]
 }
 
 export type CheckoutLineItem = {

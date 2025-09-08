@@ -23,12 +23,14 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
   const { addToCart, isLoading } = useCart()
   const [quantity, setQuantity] = useState(1)
 
-  // Build option groups from variant titles, e.g. "M/L / Blue"
+  // Prefer Shopify option names/values when available; fallback to parsing variant titles
   const optionGroups = useMemo(() => {
+    if (product.options && product.options.length) {
+      return product.options.map((o) => o.values)
+    }
     const groups: string[][] = []
     for (const v of product.variants) {
       const parts = (v.title || '').split(' / ').filter(Boolean)
-      // Skip Shopify's default single variant label
       if (parts.length === 1 && parts[0] === 'Default Title') continue
       parts.forEach((part, idx) => {
         if (!groups[idx]) groups[idx] = []
@@ -36,9 +38,11 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
       })
     }
     return groups
-  }, [product.variants])
+  }, [product.options, product.variants])
 
   const hasOptions = optionGroups.length > 0
+
+  const filteredOptionGroups = optionGroups.filter((group) => group.length === 1)
 
   // Preselect the first option from each group
   const [selectedOptions, setSelectedOptions] = useState<string[]>([])
@@ -120,7 +124,7 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
               <div className="mb-6 space-y-4">
                 {optionGroups.map((options, groupIdx) => {
                   if (options.length === 1) return null
-                  const groupLabel = groupIdx === 1 ? 'SIZE' : groupIdx === 2 ? 'COLOUR' : `OPTION ${groupIdx + 1}`
+                  const groupLabel = product.options?.[groupIdx]?.name?.toUpperCase?.() || `OPTION ${groupIdx + 1}`
                   const selected = selectedOptions[groupIdx]
                   return (
                     <div
