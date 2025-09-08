@@ -2,7 +2,7 @@ const excludeUrls = ['/privacy-policy']
 
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://ubu-store.vercel.app',
+  siteUrl: 'https://ubustore.com.au',
   generateRobotsTxt: true,
   robotsTxtOptions: {
     policies: [

@@ -5,12 +5,12 @@ const nextConfig = {
   trailingSlash: false,
   reactStrictMode: true,
   env: {
-    siteDomain: 'ubu-store.vercel.app',
+    siteDomain: 'ubustore.com.au',
     siteName: 'UBU Store',
     siteTitle: ' | UBU Store',
     siteDescription:
       'UBU is a creative kids’ accessories brand for the trendsetters, letting you be you and express yourself.',
-    siteUrl: 'https://ubu-store.vercel.app',
+    siteUrl: 'https://ubustore.com.au',
     publisher: 'UBU Store',
     siteImagePreviewURL: '/share-preview.jpg',
     siteLogo: '/logo.svg',
