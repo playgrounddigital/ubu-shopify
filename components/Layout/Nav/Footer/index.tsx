@@ -7,6 +7,7 @@ import Button from '~/components/Layout/Button'
 import Container from '~/components/Layout/Container'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
 import OutgoingLink from '~/components/Layout/OutgoingLink'
+import PageLink from '~/components/Layout/PageLink'
 import { isProduction } from '~/constants/environment'
 import useBreakpoints from '~/hooks/useBreakpoints'
 import FooterJSON from '~/public/footer.json'
@@ -36,7 +37,7 @@ const Footer: FC = () => {
         title: 'Shop',
         links: FooterJSON.shopLinks.map((item) => ({
           title: item.collection.title,
-          href: item.collection.handle,
+          href: `${SitePages.Collections}/${item.collection.handle}`,
         })),
       },
       {
@@ -146,12 +147,12 @@ const Footer: FC = () => {
                 <ul className="inline-flex flex-col gap-y-5">
                   {item.links.map((link) => (
                     <li key={link.title}>
-                      <OutgoingLink
+                      <PageLink
                         href={link.href}
                         className="hover:underline"
                       >
                         {link.title}
-                      </OutgoingLink>
+                      </PageLink>
                     </li>
                   ))}
                 </ul>
