@@ -68,7 +68,7 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
     if (variantTitle === 'Default Title' && colorMetafield) {
       return colorMetafield
     }
-    return variantTitle
+    return ''
   })()
 
   const decreaseQty = () => setQuantity((q) => Math.max(1, q - 1))
