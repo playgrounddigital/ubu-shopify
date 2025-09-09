@@ -47,6 +47,7 @@ const Header: FC<HeaderProps> = ({ title, image, content, backgroundClassName })
             'relative inline-flex h-[221px] items-end overflow-hidden p-4 pl-4.5 md:h-[270px] md:p-[30px] md:pl-10 lg:h-full',
             {
               'bg-yellow': !content?.backgroundColour && !backgroundClassName,
+              'text-white': content?.backgroundColour === 'black',
             },
             backgroundClassName
           )}
