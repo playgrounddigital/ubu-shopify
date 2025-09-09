@@ -3,8 +3,10 @@ import { FC } from 'react'
 import Button from '~/components/Layout/Button'
 import Container from '~/components/Layout/Container'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
+import PageLink from '~/components/Layout/PageLink'
 import { joinSmartTagsIntoString } from '~/helpers/cms'
 import { DoubleLinkImageSectionRecord } from '~/types/cms/pages/home'
+import { SitePages } from '~/types/pages'
 
 interface DoubleLinkImageSectionProps {
   content: DoubleLinkImageSectionRecord
@@ -43,12 +45,14 @@ const DoubleLinkImageSection: FC<DoubleLinkImageSectionProps> = ({ content }) =>
             </p>
 
             {/* RIGHT SIDE */}
-            <Button
-              variant="white-black"
-              size="sm"
-            >
-              {content.linkBlock.buttonText}
-            </Button>
+            <PageLink href={`${SitePages.Collections}/${content.linkBlock.link.collection.handle}`}>
+              <Button
+                variant="white-black"
+                size="sm"
+              >
+                {content.linkBlock.buttonText}
+              </Button>
+            </PageLink>
           </div>
         </div>
 
