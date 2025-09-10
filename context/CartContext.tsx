@@ -3,6 +3,9 @@ import { FC, ReactNode, createContext, use, useCallback, useEffect, useMemo, use
 import Cart from '~/components/Layout/Nav/Cart'
 import { Checkout, CheckoutLineItemAddInput, CheckoutLineItemUpdateInput } from '~/types/shopify'
 
+const SHOPIFY_DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_DOMAIN
+const SITE_DOMAIN = process.env.siteUrl
+
 type CartContextState = {
   cart: Checkout | null
   checkoutUrl: string | null
@@ -371,7 +374,10 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
     }
   }, [checkoutId, cart, persist])
 
-  const checkoutUrl = useMemo(() => cart?.webUrl ?? null, [cart])
+  const checkoutUrl = useMemo(() => {
+    if (!cart) return null
+    return cart.webUrl.replace(SITE_DOMAIN, `https://${SHOPIFY_DOMAIN}`)
+  }, [cart])
 
   const value = useMemo<CartContextState>(
     () => ({

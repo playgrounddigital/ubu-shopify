@@ -17,7 +17,7 @@ import {
 } from '~/types/shopify'
 
 // Environment
-const SHOPIFY_DOMAIN = process.env.NEXT_PRIVATE_SHOPIFY_DOMAIN
+const SHOPIFY_DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_DOMAIN
 const SHOPIFY_STOREFRONT_TOKEN = process.env.NEXT_PRIVATE_SHOPIFY_STOREFRONT_API_ACCESS_TOKEN
 
 // Use the latest stable Storefront API version available
