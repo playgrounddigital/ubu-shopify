@@ -173,8 +173,8 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
               <Button
                 onClick={handleAddToCart}
                 disabled={isLoading || !variant || !hasQuantityAvailable}
-                buttonClassName={cx('w-full', {
-                  '!text-base': isMobile,
+                buttonClassName={cx('w-full whitespace-nowrap', {
+                  '!text-xs xs:!text-base': isMobile,
                 })}
                 className="w-full"
                 icon={CartIcon}
