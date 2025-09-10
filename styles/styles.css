@@ -162,3 +162,29 @@ input[type='number'] {
 .slick-track {
   display: flex !important;
 }
+
+/* PRODUCT PAGE */
+
+.product-image-gallery-slider .slick-dots {
+  @apply absolute bottom-3 left-3 !flex w-full gap-x-1.5;
+}
+
+/* Active dot */
+.product-image-gallery-slider .slick-dots li button:before {
+  content: none;
+}
+.product-image-gallery-slider .slick-dots li {
+  @apply !m-0 size-2.5;
+}
+.product-image-gallery-slider .slick-dots li button {
+  @apply size-2.5 rounded-full bg-grey transition-all;
+}
+
+.product-image-gallery-slider .slick-dots li.slick-active,
+.product-image-gallery-slider .slick-dots li.slick-active button {
+  @apply w-[30px];
+}
+
+.product-image-gallery-slider .slick-dots li.slick-active button {
+  @apply bg-green;
+}

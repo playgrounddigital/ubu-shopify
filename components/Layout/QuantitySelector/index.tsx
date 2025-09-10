@@ -25,7 +25,7 @@ const QuantitySelector: FC<QuantitySelectorProps> = ({
   return (
     <div
       className={cx('flex items-center rounded-full border border-green', className, {
-        'h-[58px]': size === 'lg',
+        'h-11 md:h-[58px]': size === 'lg',
         'h-[29px]': size === 'sm',
       })}
     >
@@ -35,7 +35,7 @@ const QuantitySelector: FC<QuantitySelectorProps> = ({
         onClick={onDecrease}
         className={cx('flex items-center justify-center disabled:opacity-50', {
           'h-[29px] pr-[7px] pl-[11px]': size === 'sm',
-          'h-[58px] pr-[13px] pl-[21px] text-xl': size === 'lg',
+          'h-[58px] pr-3 pl-[13px] text-xl md:pr-[13px] md:pl-[21px]': size === 'lg',
         })}
       >
         −

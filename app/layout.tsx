@@ -2,6 +2,7 @@
 import cx from 'classnames'
 import { Inter } from 'next/font/google'
 import { ReactNode, Suspense } from 'react'
+import 'slick-carousel/slick/slick-theme.css'
 import AnimateLayout from '~/components/Layout/AnimateLayout'
 import ErrorBoundary from '~/components/Layout/ErrorBoundary'
 import Footer from '~/components/Layout/Nav/Footer'

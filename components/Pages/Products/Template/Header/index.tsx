@@ -8,6 +8,7 @@ import QuantitySelector from '~/components/Layout/QuantitySelector'
 import StructuredTextRenderer from '~/components/Layout/StructuredTextRenderer'
 import ProductImageGallery from '~/components/Pages/Shared/ProductImageGallery'
 import { useCart } from '~/context/CartContext'
+import useBreakpoints from '~/hooks/useBreakpoints'
 import CartIcon from '~/public/img/icons/cart.svg'
 import TruckIcon from '~/public/img/icons/truck.svg'
 import ShippingReturnsInformationJSON from '~/public/shipping-returns-information.json'
@@ -21,6 +22,7 @@ interface HeaderProps {
 
 const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
   const { addToCart, isLoading } = useCart()
+  const { isMobile } = useBreakpoints()
   const [quantity, setQuantity] = useState(1)
 
   // Prefer Shopify option names/values when available; fallback to parsing variant titles
@@ -41,8 +43,6 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
   }, [product.options, product.variants])
 
   const hasOptions = optionGroups.length > 0
-
-  const filteredOptionGroups = optionGroups.filter((group) => group.length === 1)
 
   // Preselect the first option from each group
   const [selectedOptions, setSelectedOptions] = useState<string[]>([])
@@ -98,14 +98,14 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
 
   return (
     <section>
-      <Container className="pt-[176px] pb-[50px]">
-        <div className="mb-10 flex md:gap-x-10">
+      <Container className="pt-28 pb-[50px] md:pt-[176px]">
+        <div className="mb-10 flex flex-col md:gap-x-10 xl:flex-row">
           {/* Left: Thumbnails + Main image slider */}
           <ProductImageGallery product={product} />
 
           {/* Right: Details */}
-          <div className="flex w-full flex-col pt-12">
-            <div className="mb-14">
+          <div className="flex w-full flex-col pt-5 lg:pt-12">
+            <div className="mb-4 xl:mb-14">
               <h1 className="text-general-title mb-3">{product.title}</h1>
               {variant?.priceV2?.amount ? (
                 <div className="mb-6 text-[27px] leading-[32.4px] font-medium -tracking-[0.81px]">
@@ -160,7 +160,7 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
             ) : null}
 
             {/* Quantity + Add to cart */}
-            <div className="mb-5 flex items-center gap-x-3">
+            <div className="mb-5 flex items-center gap-x-1.5 md:gap-x-3">
               <QuantitySelector
                 size="lg"
                 quantity={quantity}
@@ -173,22 +173,29 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
               <Button
                 onClick={handleAddToCart}
                 disabled={isLoading || !variant || !hasQuantityAvailable}
-                buttonClassName="w-full"
+                buttonClassName={cx('w-full', {
+                  '!text-base': isMobile,
+                })}
                 className="w-full"
                 icon={CartIcon}
-                iconClassName="!w-6 min-w-6 !h-[26px] !translate-x-0"
+                iconClassName={cx('!translate-x-0', {
+                  '!w-6 min-w-6 !h-[26px]': !isMobile,
+                  '!w-5 !h-5 !min-h-5': isMobile,
+                })}
               >
                 {hasQuantityAvailable ? 'ADD TO CART' : 'SOLD OUT'}
               </Button>
             </div>
 
-            <div className="flex items-center justify-center gap-x-3 text-sm">
+            <div className="flex items-center gap-x-3 text-sm xl:justify-center">
               <TruckIcon className="h-[15px] w-[17px]" />
               <p>{freeShippingBanner.bannerText}</p>
             </div>
 
             {/* Description */}
-            {product.description ? <p className="mt-9 mb-[60px]">{product.description}</p> : null}
+            {product.description ? (
+              <p className="mt-9 mb-[60px] max-w-[450px] xl:max-w-[unset]">{product.description}</p>
+            ) : null}
 
             <Accordion label="Shipping & Returns">
               <div className="pb-6">

@@ -32,7 +32,7 @@ const ProductImageGallery: FC<ProductImageGalleryProps> = ({ product }) => {
   return (
     <div className="flex items-start gap-x-5">
       {/* Thumbs */}
-      <div className="flex flex-col gap-y-6">
+      <div className="hidden flex-col gap-y-6 xl:flex">
         {images.map((img, index) => (
           <button
             key={img.id ?? index}
@@ -53,13 +53,13 @@ const ProductImageGallery: FC<ProductImageGalleryProps> = ({ product }) => {
       </div>
 
       {/* Main slider */}
-      <div className="flex w-full max-w-[630px] flex-col">
-        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[10px] border-2 border-green">
+      <div className="mx-auto flex w-full max-w-[400px] flex-col xl:mx-0 xl:max-w-[630px]">
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[6px] border-2 border-green md:rounded-[10px]">
           <Slider
             {...productImageGallerySliderSettings}
             ref={sliderRef}
             beforeChange={handleSlideChange}
-            className="h-full w-[630px]"
+            className="product-image-gallery-slider h-full w-full md:w-[400px] xl:w-[630px]"
           >
             {images.map((img, index) => (
               <OptimisedImage
@@ -67,14 +67,14 @@ const ProductImageGallery: FC<ProductImageGalleryProps> = ({ product }) => {
                 src={img.url}
                 alt={product.title}
                 layout="cover"
-                className="aspect-[4/5] w-[630px]"
+                className="aspect-[4/5] w-full md:w-[400px] xl:w-[630px]"
               />
             ))}
           </Slider>
         </div>
         {/* Bottom slider navigation */}
         {images.length > 1 && (
-          <div className="mt-10 flex gap-x-4">
+          <div className="mt-10 hidden gap-x-4 xl:flex">
             <CircleButton
               isFlipped
               disabled={currentSlide === 0}
