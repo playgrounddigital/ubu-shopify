@@ -28,24 +28,6 @@ const featuredProductsSectionQuery = `... on FeaturedProductsSectionRecord {
   }
 }`
 
-const fullWidthBannerSectionQuery = `... on FullWidthBannerSectionRecord {
-  id
-  image ${imageQuery}
-  imageMobile ${imageQuery}
-  title
-  titleColour
-  buttonText
-  buttonColour
-  link
-  height
-}`
-
-const textMarqueeSectionQuery = `... on TextMarqueeSectionRecord {
-  id
-  marqueeText
-  textColour
-}`
-
 const productOrCollectionLinkQuery = `{
   __typename
   ... on CollectionLinkRecord {
@@ -54,6 +36,24 @@ const productOrCollectionLinkQuery = `{
   ... on ProductLinkRecord {
     product
   }
+}`
+
+const fullWidthBannerSectionQuery = `... on FullWidthBannerSectionRecord {
+  id
+  image ${imageQuery}
+  imageMobile ${imageQuery}
+  title
+  titleColour
+  buttonText
+  buttonColour
+  link ${productOrCollectionLinkQuery}
+  height
+}`
+
+const textMarqueeSectionQuery = `... on TextMarqueeSectionRecord {
+  id
+  marqueeText
+  textColour
 }`
 
 const doubleLinkImageSectionQuery = `... on DoubleLinkImageSectionRecord {
@@ -208,7 +208,7 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
           title
           buttonText
           buttonColour
-          link
+          link ${productOrCollectionLinkQuery}
           height
           shouldAddBorder
         }
