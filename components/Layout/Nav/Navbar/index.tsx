@@ -11,6 +11,7 @@ import PageLink from '~/components/Layout/PageLink'
 import { useAuth } from '~/context/AuthContext'
 import { useCart } from '~/context/CartContext'
 import { disableScroll, enableScroll } from '~/helpers/common'
+import useBreakpoints from '~/hooks/useBreakpoints'
 import useOpenState from '~/hooks/useOpenState'
 import CartIcon from '~/public/img/icons/cart.svg'
 import SearchIcon from '~/public/img/icons/search.svg'
@@ -29,6 +30,7 @@ const Navbar: FC = () => {
   const { cart, openCart } = useCart()
   const { isAuthenticated } = useAuth()
   const pathname = usePathname()
+  const { isDesktop } = useBreakpoints()
 
   const isOnHomePage = pathname === SitePages.Home
 
@@ -187,11 +189,13 @@ const Navbar: FC = () => {
         </div>
       </header>
 
-      <ShopMenuBar
-        isBannerActive={siteBanner.isBannerActive}
-        isOpen={isShopMenuOpen}
-        onClose={closeShopMenu}
-      />
+      {isDesktop && (
+        <ShopMenuBar
+          isBannerActive={siteBanner.isBannerActive}
+          isOpen={isShopMenuOpen}
+          onClose={closeShopMenu}
+        />
+      )}
 
       {/* Mobile nav menu */}
       <MobileNavMenu

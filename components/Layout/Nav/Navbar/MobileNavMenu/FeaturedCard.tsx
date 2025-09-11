@@ -24,7 +24,7 @@ const FeaturedCard: FC<FeaturedCardProps> = ({ menu, onClose }) => {
         style={{
           maskImage: menu.isLarge ? undefined : 'url(/img/shared/nav-featured-card-mask-small.svg)',
           maskSize: 'cover',
-          maskPosition: 'center',
+          maskPosition: 'bottom',
           maskRepeat: 'no-repeat',
         }}
       >
