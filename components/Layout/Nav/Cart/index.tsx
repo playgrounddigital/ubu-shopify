@@ -1,5 +1,6 @@
 'use client'
 import cx from 'classnames'
+import { useRouter } from 'next/navigation'
 import { FC, useMemo } from 'react'
 import Button from '~/components/Layout/Button'
 import CartItem from '~/components/Layout/Nav/Cart/CartItem'
@@ -12,12 +13,14 @@ import FooterJSON from '~/public/footer.json'
 import FreeShippingBannerJSON from '~/public/free-shipping-banner.json'
 import ChevronLeftIcon from '~/public/img/icons/chevron-left.svg'
 import TruckIcon from '~/public/img/icons/truck.svg'
+import { SitePages } from '~/types/pages'
 
 const FREE_SHIPPING_LIMIT = FreeShippingBannerJSON.freeShippingThreshold
 
 const Cart: FC = () => {
   const { cart, isCartOpen, closeCart, updateCartItemQuantity, isLoading, checkoutUrl } = useCart()
   const { isMobile } = useBreakpoints()
+  const router = useRouter()
 
   const { subtotal, remaining, percent } = useMemo(() => {
     const subtotalValue = (cart?.lineItems ?? []).reduce((sum, li) => {
@@ -192,6 +195,7 @@ const Cart: FC = () => {
                   variant={!hasCartItems ? 'black-green' : 'white-black'}
                   onClick={() => {
                     if (!hasCartItems) {
+                      router.push(SitePages.Shop)
                       closeCart()
                       return
                     }

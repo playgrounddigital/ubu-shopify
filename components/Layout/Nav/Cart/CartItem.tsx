@@ -21,7 +21,11 @@ const CartItem: FC<CartItemProps> = ({ item, isLoading, onIncrease, onDecrease, 
   })()
 
   return (
-    <li className="flex items-center justify-between gap-x-4 text-[13px] leading-4 font-medium -tracking-[0.39px]">
+    <li
+      className={cx('flex items-center justify-between gap-x-4 text-[13px] leading-4 font-medium -tracking-[0.39px]', {
+        'cursor-wait': isLoading,
+      })}
+    >
       {/* Image */}
       <img
         src={item.variant?.image?.url}
@@ -36,7 +40,10 @@ const CartItem: FC<CartItemProps> = ({ item, isLoading, onIncrease, onDecrease, 
           {/* Delete button */}
           <button
             onClick={() => onDelete(item.id)}
-            className="translate-y-0.5 text-grey"
+            disabled={isLoading}
+            className={cx('translate-y-0.5 text-grey', {
+              'opacity-50': isLoading,
+            })}
           >
             <TrashIcon className="size-[15px]" />
           </button>
