@@ -194,7 +194,7 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
                     quantity: next[existingIndex].quantity + it.quantity,
                   }
                 } else {
-                  next.push({
+                  next.unshift({
                     id: `temp:${variantId}`,
                     quantity: it.quantity,
                     title: it.productTitle ?? '',
@@ -305,7 +305,7 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
                     quantity: it.quantity,
                   }
                 } else {
-                  next.push({
+                  next.unshift({
                     id,
                     quantity: it.quantity,
                     title: '',
