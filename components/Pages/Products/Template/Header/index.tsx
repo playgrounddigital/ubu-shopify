@@ -69,6 +69,9 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
   const colorMetafield = product.metafields[0]?.references[0]?.fields.find((field) => field.key === 'label')?.value
 
   const secondaryTitleToUse = (() => {
+    if (colorMetafield) {
+      return colorMetafield
+    }
     if (variantTitle === 'Default Title' && colorMetafield) {
       return colorMetafield
     }
