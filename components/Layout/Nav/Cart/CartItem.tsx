@@ -15,7 +15,10 @@ interface CartItemProps {
 }
 
 const CartItem: FC<CartItemProps> = ({ item, isLoading, onIncrease, onDecrease, onDelete, formatCurrency }) => {
-  const variantTitle = item.variant?.title
+  const variantTitle = (() => {
+    if (item.variant?.title && item.variant.title !== 'Default Title') return item.variant.title
+    return null
+  })()
 
   return (
     <li className="flex items-center justify-between gap-x-4 text-[13px] leading-4 font-medium -tracking-[0.39px]">
