@@ -74,6 +74,7 @@ const Footer: FC = () => {
   )
 
   const validateForm = async () => {
+    if (!email) return false
     if (isProduction) {
       const token = await recaptchaRef.current.executeAsync()
       if (!token) return false
@@ -120,6 +121,7 @@ const Footer: FC = () => {
                 type={hasSubmittedSuccessfully ? 'text' : 'email'}
                 placeholder="Email"
                 value={email}
+                required
                 onFocus={handleInputFocus}
                 onChange={(e) => {
                   if (hasSubmittedSuccessfully || isSubmitting) return
