@@ -25,8 +25,11 @@ if (!SITE_KEY) {
 const Footer: FC = () => {
   const [state, handleSubmit] = useForm(FORM_ID)
   const [email, setEmail] = useState('')
+  const [hasInputBeenFocused, setHasInputBeenFocused] = useState(false)
   const recaptchaRef = useRef<ReCAPTCHA>(null)
   const { isMobile, isDesktop } = useBreakpoints()
+
+  const handleInputFocus = () => setHasInputBeenFocused(true)
 
   const hasSubmittedSuccessfully = state.succeeded
   const isSubmitting = state.submitting
@@ -104,11 +107,19 @@ const Footer: FC = () => {
               'cursor-not-allowed': hasSubmittedSuccessfully || isSubmitting,
             })}
           >
+            {hasInputBeenFocused && isProduction && (
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                size="invisible"
+                sitekey={SITE_KEY}
+              />
+            )}
             <input
               name="email"
               type={hasSubmittedSuccessfully ? 'text' : 'email'}
               placeholder="Email"
               value={email}
+              onFocus={handleInputFocus}
               onChange={(e) => {
                 if (hasSubmittedSuccessfully || isSubmitting) return
                 setEmail(e.target.value)
