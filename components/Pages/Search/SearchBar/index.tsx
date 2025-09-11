@@ -25,7 +25,7 @@ const SearchBar: FC<SearchBarProps> = ({ hasResults, searchQuery, setSearchQuery
           className="mx-auto w-full max-w-[1200px] border-b-4 border-white pb-3.5 text-center font-semibold text-white placeholder:text-white/50 md:pb-10 md:text-[48px] md:leading-[58px] md:-tracking-[1.44px]"
         />
 
-        {!hasResults && (
+        {searchQuery.length > 0 && !hasResults && (
           <p
             className={cx('mt-2 text-white md:mt-7', {
               'text-subheading': !isMobile,

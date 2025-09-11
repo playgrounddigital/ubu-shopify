@@ -24,7 +24,7 @@ export interface SearchPageSectionProps {
 
 const SearchPage: FC<SearchPageProps> = ({ title, collection, products }) => {
   const [searchQuery, setSearchQuery] = useState('')
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(products)
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
 
   const debouncedSetSearchQuery = debounce((query: string) => {
     setSearchQuery(query)
@@ -33,7 +33,7 @@ const SearchPage: FC<SearchPageProps> = ({ title, collection, products }) => {
   // Filter products based on search query
   useEffect(() => {
     if (searchQuery === '') {
-      setFilteredProducts(products)
+      setFilteredProducts([])
       return
     }
     setFilteredProducts(
