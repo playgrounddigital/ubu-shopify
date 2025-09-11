@@ -80,7 +80,7 @@ const FullWidthBannerSection: FC<FullWidthBannerSectionProps> = ({ content }) =>
                   case 'green':
                     return 'black-green'
                   case 'blue':
-                    return 'black-blue'
+                    return 'white-blue'
                   case 'pink':
                     return 'black-pink'
                   case 'yellow':

@@ -1,6 +1,6 @@
 export type ButtonSize = 'sm' | 'md'
 
-export type ButtonColours = 'white-black' | 'black-green' | 'black-pink' | 'black-yellow' | 'black-blue'
+export type ButtonColours = 'white-black' | 'black-green' | 'black-pink' | 'black-yellow' | 'white-blue'
 
 export const defaultButtonClasses =
   'group relative font-mono flex select-none items-center justify-between gap-x-2 overflow-hidden border uppercase font-normal transition-all'
@@ -43,8 +43,8 @@ export const BUTTON_COLOURS: Record<
     button: 'text-black',
     background: 'bg-yellow',
   },
-  'black-blue': {
-    button: 'text-black',
+  'white-blue': {
+    button: 'text-white',
     background: 'bg-blue',
   },
 }
