@@ -76,7 +76,7 @@ const FeaturedProductsSection: FC<FeaturedProductsSectionProps> = ({ products, c
               <ProductCard
                 key={cmsProduct.product.id}
                 product={shopifyProduct}
-                className="mr-2 min-w-[225px] md:mr-6 md:min-w-[305px] xl:mr-10"
+                className="mr-2 w-[50vw] max-w-[200px] min-w-[180px] md:mr-6 md:w-auto md:max-w-[unset] md:min-w-[305px] xl:mr-10"
               />
             )
           })}
