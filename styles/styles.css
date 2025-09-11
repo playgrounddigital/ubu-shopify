@@ -188,3 +188,9 @@ input[type='number'] {
 .product-image-gallery-slider .slick-dots li.slick-active button {
   @apply bg-green;
 }
+
+/* RECAPTCHA */
+
+.grecaptcha-badge {
+  @apply z-70;
+}

@@ -107,29 +107,31 @@ const Footer: FC = () => {
               'cursor-not-allowed': hasSubmittedSuccessfully || isSubmitting,
             })}
           >
-            {hasInputBeenFocused && isProduction && (
-              <ReCAPTCHA
-                ref={recaptchaRef}
-                size="invisible"
-                sitekey={SITE_KEY}
+            <div>
+              {hasInputBeenFocused && isProduction && (
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  size="invisible"
+                  sitekey={SITE_KEY}
+                />
+              )}
+              <input
+                name="email"
+                type={hasSubmittedSuccessfully ? 'text' : 'email'}
+                placeholder="Email"
+                value={email}
+                onFocus={handleInputFocus}
+                onChange={(e) => {
+                  if (hasSubmittedSuccessfully || isSubmitting) return
+                  setEmail(e.target.value)
+                }}
+                className={cx('w-full bg-transparent placeholder:text-white', {
+                  'text-input': isDesktop,
+                  'text-[26px] leading-6 -tracking-[1px]': !isDesktop,
+                  'text-green': hasSubmittedSuccessfully,
+                })}
               />
-            )}
-            <input
-              name="email"
-              type={hasSubmittedSuccessfully ? 'text' : 'email'}
-              placeholder="Email"
-              value={email}
-              onFocus={handleInputFocus}
-              onChange={(e) => {
-                if (hasSubmittedSuccessfully || isSubmitting) return
-                setEmail(e.target.value)
-              }}
-              className={cx('w-full bg-transparent placeholder:text-white', {
-                'text-input': isDesktop,
-                'text-[26px] leading-6 -tracking-[1px]': !isDesktop,
-                'text-green': hasSubmittedSuccessfully,
-              })}
-            />
+            </div>
             <Button
               type="submit"
               size={isMobile ? 'sm' : 'md'}
