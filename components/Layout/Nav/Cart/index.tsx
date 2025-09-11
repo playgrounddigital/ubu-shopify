@@ -4,7 +4,6 @@ import { FC, useMemo } from 'react'
 import Button from '~/components/Layout/Button'
 import CartItem from '~/components/Layout/Nav/Cart/CartItem'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
-import ProductCard from '~/components/Pages/Shared/ProductCard'
 import { useCart } from '~/context/CartContext'
 import { formatCurrency } from '~/helpers/formatters'
 import useBreakpoints from '~/hooks/useBreakpoints'
@@ -13,8 +12,6 @@ import FooterJSON from '~/public/footer.json'
 import FreeShippingBannerJSON from '~/public/free-shipping-banner.json'
 import ChevronLeftIcon from '~/public/img/icons/chevron-left.svg'
 import TruckIcon from '~/public/img/icons/truck.svg'
-import ProductsJSON from '~/public/products.json'
-import RecommendedCartItemListJSON from '~/public/recommended-cart-item-list.json'
 
 const FREE_SHIPPING_LIMIT = FreeShippingBannerJSON.freeShippingThreshold
 
@@ -154,7 +151,7 @@ const Cart: FC = () => {
           {/* Footer - Recommended Items & Total */}
           <div>
             {/* RECOMMENDED ITEMS */}
-            <div className="px-4 md:px-10">
+            {/* <div className="px-4 md:px-10">
               <hr className="mb-5 border-divider-grey" />
               <h3 className="mb-4 text-sm leading-5 -tracking-[0.28px]">{RecommendedCartItemListJSON.text}</h3>
               <div
@@ -181,7 +178,7 @@ const Cart: FC = () => {
                   )
                 })}
               </div>
-            </div>
+            </div> */}
 
             {/* TOTAL */}
             <div className="w-full px-4 pt-4 pb-[38px] md:px-10">
