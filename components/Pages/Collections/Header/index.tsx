@@ -84,7 +84,7 @@ const Header: FC<HeaderProps> = ({ title, image, content, backgroundClassName })
       {content && 'description' in content && (
         <div className="bg-black pt-[100px] pb-[43px]">
           <Container>
-            <p className="text-introduction max-w-[824px] text-white">{content.description}</p>
+            <p className="text-introduction-larger max-w-[824px] text-white">{content.description}</p>
           </Container>
         </div>
       )}

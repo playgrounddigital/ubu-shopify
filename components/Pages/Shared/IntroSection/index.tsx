@@ -18,7 +18,7 @@ const IntroSection: FC<IntroSectionProps> = ({ content }) => {
         })}
       >
         <div
-          className={cx('text-introduction text-white', {
+          className={cx('text-introduction-larger text-white', {
             'max-w-[888px]': !content.shouldAddPaddingBelow,
           })}
         >

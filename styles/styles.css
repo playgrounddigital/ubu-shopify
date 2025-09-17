@@ -68,6 +68,9 @@ button:not(:disabled),
   .text-introduction {
     @apply font-semibold -tracking-[0.48px] md:text-[35px] md:leading-[42px] md:-tracking-[1.05px];
   }
+  .text-introduction-larger {
+    @apply text-[28px] leading-[34px] font-semibold -tracking-[0.48px] md:text-[35px] md:leading-[42px] md:-tracking-[1.05px];
+  }
   .text-general-title {
     @apply text-[28px] leading-[34px] font-bold -tracking-[0.84px] md:text-[39px] md:leading-[46.8px] md:-tracking-[1.17px];
   }
