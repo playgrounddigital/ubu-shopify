@@ -1,4 +1,5 @@
 'use client'
+import { GoogleAnalytics } from '@next/third-parties/google'
 import cx from 'classnames'
 import { Inter } from 'next/font/google'
 import { ReactNode, Suspense } from 'react'
@@ -12,6 +13,11 @@ import CartProvider from '~/context/CartContext'
 import PageTransitionProvider from '~/context/PageTransitionContext'
 import '~/styles/styles.css'
 
+const GA_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
+if (!GA_ID) {
+  throw new Error('NEXT_PUBLIC_GOOGLE_ANALYTICS_ID is not set')
+}
+
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
@@ -24,6 +30,7 @@ export default ({ children }: { children: ReactNode }) => {
     <html lang="en">
       <body className={cx(inter.variable)}>
         <ErrorBoundary>
+          <GoogleAnalytics gaId={GA_ID} />
           <PageTransitionProvider>
             <AuthProvider>
               <CartProvider>
