@@ -96,7 +96,7 @@ const PromoBanner: FC<PromoBannerProps> = ({ content }) => {
   if (hasSubscribedPreviously) return null
 
   return (
-    <div className="!fixed bottom-4 left-0 z-50 flex h-px items-end px-4">
+    <div className="!fixed bottom-4 left-0 z-50 flex h-px w-screen items-end px-4">
       <div
         className={cx(
           'relative flex h-[143px] w-full transform-gpu gap-x-2 overflow-hidden rounded-[12px] border-[1.5px] border-white bg-white shadow-xl transition-all duration-500 md:w-[455px]',
