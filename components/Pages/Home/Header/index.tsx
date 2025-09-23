@@ -53,11 +53,11 @@ const Header: FC<HomePageSectionProps> = ({ content }) => {
             )}
             {/* Text overlay on top */}
             <Container className="!absolute bottom-0 left-1/2 flex -translate-x-1/2 justify-end pb-22 md:pb-6">
-              <div className="relative pt-4 pr-3.5 pb-3.5 pl-[31px] lg:pt-2">
-                <p className="text-subheading relative z-10 max-w-[220px] text-white lg:max-w-[259px]">
+              <div className="relative pt-4 pr-3.5 pb-3.5 pl-[31px] md:pt-3 lg:pt-2">
+                <p className="text-subheading relative z-10 max-w-[220px] text-white md:max-w-[259px]">
                   {slide.description}
                 </p>
-                <RectangleBackground className="absolute top-0 left-0 min-h-[72px] lg:inset-0" />
+                <RectangleBackground className="absolute top-0 left-0 min-h-[72px] md:inset-0" />
               </div>
             </Container>
           </div>
