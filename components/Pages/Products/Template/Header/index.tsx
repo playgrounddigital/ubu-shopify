@@ -26,6 +26,7 @@ const Header: FC<HeaderProps> = ({ product, accordions, freeShippingBanner }) =>
   const { addToCart, isLoading } = useCart()
   const { isMobile } = useBreakpoints()
   const [quantity, setQuantity] = useState(1)
+  const [openAccordionId, setOpenAccordionId] = useState<string | null>(null)
 
   // Prefer Shopify option names/values when available; fallback to parsing variant titles
   const optionGroups = useMemo(() => {
@@ -206,11 +207,21 @@ const Header: FC<HeaderProps> = ({ product, accordions, freeShippingBanner }) =>
               <Accordion
                 key={accordion.id}
                 label={accordion.title}
+                isOpen={openAccordionId === accordion.id}
+                onToggle={() => {
+                  setOpenAccordionId(openAccordionId === accordion.id ? null : accordion.id)
+                }}
               >
                 <StructuredTextRenderer data={accordion.description} />
               </Accordion>
             ))}
-            <Accordion label="Shipping & Returns">
+            <Accordion
+              label="Shipping & Returns"
+              isOpen={openAccordionId === 'shipping-returns'}
+              onToggle={() => {
+                setOpenAccordionId(openAccordionId === 'shipping-returns' ? null : 'shipping-returns')
+              }}
+            >
               <div className="pb-6">
                 <StructuredTextRenderer data={ShippingReturnsInformationJSON.content} />
               </div>

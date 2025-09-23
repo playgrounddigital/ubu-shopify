@@ -11,6 +11,8 @@ interface AccordionProps {
   buttonClassName?: string
   contentClassName?: string
   children: string | ReactNode
+  isOpen?: boolean
+  onToggle?: () => void
 }
 
 const Accordion: FC<AccordionProps> = ({
@@ -21,18 +23,27 @@ const Accordion: FC<AccordionProps> = ({
   contentClassName,
   buttonClassName,
   children,
+  isOpen: externalIsOpen,
+  onToggle,
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [internalIsOpen, setInternalIsOpen] = useState(false)
   const panelRef = useRef(null)
+
+  // Use external state if provided, otherwise use internal state
+  const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen
 
   const handleClose = () => {
     panelRef.current.style.maxHeight = null
-    setIsOpen(false)
+    if (externalIsOpen === undefined) {
+      setInternalIsOpen(false)
+    }
   }
 
   const handleOpen = () => {
     panelRef.current.style.maxHeight = `${panelRef.current.scrollHeight}px`
-    setIsOpen(true)
+    if (externalIsOpen === undefined) {
+      setInternalIsOpen(true)
+    }
   }
 
   useEffect(() => {
@@ -47,6 +58,17 @@ const Accordion: FC<AccordionProps> = ({
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  // Handle external state changes
+  useEffect(() => {
+    if (externalIsOpen !== undefined && panelRef.current) {
+      if (externalIsOpen) {
+        panelRef.current.style.maxHeight = `${panelRef.current.scrollHeight}px`
+      } else {
+        panelRef.current.style.maxHeight = null
+      }
+    }
+  }, [externalIsOpen])
+
   return (
     <div className={cx('h-fit w-full flex-shrink border-b border-green', containerClassName)}>
       <ActivationButton
@@ -57,6 +79,14 @@ const Accordion: FC<AccordionProps> = ({
         buttonClassName={buttonClassName}
         onClick={() => {
           if (isDisabled) return
+
+          // If external control is provided, use the onToggle callback
+          if (onToggle) {
+            onToggle()
+            return
+          }
+
+          // Otherwise use internal state management
           if (isOpen) {
             handleClose()
           } else {
