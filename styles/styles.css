@@ -197,3 +197,7 @@ input[type='number'] {
 .grecaptcha-badge {
   @apply z-70;
 }
+
+.promo-banner .grecaptcha-badge {
+  @apply !hidden;
+}

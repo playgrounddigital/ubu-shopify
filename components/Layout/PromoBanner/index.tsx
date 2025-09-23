@@ -137,7 +137,7 @@ const PromoBanner: FC<PromoBannerProps> = ({ content }) => {
         />
 
         {/* Content area */}
-        <div className="pt-3">
+        <div className="promo-banner pt-3">
           <div className="mb-2 inline-flex h-6 items-center justify-center rounded bg-green px-[7px] text-xs text-black">
             <AnimateOnUpdate
               isSpan
