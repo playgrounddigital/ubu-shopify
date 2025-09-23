@@ -6,6 +6,7 @@ import { getAllProducts } from '~/lib/shopify'
 import { EmptyCartTextContent } from '~/types/cms/models/empty-cart-text'
 import { Footer } from '~/types/cms/models/footer'
 import { FreeShippingBanner } from '~/types/cms/models/free-shipping-banner'
+import { MobileShopNavigationMenu } from '~/types/cms/models/mobile-shop-navigation-menu'
 import { RecommendedCartItemListContent } from '~/types/cms/models/recommended-cart-item-list'
 import { ShippingReturnsInformationContent } from '~/types/cms/models/shipping-returns-information'
 import { ShopNavigationMenu } from '~/types/cms/models/shop-navigation-menu'
@@ -24,6 +25,7 @@ const fetchContent = async () => {
   const shippingReturnsInformationQuery = getGraphQLQuery(GraphQlQueryEnum.ShippingReturnsInformation)
   const freeShippingBannerQuery = getGraphQLQuery(GraphQlQueryEnum.FreeShippingBanner)
   const allShopNavigationMenusQuery = getGraphQLQuery(GraphQlQueryEnum.AllShopNavigationMenus)
+  const allMobileShopNavigationMenusQuery = getGraphQLQuery(GraphQlQueryEnum.AllMobileShopNavigationMenus)
   const emptyCartTextQuery = getGraphQLQuery(GraphQlQueryEnum.EmptyCartText)
   const recommendedCartItemListQuery = getGraphQLQuery(GraphQlQueryEnum.RecommendedCartItemList)
 
@@ -33,6 +35,7 @@ const fetchContent = async () => {
     { shippingReturnsInformation },
     { freeShippingBanner },
     { allShopNavigationMenus },
+    { allMobileShopNavigationMenus },
     { emptyCartText },
     { recommendedCartItemList },
     products,
@@ -42,6 +45,7 @@ const fetchContent = async () => {
     { shippingReturnsInformation: ShippingReturnsInformationContent },
     { freeShippingBanner: FreeShippingBanner },
     { allShopNavigationMenus: ShopNavigationMenu[] },
+    { allMobileShopNavigationMenus: MobileShopNavigationMenu[] },
     { emptyCartText: EmptyCartTextContent },
     { recommendedCartItemList: RecommendedCartItemListContent },
     products: Product[],
@@ -51,6 +55,7 @@ const fetchContent = async () => {
     fetchFromDatoAPI(shippingReturnsInformationQuery),
     fetchFromDatoAPI(freeShippingBannerQuery),
     fetchFromDatoAPI(allShopNavigationMenusQuery),
+    fetchFromDatoAPI(allMobileShopNavigationMenusQuery),
     fetchFromDatoAPI(emptyCartTextQuery),
     fetchFromDatoAPI(recommendedCartItemListQuery),
     getAllProducts(),
@@ -70,6 +75,9 @@ const fetchContent = async () => {
 
   const allShopNavigationMenusJson = JSON.stringify(allShopNavigationMenus)
   fs.writeFileSync(path.join(publicDir, 'all-shop-navigation-menus.json'), allShopNavigationMenusJson)
+
+  const allMobileShopNavigationMenusJson = JSON.stringify(allMobileShopNavigationMenus)
+  fs.writeFileSync(path.join(publicDir, 'all-mobile-shop-navigation-menus.json'), allMobileShopNavigationMenusJson)
 
   const emptyCartTextJson = JSON.stringify(emptyCartText)
   fs.writeFileSync(path.join(publicDir, 'empty-cart-text.json'), emptyCartTextJson)

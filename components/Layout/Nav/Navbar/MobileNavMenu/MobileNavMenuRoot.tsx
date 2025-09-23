@@ -10,7 +10,7 @@ import {
 } from '~/components/Layout/Nav/Navbar/MobileNavMenu/presets'
 import PageLink from '~/components/Layout/PageLink'
 import useBreakpoints from '~/hooks/useBreakpoints'
-import allShopNavigationMenusJSON from '~/public/all-shop-navigation-menus.json'
+import allMobileShopNavigationMenusJSON from '~/public/all-mobile-shop-navigation-menus.json'
 import UserIcon from '~/public/img/icons/user.svg'
 import { SitePages } from '~/types/pages'
 
@@ -23,6 +23,8 @@ interface MobileNavMenuRootProps {
 
 const MobileNavMenuRoot: FC<MobileNavMenuRootProps> = ({ isOpen, isAuthenticated, onClose, onOpenShop }) => {
   const { isMobile } = useBreakpoints()
+  const mainMobileMenu = allMobileShopNavigationMenusJSON.find((menu) => menu.title === 'Main')
+
   return (
     <div
       className={cx(mobileNavMenuSlideClasses, {
@@ -84,10 +86,12 @@ const MobileNavMenuRoot: FC<MobileNavMenuRootProps> = ({ isOpen, isAuthenticated
         </div>
 
         {/* Featured preview card */}
-        <FeaturedCard
-          menu={allShopNavigationMenusJSON[0]}
-          onClose={onClose}
-        />
+        {mainMobileMenu && (
+          <FeaturedCard
+            menu={mainMobileMenu}
+            onClose={onClose}
+          />
+        )}
       </div>
     </div>
   )

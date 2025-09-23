@@ -8,6 +8,7 @@ import {
   mobileNavMenuSlideClasses,
   mobileNavMenuSlideInternalClasses,
 } from '~/components/Layout/Nav/Navbar/MobileNavMenu/presets'
+import allMobileShopNavigationMenusJSON from '~/public/all-mobile-shop-navigation-menus.json'
 import allShopNavigationMenusJSON from '~/public/all-shop-navigation-menus.json'
 import { SitePages } from '~/types/pages'
 
@@ -19,6 +20,7 @@ interface MobileNavMenuShopProps {
 }
 
 const MobileNavMenuShop: FC<MobileNavMenuShopProps> = ({ isOpen, onClose, onBack, onOpenFeatured }) => {
+  const shopMobileMenu = allMobileShopNavigationMenusJSON.find((menu) => menu.title === 'Collections')
   return (
     <div
       className={cx(mobileNavMenuSlideClasses, {
@@ -47,11 +49,12 @@ const MobileNavMenuShop: FC<MobileNavMenuShopProps> = ({ isOpen, onClose, onBack
           ))}
         </ul>
 
-        {/* Mirror of featured preview */}
-        <FeaturedCard
-          menu={allShopNavigationMenusJSON[0]}
-          onClose={onClose}
-        />
+        {shopMobileMenu && (
+          <FeaturedCard
+            menu={shopMobileMenu}
+            onClose={onClose}
+          />
+        )}
       </div>
     </div>
   )

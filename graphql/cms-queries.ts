@@ -333,6 +333,18 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
       isLarge
     }
   }`,
+  [GraphQlQueryEnum.AllMobileShopNavigationMenus]: () => `{
+    allMobileShopNavigationMenus {
+      id
+      title
+      
+      featuredTitle
+      image {
+        url
+      }
+      collectionLink
+    }
+  }`,
 
   [GraphQlQueryEnum.ShippingReturnsInformation]: () => `{
     shippingReturnsInformation {
