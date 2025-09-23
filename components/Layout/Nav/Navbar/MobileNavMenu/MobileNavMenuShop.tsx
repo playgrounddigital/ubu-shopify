@@ -20,7 +20,7 @@ interface MobileNavMenuShopProps {
 }
 
 const MobileNavMenuShop: FC<MobileNavMenuShopProps> = ({ isOpen, onClose, onBack, onOpenFeatured }) => {
-  const shopMobileMenu = allMobileShopNavigationMenusJSON.find((menu) => menu.title === 'Collections')
+  const shopMobileMenu = allMobileShopNavigationMenusJSON.find((menu) => menu.title === 'Shop')
   return (
     <div
       className={cx(mobileNavMenuSlideClasses, {
