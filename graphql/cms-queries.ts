@@ -296,6 +296,13 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
   [GraphQlQueryEnum.AllProducts]: () => `{
     allProducts {
       shopifyProduct
+      accordions {
+        id
+        title
+        description {
+          value
+        }
+      }
       content {
         __typename
         ... on ImageSliderSectionRecord {

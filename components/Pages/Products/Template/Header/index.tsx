@@ -13,14 +13,16 @@ import CartIcon from '~/public/img/icons/cart.svg'
 import TruckIcon from '~/public/img/icons/truck.svg'
 import ShippingReturnsInformationJSON from '~/public/shipping-returns-information.json'
 import { FreeShippingBanner } from '~/types/cms/models/free-shipping-banner'
+import { AccordionRecord } from '~/types/cms/models/product-content'
 import { Product } from '~/types/shopify'
 
 interface HeaderProps {
   product: Product
+  accordions: AccordionRecord[]
   freeShippingBanner: FreeShippingBanner
 }
 
-const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
+const Header: FC<HeaderProps> = ({ product, accordions, freeShippingBanner }) => {
   const { addToCart, isLoading } = useCart()
   const { isMobile } = useBreakpoints()
   const [quantity, setQuantity] = useState(1)
@@ -200,6 +202,14 @@ const Header: FC<HeaderProps> = ({ product, freeShippingBanner }) => {
               <p className="mt-9 mb-[60px] max-w-[450px] xl:max-w-[unset]">{product.description}</p>
             ) : null}
 
+            {accordions.map((accordion) => (
+              <Accordion
+                key={accordion.id}
+                label={accordion.title}
+              >
+                <StructuredTextRenderer data={accordion.description} />
+              </Accordion>
+            ))}
             <Accordion label="Shipping & Returns">
               <div className="pb-6">
                 <StructuredTextRenderer data={ShippingReturnsInformationJSON.content} />

@@ -30,6 +30,7 @@ const ProductPageContent: FC<ProductPageContentProps> = ({
     <>
       <Header
         product={product}
+        accordions={productContent?.accordions || []}
         freeShippingBanner={freeShippingBanner}
       />
       {productContent?.content.map((section) => {

@@ -74,7 +74,7 @@ const StructuredTextRenderer: FC<StructuredTextRendererProps> = ({ data, paragra
             return (
               <ul
                 key={key}
-                className={cx('mb-8 flex list-disc flex-col gap-y-2 pl-6', paragraphClassName)}
+                className={cx('mb-8 flex list-disc flex-col gap-y-2 pl-4', paragraphClassName)}
               >
                 {children}
               </ul>
@@ -83,7 +83,7 @@ const StructuredTextRenderer: FC<StructuredTextRendererProps> = ({ data, paragra
             return (
               <ol
                 key={key}
-                className={cx('mb-8 flex list-decimal flex-col gap-y-2 pl-6', paragraphClassName)}
+                className={cx('mb-8 flex list-decimal flex-col gap-y-2 pl-4', paragraphClassName)}
               >
                 {children}
               </ol>
