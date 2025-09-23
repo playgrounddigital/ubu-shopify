@@ -141,7 +141,7 @@ const PromoBanner: FC<PromoBannerProps> = ({ content }) => {
           <div className="mb-2 inline-flex h-6 items-center justify-center rounded bg-green px-[7px] text-xs text-black">
             <AnimateOnUpdate
               isSpan
-              updateKey={bannerState}
+              updateKey={bannerState === 'thankyou'}
             >
               {bannerState === 'thankyou' ? content.badgeTextSubmitted : content.badgeText}
             </AnimateOnUpdate>
