@@ -1,0 +1,15 @@
+{
+  "id": "U-mmeOX0S5WUtP-w4Q23aA",
+  "image": {
+    "id": "a2JYmSeYQn6kYoIqdd6x1Q",
+    "url": "https://www.datocms-assets.com/166541/1758618489-banner-image.jpg",
+    "smartTags": ["head", "person", "face", "photography", "portrait", "happy"]
+  },
+  "badgeText": "10% OFF",
+  "bannerTitle": "Sign up and save.",
+  "bannerText": "Free shipping on orders $99+",
+  "discountCode": "NEWUBU10",
+  "badgeTextSubmitted": "THANK YOU",
+  "bannerTextSubmitted": "Here is your code to use at checkout.",
+  "isBannerActive": true
+}

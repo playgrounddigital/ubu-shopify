@@ -16,6 +16,7 @@
     "@next/third-parties": "^15.5.3",
     "@svgr/webpack": "^6.3.1",
     "classnames": "^2.3.1",
+    "copy-to-clipboard": "^3.3.3",
     "framer-motion": "^6.3.4",
     "graphql": "^16.9.0",
     "graphql-request": "^7.1.0",

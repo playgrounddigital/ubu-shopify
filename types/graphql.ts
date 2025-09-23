@@ -1,6 +1,6 @@
 export enum GraphQlQueryEnum {
   Metadata = 'Metadata',
-  SiteBanner = 'SiteBanner',
+
   HomePage = 'HomePage',
   AboutPage = 'AboutPage',
   SignInPage = 'SignInPage',
@@ -9,6 +9,10 @@ export enum GraphQlQueryEnum {
   PrivacyPolicyPage = 'PrivacyPolicyPage',
   ProductPageTemplate = 'ProductPageTemplate',
 
+  SiteBanner = 'SiteBanner',
+  FreeShippingBanner = 'FreeShippingBanner',
+  PromoBanner = 'PromoBanner',
+
   AllCollections = 'AllCollections',
   AllProducts = 'AllProducts',
 
@@ -16,7 +20,6 @@ export enum GraphQlQueryEnum {
   AllShopNavigationMenus = 'AllShopNavigationMenus',
   AllMobileShopNavigationMenus = 'AllMobileShopNavigationMenus',
   ShippingReturnsInformation = 'ShippingReturnsInformation',
-  FreeShippingBanner = 'FreeShippingBanner',
   RecommendedCartItemList = 'RecommendedCartItemList',
   Footer = 'Footer',
 }

@@ -7,6 +7,7 @@ import { EmptyCartTextContent } from '~/types/cms/models/empty-cart-text'
 import { Footer } from '~/types/cms/models/footer'
 import { FreeShippingBanner } from '~/types/cms/models/free-shipping-banner'
 import { MobileShopNavigationMenu } from '~/types/cms/models/mobile-shop-navigation-menu'
+import { PromoBannerContent } from '~/types/cms/models/promo-banner'
 import { RecommendedCartItemListContent } from '~/types/cms/models/recommended-cart-item-list'
 import { ShippingReturnsInformationContent } from '~/types/cms/models/shipping-returns-information'
 import { ShopNavigationMenu } from '~/types/cms/models/shop-navigation-menu'
@@ -28,6 +29,7 @@ const fetchContent = async () => {
   const allMobileShopNavigationMenusQuery = getGraphQLQuery(GraphQlQueryEnum.AllMobileShopNavigationMenus)
   const emptyCartTextQuery = getGraphQLQuery(GraphQlQueryEnum.EmptyCartText)
   const recommendedCartItemListQuery = getGraphQLQuery(GraphQlQueryEnum.RecommendedCartItemList)
+  const promoBannerQuery = getGraphQLQuery(GraphQlQueryEnum.PromoBanner)
 
   const [
     { siteBanner },
@@ -38,6 +40,7 @@ const fetchContent = async () => {
     { allMobileShopNavigationMenus },
     { emptyCartText },
     { recommendedCartItemList },
+    { promoBanner },
     products,
   ]: [
     { siteBanner: SiteBanner },
@@ -48,6 +51,7 @@ const fetchContent = async () => {
     { allMobileShopNavigationMenus: MobileShopNavigationMenu[] },
     { emptyCartText: EmptyCartTextContent },
     { recommendedCartItemList: RecommendedCartItemListContent },
+    { promoBanner: PromoBannerContent },
     products: Product[],
   ] = await Promise.all([
     fetchFromDatoAPI(siteBannerQuery),
@@ -58,6 +62,7 @@ const fetchContent = async () => {
     fetchFromDatoAPI(allMobileShopNavigationMenusQuery),
     fetchFromDatoAPI(emptyCartTextQuery),
     fetchFromDatoAPI(recommendedCartItemListQuery),
+    fetchFromDatoAPI(promoBannerQuery),
     getAllProducts(),
   ])
 
@@ -84,6 +89,9 @@ const fetchContent = async () => {
 
   const recommendedCartItemListJson = JSON.stringify(recommendedCartItemList)
   fs.writeFileSync(path.join(publicDir, 'recommended-cart-item-list.json'), recommendedCartItemListJson)
+
+  const promoBannerJson = JSON.stringify(promoBanner)
+  fs.writeFileSync(path.join(publicDir, 'promo-banner.json'), promoBannerJson)
 
   const productsJson = JSON.stringify(products)
   fs.writeFileSync(path.join(publicDir, 'products.json'), productsJson)

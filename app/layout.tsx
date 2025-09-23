@@ -8,10 +8,14 @@ import AnimateLayout from '~/components/Layout/AnimateLayout'
 import ErrorBoundary from '~/components/Layout/ErrorBoundary'
 import Footer from '~/components/Layout/Nav/Footer'
 import Navbar from '~/components/Layout/Nav/Navbar'
+import PromoBanner from '~/components/Layout/PromoBanner'
 import AuthProvider from '~/context/AuthContext'
 import CartProvider from '~/context/CartContext'
 import PageTransitionProvider from '~/context/PageTransitionContext'
+import promoBannerJSON from '~/public/promo-banner.json'
 import '~/styles/styles.css'
+
+const isBannerActive = promoBannerJSON.isBannerActive
 
 const GA_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
 if (!GA_ID) {
@@ -36,6 +40,7 @@ export default ({ children }: { children: ReactNode }) => {
               <CartProvider>
                 <Suspense>
                   <Navbar />
+                  {isBannerActive && <PromoBanner content={promoBannerJSON} />}
                   <AnimateLayout>
                     {children}
                     <Footer />

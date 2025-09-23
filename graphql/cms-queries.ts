@@ -86,13 +86,6 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
       }
     }
   }`,
-  [GraphQlQueryEnum.SiteBanner]: () => `{
-    siteBanner {
-      id
-      bannerText
-      isBannerActive
-    }
-  }`,
   [GraphQlQueryEnum.HomePage]: () => `{
     homePage {
       heroSlides {
@@ -278,6 +271,27 @@ export const GRAPHQL_QUERIES: Record<GraphQlQueryEnum, (slug?: string) => string
     }
   }`,
 
+  [GraphQlQueryEnum.SiteBanner]: () => `{
+    siteBanner {
+      id
+      bannerText
+      isBannerActive
+    }
+  }`,
+  [GraphQlQueryEnum.PromoBanner]: () => `{
+    promoBanner {
+      id
+      image ${imageQuery}
+      badgeText
+      bannerTitle
+      bannerText
+
+      badgeTextSubmitted
+      bannerTextSubmitted
+      discountCode
+      isBannerActive
+    }
+  }`,
   [GraphQlQueryEnum.AllCollections]: () => `{
     allCollections {
       shopifyCollection

@@ -1,4 +1,4 @@
-export type ButtonSize = 'sm' | 'md'
+export type ButtonSize = 'xs' | 'sm' | 'md'
 
 export type ButtonColours = 'white-black' | 'black-green' | 'black-pink' | 'black-yellow' | 'white-blue'
 
@@ -6,16 +6,19 @@ export const defaultButtonClasses =
   'group relative font-mono flex select-none items-center justify-between gap-x-2 overflow-hidden border uppercase font-normal transition-all'
 
 export const BUTTON_SIZE: Record<ButtonSize, string> = {
+  xs: 'h-[26px] px-3 text-xs tracking-[0.1px]',
   sm: 'h-[34px] px-4 text-base tracking-[0.1px]',
   md: 'h-11 md:h-[58px] px-5 md:px-[27px] text-[23px] leading-[45.5px]',
 }
 
 export const BUTTON_CIRCLE_SIZE: Record<ButtonSize, string> = {
+  xs: 'size-[26px] min-w-[26px]',
   sm: 'size-[34px] min-w-[34px]',
   md: 'size-11 md:size-[58px] min-w-11 md:min-w-[58px]',
 }
 
 export const BUTTON_ARROW_SIZE: Record<ButtonSize, string> = {
+  xs: 'size-[12px] min-w-[12px] min-h-[12px]',
   sm: 'size-[15px] min-w-[15px] min-h-[15px]',
   md: 'size-[26px] min-w-[26px] min-h-[26px]',
 }
