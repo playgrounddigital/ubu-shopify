@@ -1,15 +1,1 @@
-{
-  "id": "U-mmeOX0S5WUtP-w4Q23aA",
-  "image": {
-    "id": "a2JYmSeYQn6kYoIqdd6x1Q",
-    "url": "https://www.datocms-assets.com/166541/1758618489-banner-image.jpg",
-    "smartTags": ["head", "person", "face", "photography", "portrait", "happy"]
-  },
-  "badgeText": "10% OFF",
-  "bannerTitle": "Sign up and save.",
-  "bannerText": "Free shipping on orders $99+",
-  "discountCode": "NEWUBU10",
-  "badgeTextSubmitted": "THANK YOU",
-  "bannerTextSubmitted": "Here is your code to use at checkout.",
-  "isBannerActive": true
-}
+{"id":"U-mmeOX0S5WUtP-w4Q23aA","image":{"id":"Gli1wP5MQ1Sh6ZhpDftMpw","url":"https://www.datocms-assets.com/166541/1758603548-pink-velvet-1-menu-1.png","smartTags":["accessories","bag","handbag","purse","velvet","clothing","pants","baby","person","hat"]},"badgeText":"10% OFF","bannerTitle":"Sign up and save.","bannerText":"10% off your first UBU order","badgeTextSubmitted":"THANK YOU","bannerTextSubmitted":"10% off your first UBU order","discountCode":"NEWUBU10","isBannerActive":true}

@@ -52,6 +52,35 @@ const CartContext = createContext<CartContextState>({
 
 const CHECKOUT_ID_KEY = 'shopify_checkout_id'
 const CHECKOUT_SNAPSHOT_KEY = 'shopify_checkout_snapshot'
+const CHECKOUT_TIMESTAMP_KEY = 'shopify_checkout_timestamp'
+const CART_EXPIRY_HOURS = 24 // 1 day
+
+// Helper function to check if cart has expired
+function isCartExpired(): boolean {
+  try {
+    if (typeof window === 'undefined') return false
+    const timestamp = window.localStorage.getItem(CHECKOUT_TIMESTAMP_KEY)
+    if (!timestamp) return false
+
+    const cartTime = new Date(timestamp).getTime()
+    const currentTime = new Date().getTime()
+    const hoursDiff = (currentTime - cartTime) / (1000 * 60 * 60)
+
+    return hoursDiff > CART_EXPIRY_HOURS
+  } catch {
+    return false
+  }
+}
+
+// Helper function to clear expired cart data
+function clearExpiredCartData(): void {
+  try {
+    if (typeof window === 'undefined') return
+    window.localStorage.removeItem(CHECKOUT_ID_KEY)
+    window.localStorage.removeItem(CHECKOUT_SNAPSHOT_KEY)
+    window.localStorage.removeItem(CHECKOUT_TIMESTAMP_KEY)
+  } catch {}
+}
 
 // API helper functions
 async function createCheckoutAPI(lineItems: CheckoutLineItemAddInput[]): Promise<Checkout> {
@@ -106,6 +135,12 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
     if (mountedRef.current) return
     mountedRef.current = true
     try {
+      // Check if cart has expired
+      if (isCartExpired()) {
+        clearExpiredCartData()
+        return
+      }
+
       const savedId = typeof window !== 'undefined' ? window.localStorage.getItem(CHECKOUT_ID_KEY) : null
       const savedSnapshot = typeof window !== 'undefined' ? window.localStorage.getItem(CHECKOUT_SNAPSHOT_KEY) : null
       if (savedId) setCheckoutId(savedId)
@@ -123,8 +158,11 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
       if (typeof window === 'undefined') return
       if (next) {
         window.localStorage.setItem(CHECKOUT_SNAPSHOT_KEY, JSON.stringify(next))
+        // Update timestamp whenever cart is persisted
+        window.localStorage.setItem(CHECKOUT_TIMESTAMP_KEY, new Date().toISOString())
       } else {
         window.localStorage.removeItem(CHECKOUT_SNAPSHOT_KEY)
+        window.localStorage.removeItem(CHECKOUT_TIMESTAMP_KEY)
       }
       if (typeof nextId === 'string') {
         setCheckoutId(nextId)
