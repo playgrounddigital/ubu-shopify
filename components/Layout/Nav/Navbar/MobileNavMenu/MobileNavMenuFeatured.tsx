@@ -1,6 +1,6 @@
 'use client'
 import cx from 'classnames'
-import { FC } from 'react'
+import { FC, Fragment } from 'react'
 import BackButton from '~/components/Layout/Nav/Navbar/MobileNavMenu/BackButton'
 import FeaturedCard from '~/components/Layout/Nav/Navbar/MobileNavMenu/FeaturedCard'
 import MobileNavLink from '~/components/Layout/Nav/Navbar/MobileNavMenu/MobileNavLink'
@@ -30,15 +30,19 @@ const MobileNavMenuFeatured: FC<MobileNavMenuFeaturedProps> = ({ isOpen, menu, o
 
         <ul className="flex flex-col gap-y-5">
           {menu?.menuLists.map((menuList) => (
-            <MobileNavLink
-              key={menuList.id}
-              title={menuList.title}
-              href={`${SitePages.Collections}/${menuList.collections[0].collection.handle}`}
-              onClick={() => onClose()}
-              isButton={false}
-              onClose={onClose}
-              hasCircleButton={false}
-            />
+            <Fragment key={menuList.id}>
+              {menuList.collections.map((collection) => (
+                <MobileNavLink
+                  key={collection.id}
+                  title={collection.title}
+                  href={`${SitePages.Collections}/${collection.collection.handle}`}
+                  onClick={() => onClose()}
+                  isButton={false}
+                  onClose={onClose}
+                  hasCircleButton={false}
+                />
+              ))}
+            </Fragment>
           ))}
         </ul>
 
