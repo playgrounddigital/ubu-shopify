@@ -119,6 +119,21 @@ async function updateCheckoutAPI(args: {
   return data.checkout
 }
 
+async function getCheckoutAPI(checkoutId: string): Promise<Checkout | null> {
+  const response = await fetch('/api/checkout/get', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ checkoutId }),
+  })
+
+  if (!response.ok) {
+    return null
+  }
+
+  const data = await response.json()
+  return data.checkout
+}
+
 interface CartProviderProps {
   children: ReactNode
 }
@@ -134,23 +149,48 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
   useEffect(() => {
     if (mountedRef.current) return
     mountedRef.current = true
-    try {
-      // Check if cart has expired
-      if (isCartExpired()) {
-        clearExpiredCartData()
-        return
-      }
 
-      const savedId = typeof window !== 'undefined' ? window.localStorage.getItem(CHECKOUT_ID_KEY) : null
-      const savedSnapshot = typeof window !== 'undefined' ? window.localStorage.getItem(CHECKOUT_SNAPSHOT_KEY) : null
-      if (savedId) setCheckoutId(savedId)
-      if (savedSnapshot) {
-        try {
-          const parsed: Checkout = JSON.parse(savedSnapshot)
-          setCart(parsed)
-        } catch {}
-      }
-    } catch {}
+    const verifyAndRestoreCart = async () => {
+      try {
+        // Check if cart has expired
+        if (isCartExpired()) {
+          clearExpiredCartData()
+          return
+        }
+
+        const savedId = typeof window !== 'undefined' ? window.localStorage.getItem(CHECKOUT_ID_KEY) : null
+        const savedSnapshot = typeof window !== 'undefined' ? window.localStorage.getItem(CHECKOUT_SNAPSHOT_KEY) : null
+
+        if (savedId && savedSnapshot) {
+          try {
+            const parsed: Checkout = JSON.parse(savedSnapshot)
+            // Set the cart immediately for UI responsiveness
+            setCart(parsed)
+            setCheckoutId(savedId)
+
+            // Verify the cart still exists (wasn't checked out)
+            const verifiedCart = await getCheckoutAPI(savedId)
+
+            if (!verifiedCart) {
+              // Cart was checked out or doesn't exist anymore - clear it
+              setCart(null)
+              setCheckoutId(null)
+              clearExpiredCartData()
+            } else {
+              // Update with the latest cart data from Shopify
+              setCart(verifiedCart)
+            }
+          } catch {
+            // If verification fails, clear the cart
+            setCart(null)
+            setCheckoutId(null)
+            clearExpiredCartData()
+          }
+        }
+      } catch {}
+    }
+
+    verifyAndRestoreCart()
   }, [])
 
   const persist = useCallback((next: Checkout | null, nextId?: string | null) => {

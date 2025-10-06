@@ -259,6 +259,12 @@ const CART_LINES_UPDATE_MUTATION = gql`
 	}
 `
 
+const CART_QUERY = gql`
+	query Cart($cartId: ID!) {
+		cart(id: $cartId) { ${CART_SELECTION} }
+	}
+`
+
 const CUSTOMER_ACCESS_TOKEN_CREATE_MUTATION = gql`
   mutation CustomerAccessTokenCreate($email: String!, $password: String!) {
     customerAccessTokenCreate(input: { email: $email, password: $password }) {
@@ -527,6 +533,17 @@ export async function updateCheckout(args: UpdateCheckoutArgs): Promise<Checkout
     throw new Error(res.cartLinesUpdate.userErrors.map((e) => e.message).join(', '))
   }
   return mapCheckout(res.cartLinesUpdate.cart)
+}
+
+export async function getCheckout(checkoutId: string): Promise<Checkout | null> {
+  try {
+    const res = await client.request<{ cart: any | null }>(CART_QUERY, { cartId: checkoutId })
+    if (!res.cart) return null
+    return mapCheckout(res.cart)
+  } catch (error) {
+    // Cart doesn't exist or was completed
+    return null
+  }
 }
 
 // ===== Customer Auth & Orders API =====
