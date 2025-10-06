@@ -193,6 +193,49 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
     verifyAndRestoreCart()
   }, [])
 
+  // Listen for storage changes from other tabs to keep cart in sync
+  useEffect(() => {
+    const handleStorageChange = (event: StorageEvent) => {
+      // Only handle changes to our cart-related keys
+      if (
+        event.key !== CHECKOUT_ID_KEY &&
+        event.key !== CHECKOUT_SNAPSHOT_KEY &&
+        event.key !== CHECKOUT_TIMESTAMP_KEY
+      ) {
+        return
+      }
+
+      // If checkout ID was removed, clear the cart
+      if (event.key === CHECKOUT_ID_KEY && !event.newValue) {
+        setCart(null)
+        setCheckoutId(null)
+        return
+      }
+
+      // If checkout snapshot was updated, sync the cart
+      if (event.key === CHECKOUT_SNAPSHOT_KEY) {
+        if (!event.newValue) {
+          setCart(null)
+        } else {
+          try {
+            const parsed: Checkout = JSON.parse(event.newValue)
+            setCart(parsed)
+          } catch {
+            // Invalid JSON, ignore
+          }
+        }
+      }
+
+      // If checkout ID was updated, sync it
+      if (event.key === CHECKOUT_ID_KEY && event.newValue) {
+        setCheckoutId(event.newValue)
+      }
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+    return () => window.removeEventListener('storage', handleStorageChange)
+  }, [])
+
   const persist = useCallback((next: Checkout | null, nextId?: string | null) => {
     try {
       if (typeof window === 'undefined') return
