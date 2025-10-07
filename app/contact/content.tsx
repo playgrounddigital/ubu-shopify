@@ -15,6 +15,7 @@ const FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_CONTACT_FORM_ID
 if (!FORM_ID) {
   throw new Error('NEXT_PUBLIC_FORMSPREE_NEWSLETTER_SIGNUP_FORM_ID is not set')
 }
+
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
 if (!SITE_KEY) {
   throw new Error('NEXT_PUBLIC_RECAPTCHA_SITE_KEY is not set')
