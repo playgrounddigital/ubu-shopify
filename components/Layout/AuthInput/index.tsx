@@ -1,12 +1,12 @@
 import cx from 'classnames'
 import useBreakpoints from '~/hooks/useBreakpoints'
 
-interface AuthInputProps {
+export interface AuthInputProps {
   id: string
-  type: 'email' | 'password' | 'text'
+  type: 'email' | 'password' | 'text' | 'textarea'
   placeholder: string
   value: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
   autoComplete?: string
   required?: boolean
   minLength?: number
@@ -25,6 +25,14 @@ export default function AuthInput({
   className = '',
 }: AuthInputProps) {
   const { isDesktop } = useBreakpoints()
+  const inputClasses = cx(
+    'w-full rounded-lg bg-white py-5 pl-2 placeholder:text-black lg:rounded-none lg:bg-transparent lg:p-0',
+    {
+      'text-input': isDesktop,
+      'text-base': !isDesktop,
+    }
+  )
+
   return (
     <div className={`mb-4 lg:mb-8 lg:border-b lg:border-black lg:pb-4 ${className}`}>
       <label
@@ -33,23 +41,36 @@ export default function AuthInput({
       >
         {placeholder}
       </label>
-      <input
-        id={id}
-        type={type}
-        placeholder={placeholder}
-        className={cx(
-          'w-full rounded-lg bg-white py-5 pl-2 placeholder:text-black lg:rounded-none lg:bg-transparent lg:p-0',
-          {
-            'text-input': isDesktop,
-            'text-base': !isDesktop,
-          }
-        )}
-        value={value}
-        onChange={onChange}
-        autoComplete={autoComplete}
-        required={required}
-        minLength={minLength}
-      />
+      {type === 'textarea' ? (
+        <textarea
+          id={id}
+          placeholder={placeholder}
+          className={inputClasses}
+          value={value}
+          onChange={onChange}
+          autoComplete={autoComplete}
+          required={required}
+          minLength={minLength}
+        />
+      ) : (
+        <input
+          id={id}
+          type={type}
+          placeholder={placeholder}
+          className={cx(
+            'w-full rounded-lg bg-white py-5 pl-2 placeholder:text-black lg:rounded-none lg:bg-transparent lg:p-0',
+            {
+              'text-input': isDesktop,
+              'text-base': !isDesktop,
+            }
+          )}
+          value={value}
+          onChange={onChange}
+          autoComplete={autoComplete}
+          required={required}
+          minLength={minLength}
+        />
+      )}
     </div>
   )
 }

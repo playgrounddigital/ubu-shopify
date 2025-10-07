@@ -13,9 +13,9 @@ import useBreakpoints from '~/hooks/useBreakpoints'
 import FooterJSON from '~/public/footer.json'
 import { SitePages } from '~/types/pages'
 
-const FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID
+const FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_NEWSLETTER_SIGNUP_FORM_ID
 if (!FORM_ID) {
-  throw new Error('NEXT_PUBLIC_FORMSPREE_FORM_ID is not set')
+  throw new Error('NEXT_PUBLIC_FORMSPREE_NEWSLETTER_SIGNUP_FORM_ID is not set')
 }
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
 if (!SITE_KEY) {
@@ -50,10 +50,10 @@ const Footer: FC = () => {
             title: 'About Us',
             href: SitePages.About,
           },
-          // {
-          //   title: 'Contact',
-          //   href: SitePages.Contact,
-          // }
+          {
+            title: 'Contact',
+            href: SitePages.Contact,
+          },
         ],
       },
       {

@@ -1,0 +1,36 @@
+export const formFieldItems = [
+  {
+    id: 'name',
+    type: 'text',
+    value: '',
+    name: 'Name',
+    autoComplete: 'name',
+    required: true,
+    placeholder: 'Name',
+  },
+  {
+    id: 'phone',
+    type: 'tel',
+    value: '',
+    name: 'Phone',
+    autoComplete: 'tel',
+    placeholder: 'Phone',
+  },
+  {
+    id: 'email',
+    type: 'email',
+    value: '',
+    name: 'Email address',
+    autoComplete: 'email',
+    required: true,
+    placeholder: 'Email address',
+  },
+  {
+    id: 'message',
+    type: 'textarea',
+    value: '',
+    required: true,
+    name: 'Message',
+    placeholder: 'Message',
+  },
+]

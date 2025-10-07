@@ -11,4 +11,5 @@ export enum SitePages {
   ForgotPassword = '/forgot-password',
   Account = '/account',
   PrivacyPolicy = '/privacy-policy',
+  Contact = '/contact',
 }
