@@ -387,6 +387,26 @@ const CartProvider: FC<CartProviderProps> = ({ children }) => {
           setCart(checkout)
           persist(checkout)
         }
+
+        // Track add to cart event in Google Analytics
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+          const totalValue = itemsArray.reduce((sum, item) => {
+            const price = parseFloat(item.priceAmount ?? '0')
+            return sum + price * item.quantity
+          }, 0)
+
+          ;(window as any).gtag('event', 'add_to_cart', {
+            currency: itemsArray[0]?.currencyCode ?? 'AUD',
+            value: totalValue,
+            items: itemsArray.map((item) => ({
+              item_id: item.variantId,
+              item_name: item.variantTitle || item.productTitle || '',
+              item_variant: item.variantTitle ?? '',
+              price: parseFloat(item.priceAmount ?? '0'),
+              quantity: item.quantity,
+            })),
+          })
+        }
       } catch (err) {
         // Revert on error
         setCart(previousCart)
