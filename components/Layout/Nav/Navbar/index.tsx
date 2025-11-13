@@ -117,17 +117,9 @@ const Navbar: FC = () => {
                     }
                   }}
                   onClick={closeAllMenus}
-                  className={cx(
-                    'group relative inline-flex h-[34px] items-center justify-center px-4 text-center uppercase',
-                    link.className
-                  )}
+                  className="group relative inline-flex h-[34px] items-center justify-center px-4 text-center text-white uppercase"
                 >
-                  <span
-                    className={cx(
-                      'absolute inset-0 rounded-full transition-[filter] group-hover:blur-sm',
-                      link.backgroundColour
-                    )}
-                  />
+                  <span className="absolute inset-0 rounded-full bg-black transition-[filter] group-hover:blur-sm" />
                   <span className="relative z-10">{link.label}</span>
                 </PageLink>
               ))}
@@ -167,9 +159,9 @@ const Navbar: FC = () => {
                     className="group relative inline-flex h-[34px] max-w-[44px] items-center justify-center rounded-full px-4 md:max-w-[50px]"
                   >
                     <span
-                      className={cx('absolute inset-0 rounded-full bg-green transition-[filter] group-hover:blur-sm')}
+                      className={cx('absolute inset-0 rounded-full bg-black transition-[filter] group-hover:blur-sm')}
                     />
-                    <Icon className={cx('relative z-10', iconClassName)} />
+                    <Icon className={cx('relative z-10 text-white', iconClassName)} />
                     <span
                       aria-hidden={!count}
                       className={cx(
