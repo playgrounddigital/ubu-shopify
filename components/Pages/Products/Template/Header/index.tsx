@@ -28,6 +28,8 @@ const Header: FC<HeaderProps> = ({ product, accordions, freeShippingBanner }) =>
   const [quantity, setQuantity] = useState(1)
   const [openAccordionId, setOpenAccordionId] = useState<string | null>(null)
 
+  console.log(accordions)
+
   // Prefer Shopify option names/values when available; fallback to parsing variant titles
   const optionGroups = useMemo(() => {
     if (product.options && product.options.length) {

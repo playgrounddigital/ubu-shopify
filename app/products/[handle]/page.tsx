@@ -45,7 +45,7 @@ export default async ({ params }: PageProps) => {
     fetchFromDatoAPI(allProductsQuery),
   ])
 
-  const productContent = allProducts.find((product) => product.shopifyProduct.handle === handle)
+  const productContent = allProducts.find((datoProduct) => datoProduct.shopifyProduct.id === product.id)
 
   return (
     <ProductPageContent
