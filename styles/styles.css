@@ -31,10 +31,31 @@
   --color-off-white: #f2f2f2;
   --color-divider-grey: #e1e1e1;
 
-  --font-sans: 'Inter', sans-serif;
+  --font-sans: 'PP Frama', sans-serif;
+  --font-display: 'Rauschen-BBook', sans-serif;
 
   /* Custom shadow */
   --shadow-shop-nav-menu: 14px 7px 13.9px 0 rgba(0, 0, 0, 0.24);
+}
+
+@font-face {
+  font-family: 'PP Frama';
+  src:
+    url('/fonts/PPFrama-Regular.woff2') format('woff2'),
+    url('/fonts/PPFrama-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rauschen-BBook';
+  src:
+    url('/fonts/Rauschen-BBook.woff2') format('woff2'),
+    url('/fonts/Rauschen-BBook.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 /* Override cursor-pointer becoming default */
@@ -45,7 +66,7 @@ button:not(:disabled),
 
 @layer base {
   body {
-    @apply w-full min-w-[320px] bg-white font-sans text-base leading-5 font-normal whitespace-pre-line text-black;
+    @apply w-full min-w-[320px] bg-white font-sans text-xs leading-5 font-normal whitespace-pre-line text-black lg:text-lg;
   }
   .heading-1 {
     @apply text-[87px] leading-[78px] font-extrabold -tracking-[1.74px] md:text-[270px] md:leading-[243px] md:-tracking-[5.4px];
@@ -55,6 +76,11 @@ button:not(:disabled),
   }
   .heading-3 {
     @apply text-[50px] leading-[45px] font-semibold -tracking-[3px] md:text-[76px] md:leading-[68.4px] md:-tracking-[4.56px];
+  }
+  .heading-1,
+  .heading-2,
+  .heading-3 {
+    @apply font-display;
   }
   .text-subheading {
     @apply font-semibold -tracking-[0.48px] md:text-2xl md:leading-7 md:-tracking-[0.72px];
