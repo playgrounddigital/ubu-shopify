@@ -8,7 +8,6 @@ import OptimisedImage from '~/components/Layout/OptimisedImage'
 import { heroSliderSettings } from '~/components/Pages/Home/Header/presets'
 import { joinSmartTagsIntoString } from '~/helpers/cms'
 import useBreakpoints from '~/hooks/useBreakpoints'
-import RectangleBackground from '~/public/img/home/header/rectangle-background.svg'
 
 const Header: FC<HomePageSectionProps> = ({ content }) => {
   const { isTablet } = useBreakpoints()
@@ -57,7 +56,6 @@ const Header: FC<HomePageSectionProps> = ({ content }) => {
                 <p className="text-subheading relative z-10 max-w-[220px] text-white md:max-w-[259px]">
                   {slide.description}
                 </p>
-                <RectangleBackground className="absolute top-0 left-0 min-h-[72px] md:inset-0" />
               </div>
             </Container>
           </div>

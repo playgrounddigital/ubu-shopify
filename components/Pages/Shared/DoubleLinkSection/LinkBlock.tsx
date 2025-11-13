@@ -4,22 +4,7 @@ import CircleButton from '~/components/Layout/Button/Circle'
 import OptimisedImage from '~/components/Layout/OptimisedImage'
 import PageLink from '~/components/Layout/PageLink'
 import { joinSmartTagsIntoString } from '~/helpers/cms'
-import LinkOneLineOneRectangle from '~/public/img/home/double-link-section/link-one-line-one-rectangle.svg'
-import LinkOneLineTwoRectangle from '~/public/img/home/double-link-section/link-one-line-two-rectangle.svg'
-import LinkTwoLineOneRectangle from '~/public/img/home/double-link-section/link-two-line-one-rectangle.svg'
-import LinkTwoLineTwoRectangle from '~/public/img/home/double-link-section/link-two-line-two-rectangle.svg'
 import { Image } from '~/types/cms/common'
-
-const rectangleClassNames = {
-  primary: {
-    lineOne: 'absolute -top-2 left-1/2 h-[130%] w-[calc(100%+30px)] -translate-x-1/2',
-    lineTwo: 'absolute -top-0.5 left-1/2 h-[130%] w-[calc(100%+30px)] -translate-x-1/2',
-  },
-  secondary: {
-    lineOne: 'absolute -top-2 left-1/2 h-[130%] w-[calc(100%+30px)] -translate-x-[calc(50%-8px)]',
-    lineTwo: 'absolute -top-2 left-1/2 h-[130%] w-[calc(100%+24px)] -translate-x-[calc(50%+2px)]',
-  },
-}
 
 interface LinkBlockProps {
   link?: string | null
@@ -31,8 +16,6 @@ interface LinkBlockProps {
 
 const LinkBlock: FC<LinkBlockProps> = ({ link, image, variant, lineOneText, lineTwoText }) => {
   const isPrimary = variant === 'primary'
-  const LineOneRectangle = isPrimary ? LinkOneLineOneRectangle : LinkTwoLineOneRectangle
-  const LineTwoRectangle = isPrimary ? LinkOneLineTwoRectangle : LinkTwoLineTwoRectangle
 
   return (
     <PageLink
@@ -50,18 +33,14 @@ const LinkBlock: FC<LinkBlockProps> = ({ link, image, variant, lineOneText, line
       />
       <div className="relative z-10 flex w-full items-end justify-between">
         {/* LEFT SIDE */}
-        <div
-          className={cx({
-            'text-white': isPrimary,
-          })}
-        >
+        <div className="text-white">
           <div
             className={cx('relative w-fit transform-gpu transition-transform', {
               'group-hover/button:-translate-y-2 group-hover/button:rotate-3': isPrimary,
               'group-hover/button:-translate-y-2 group-hover/button:-rotate-3': !isPrimary,
             })}
           >
-            <LineOneRectangle className={rectangleClassNames[variant].lineOne} />
+            {/* <LineOneRectangle className={rectangleClassNames[variant].lineOne} /> */}
             <span className="heading-3 relative z-10">{lineOneText}</span>
           </div>
           <div
@@ -70,7 +49,7 @@ const LinkBlock: FC<LinkBlockProps> = ({ link, image, variant, lineOneText, line
               'group-hover/button:translate-y-2 group-hover/button:rotate-3': !isPrimary,
             })}
           >
-            <LineTwoRectangle className={rectangleClassNames[variant].lineTwo} />
+            {/* <LineTwoRectangle className={rectangleClassNames[variant].lineTwo} /> */}
             <span className="heading-3 relative z-10">{lineTwoText}</span>
           </div>
         </div>
